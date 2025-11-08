@@ -11,25 +11,27 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: `${siteConfig.ownerName} | ${siteConfig.siteName}`,
   description: siteConfig.tagline,
-  metadataBase: new URL('https://anil-rongala-website.example.com'),
+  metadataBase: new URL('https://anil-rongala.vercel.app'), // temporary preview URL
   openGraph: {
     title: `${siteConfig.ownerName} | ${siteConfig.siteName}`,
     description: siteConfig.tagline,
-    url: 'https://anil-rongala-website.example.com',
+    url: 'https://anil-rongala.vercel.app',
     siteName: siteConfig.siteName,
     locale: 'en_US',
-    type: 'website'
+    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: `${siteConfig.ownerName} | ${siteConfig.siteName}`,
-    description: siteConfig.tagline
-  }
+    description: siteConfig.tagline,
+  },
+  // 👇 This part keeps Google and other search engines from indexing it
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
-type RootLayoutProps = {
-  children: ReactNode;
-};
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
