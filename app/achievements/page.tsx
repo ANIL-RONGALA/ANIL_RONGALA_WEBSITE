@@ -1,8 +1,7 @@
 import type { Metadata } from 'next';
-import { PageTransition } from '@/components/PageTransition';
+import PageTransition from '@/components/PageTransition';
 import { SectionHeader } from '@/components/SectionHeader';
 import { achievements } from '@/lib/achievements';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Achievements | ANIL RONGALA WEBSITE'
@@ -33,7 +32,7 @@ export default function AchievementsPage() {
                     className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-200 hover:text-cyan-100"
                   >
                     View Details
-                  </Link>
+                  </a>
                 ) : null}
               </div>
             </div>
