@@ -23,5 +23,11 @@ export const mediaItems: MediaItem[] = [
     youtubeUrl: 'https://www.youtube.com/watch?v=jNQXAC9IVRw',
     description: 'Breakdown of PE tiling, dataflow orchestration, and FPGA resource balancing for neural compute.',
     tags: ['AI Hardware', 'Architecture', 'Research']
+  },
+  {
+    title: 'Live Circuit Telemetry Demo',
+    youtubeUrl: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
+    description: 'A visual feed of telemetry overlays, waveform capture, and futuristic board diagnostics.',
+    tags: ['Telemetry', 'Visualization', 'Showcase']
   }
 ];
