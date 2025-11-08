@@ -27,6 +27,54 @@ const innerSheen =
 
 function AnimatedIcon({ animation, color }: { animation: ChipAnimation; color: string }) {
   switch (animation) {
+    case 'core':
+      return (
+        <svg className="h-full w-full" viewBox="0 0 120 80" fill="none">
+          <defs>
+            <radialGradient id="coreGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor={color} stopOpacity={0.9} />
+              <stop offset="55%" stopColor={color} stopOpacity={0.2} />
+              <stop offset="100%" stopColor={color} stopOpacity={0} />
+            </radialGradient>
+          </defs>
+          <motion.circle
+            cx="60"
+            cy="40"
+            r="26"
+            fill="url(#coreGlow)"
+            animate={{ scale: [0.9, 1.05, 0.9], opacity: [0.6, 0.95, 0.6] }}
+            transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
+          />
+          <motion.circle
+            cx="60"
+            cy="40"
+            r="18"
+            stroke={color}
+            strokeWidth="2.4"
+            strokeDasharray="10 10"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.circle
+            cx="60"
+            cy="40"
+            r="12"
+            stroke={color}
+            strokeWidth="2"
+            strokeDasharray="4 6"
+            animate={{ rotate: -360 }}
+            transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
+          />
+          <motion.circle
+            cx="60"
+            cy="40"
+            r="4"
+            fill={color}
+            animate={{ scale: [0.6, 1, 0.6] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </svg>
+      );
     case 'gpu':
       return (
         <svg className="h-full w-full" viewBox="0 0 120 80" fill="none">
