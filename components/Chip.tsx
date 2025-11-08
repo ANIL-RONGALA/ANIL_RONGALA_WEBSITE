@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useMemo, type CSSProperties } from 'react';
 
 import type { ChipAnimation } from '@/lib/boardSections';
 
@@ -13,52 +14,16 @@ export type ChipProps = {
   animation?: ChipAnimation;
   iconUrl?: string;
   videoUrl?: string;
+  className?: string;
+  style?: CSSProperties;
+  onHoverStart?: () => void;
+  onHoverEnd?: () => void;
 };
 
-const animationLayers: Record<ChipAnimation, { gradient: string; overlay: string }> = {
-  cpu: {
-    gradient:
-      'repeating-linear-gradient(135deg, rgba(255, 179, 71, 0.25) 0px, rgba(255, 179, 71, 0.45) 12px, transparent 12px, transparent 24px)',
-    overlay:
-      'linear-gradient(120deg, rgba(255, 179, 71, 0.35), rgba(15, 118, 110, 0.1), rgba(14, 165, 233, 0.2))'
-  },
-  gpu: {
-    gradient:
-      'repeating-linear-gradient(45deg, rgba(255, 107, 255, 0.4) 0px, rgba(255, 107, 255, 0.15) 16px, transparent 16px, transparent 32px)',
-    overlay:
-      'linear-gradient(90deg, rgba(236, 72, 153, 0.5), rgba(14, 165, 233, 0.1), rgba(236, 72, 153, 0.4))'
-  },
-  ram: {
-    gradient:
-      'repeating-linear-gradient(120deg, rgba(0, 255, 170, 0.45) 0px, rgba(0, 255, 170, 0.12) 10px, transparent 10px, transparent 18px)',
-    overlay:
-      'linear-gradient(135deg, rgba(0, 255, 170, 0.4), rgba(20, 184, 166, 0.1), rgba(45, 212, 191, 0.4))'
-  },
-  ssd: {
-    gradient:
-      'repeating-linear-gradient(160deg, rgba(255, 217, 59, 0.4) 0px, rgba(255, 217, 59, 0.18) 14px, transparent 14px, transparent 28px)',
-    overlay:
-      'linear-gradient(110deg, rgba(253, 224, 71, 0.5), rgba(251, 191, 36, 0.2), rgba(253, 224, 71, 0.35))'
-  },
-  media: {
-    gradient:
-      'repeating-linear-gradient(140deg, rgba(255, 75, 75, 0.45) 0px, rgba(255, 75, 75, 0.1) 8px, transparent 8px, transparent 16px)',
-    overlay:
-      'linear-gradient(100deg, rgba(244, 63, 94, 0.45), rgba(88, 28, 135, 0.15), rgba(244, 63, 94, 0.35))'
-  },
-  sensor: {
-    gradient:
-      'repeating-linear-gradient(125deg, rgba(224, 231, 255, 0.45) 0px, rgba(165, 180, 252, 0.15) 10px, transparent 10px, transparent 20px)',
-    overlay:
-      'linear-gradient(120deg, rgba(94, 234, 212, 0.3), rgba(59, 130, 246, 0.15), rgba(226, 232, 240, 0.45))'
-  },
-  io: {
-    gradient:
-      'repeating-linear-gradient(150deg, rgba(0, 195, 255, 0.45) 0px, rgba(0, 195, 255, 0.15) 12px, transparent 12px, transparent 24px)',
-    overlay:
-      'linear-gradient(135deg, rgba(56, 189, 248, 0.4), rgba(14, 116, 144, 0.1), rgba(56, 189, 248, 0.4))'
-  }
-};
+const metallicGradient = 'linear-gradient(140deg, #111 0%, #1c1c1c 45%, #111 100%)';
+
+const innerSheen =
+  'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 55%), radial-gradient(circle at 70% 70%, rgba(0,255,255,0.15), transparent 60%)';
 
 function AnimatedIcon({ animation, color }: { animation: ChipAnimation; color: string }) {
   switch (animation) {
@@ -303,81 +268,93 @@ export function Chip({
   color,
   animation = 'cpu',
   iconUrl,
-  videoUrl
+  videoUrl,
+  className,
+  style,
+  onHoverStart,
+  onHoverEnd
 }: ChipProps) {
-  const layers = animationLayers[animation] ?? animationLayers.cpu;
+  const borderColor = useMemo(() => `${color}aa`, [color]);
+  const glowColor = useMemo(() => `${color}44`, [color]);
+  const accentColor = useMemo(() => `${color}cc`, [color]);
 
   return (
     <motion.div
-      whileHover={{ scale: 1.05, boxShadow: `0 0 20px ${color}` }}
-      whileTap={{ scale: 0.98 }}
-      className="neon-border rounded-xl bg-white/5 backdrop-blur"
-      style={{ borderColor: color }}
+      whileHover={{ scale: 1.05, boxShadow: `0 0 40px ${accentColor}` }}
+      whileTap={{ scale: 0.97 }}
+      onHoverStart={onHoverStart}
+      onHoverEnd={onHoverEnd}
+      className={`group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none rounded-2xl border-[1.5px] p-[1.5px] transition-all duration-500 will-change-transform ${className ?? ''}`}
+      style={{
+        ...style,
+        borderColor,
+        boxShadow: `0 0 28px ${glowColor}`,
+        backgroundImage: metallicGradient
+      }}
     >
       <Link
         href={href}
-        className="group relative flex h-40 w-52 flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-4 text-left transition-colors duration-200 hover:bg-white/15"
+        className="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-[18px] border border-white/10 bg-gradient-to-br from-[#141414]/90 to-[#0c0c0c]/90 p-4 text-left"
       >
-        <motion.span
+        <div
           aria-hidden
-          className="absolute inset-px rounded-[10px] opacity-80"
-          style={{ backgroundImage: layers.gradient }}
-          animate={{ backgroundPosition: ['0% 50%', '120% 50%'] }}
-          transition={{ duration: 12, repeat: Infinity, ease: 'linear' }}
+          className="pointer-events-none absolute inset-0 rounded-[18px] opacity-80"
+          style={{ backgroundImage: innerSheen }}
         />
-        <motion.span
+        <motion.div
           aria-hidden
-          className="absolute inset-0 rounded-xl mix-blend-screen"
-          style={{ backgroundImage: layers.overlay }}
-          animate={{ opacity: [0.35, 0.6, 0.35] }}
+          className="pointer-events-none absolute inset-0 rounded-[18px]"
+          style={{ background: `radial-gradient(circle at 20% 20%, ${glowColor}, transparent 60%)` }}
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <div className="relative z-[1] flex flex-col gap-3">
-          <div className="relative h-20 overflow-hidden rounded-lg border border-white/10 bg-black/30">
-            <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-40" />
-            {videoUrl ? (
-              <video
-                className="h-full w-full object-cover opacity-80 transition duration-500 ease-out group-hover:opacity-100"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="none"
-                poster=""
-              >
-                <source src={videoUrl} type="video/mp4" />
-              </video>
-            ) : iconUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={iconUrl}
-                alt={`${label} visualization`}
-                className="h-full w-full object-cover opacity-80 transition duration-500 ease-out group-hover:opacity-100"
-              />
-            ) : (
+        <div className="relative z-[1] flex items-center justify-between text-[10px] uppercase tracking-[0.35em] text-cyan-100/70">
+          <span>{label}</span>
+          <span className="text-[9px] text-slate-300/70">Module</span>
+        </div>
+        <div className="relative z-[1] mt-3 flex-1 overflow-hidden rounded-xl border border-white/10 bg-black/50 p-3">
+          <div className="absolute inset-0 rounded-xl border border-white/5 opacity-30" />
+          {videoUrl ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover opacity-75 mix-blend-screen transition duration-500 ease-out group-hover:opacity-100"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="none"
+            >
+              <source src={videoUrl} type="video/mp4" />
+            </video>
+          ) : iconUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={iconUrl}
+              alt={`${label} visualization`}
+              className="absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-screen"
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center p-2">
               <AnimatedIcon animation={animation} color={color} />
-            )}
-            <motion.span
-              aria-hidden
-              className="pointer-events-none absolute inset-0"
-              animate={{ opacity: [0.1, 0.4, 0.1] }}
-              transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              style={{ background: `radial-gradient(circle at 30% 30%, ${color}33, transparent 60%)` }}
-            />
-          </div>
-          <div className="space-y-2">
-            <span className="block text-xs uppercase tracking-[0.3em] text-slate-200">{label}</span>
-            <span className="block text-lg font-semibold" style={{ color }}>
-              {subtitle}
-            </span>
-            <motion.span
-              aria-hidden
-              className="block h-[3px] w-full rounded-full"
-              style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}
-              animate={{ opacity: [0.2, 0.9, 0.2], scaleX: [0.9, 1.05, 0.9] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-            />
-          </div>
+            </div>
+          )}
+          <motion.div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{ background: `radial-gradient(circle at 50% 50%, ${accentColor}, transparent 65%)` }}
+            animate={{ opacity: [0.12, 0.4, 0.12] }}
+            transition={{ duration: 4.8, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </div>
+        <div className="relative z-[1] mt-4 space-y-1">
+          <p className="text-[11px] uppercase tracking-[0.28em] text-slate-300/80">Access Port</p>
+          <p className="text-lg font-semibold text-white drop-shadow-[0_0_4px_rgba(0,0,0,0.45)]">{subtitle}</p>
+          <motion.span
+            aria-hidden
+            className="mt-2 block h-1 rounded-full"
+            style={{ background: `linear-gradient(90deg, transparent, ${color}, transparent)` }}
+            animate={{ opacity: [0.3, 0.9, 0.3], scaleX: [0.85, 1.05, 0.85] }}
+            transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+          />
         </div>
       </Link>
     </motion.div>

@@ -2,17 +2,24 @@
 
 import { motion } from 'framer-motion';
 
+type BoardPosition = {
+  top: string;
+  left: string;
+  width?: string;
+};
+
 function extractYouTubeId(url: string) {
   try {
     const parsed = new URL(url);
     if (parsed.hostname.includes('youtu.be')) {
       return parsed.pathname.replace('/', '');
     }
-    if (parsed.searchParams.get('v')) {
-      return parsed.searchParams.get('v');
+    const idFromQuery = parsed.searchParams.get('v');
+    if (idFromQuery) {
+      return idFromQuery;
     }
     const segments = parsed.pathname.split('/');
-    return segments[segments.length - 1];
+    return segments.pop() ?? null;
   } catch (error) {
     return null;
   }
@@ -21,33 +28,49 @@ function extractYouTubeId(url: string) {
 export type AdBoardProps = {
   youtubeUrl: string;
   title: string;
-  className?: string;
+  position: BoardPosition;
+  rotation?: number;
+  isActive?: boolean;
 };
 
-export function AdBoard({ youtubeUrl, title, className }: AdBoardProps) {
+export function AdBoard({ youtubeUrl, title, position, rotation = 0, isActive = true }: AdBoardProps) {
   const videoId = extractYouTubeId(youtubeUrl);
   if (!videoId) return null;
 
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&playsinline=1&rel=0`;
+  const floatDuration = isActive ? 16 : 12;
 
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 0.95, scale: 1 }}
-      transition={{ duration: 0.8, ease: 'easeOut' }}
-      className={`group relative w-48 overflow-hidden rounded-2xl border border-cyan-400/30 bg-white/5 p-2 backdrop-blur ${className ?? ''}`}
+      animate={{
+        opacity: isActive ? 0.95 : 0.4,
+        scale: isActive ? 1 : 0.96,
+        y: isActive ? [-10, 10, -10] : [-4, 4, -4]
+      }}
+      transition={{ duration: floatDuration, repeat: Infinity, ease: 'easeInOut' }}
+      className="group absolute z-20 -translate-x-1/2 -translate-y-1/2"
+      style={{
+        top: position.top,
+        left: position.left,
+        width: position.width ?? '260px',
+        rotate: `${rotation}deg`
+      }}
     >
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-cyan-500/20 via-transparent to-fuchsia-500/20 opacity-80 blur-2xl" />
-      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-black/60 shadow-[0_0_25px_rgba(34,211,238,0.35)]">
-        <iframe
-          className="h-28 w-full origin-center scale-105 opacity-90 transition duration-500 ease-out group-hover:opacity-100"
-          src={embedUrl}
-          title={title}
-          allow="autoplay; encrypted-media"
-          allowFullScreen={false}
-        />
+      <div className="relative overflow-hidden rounded-3xl border border-cyan-500/30 bg-white/5 p-2 shadow-[0_0_30px_rgba(34,211,238,0.35)] backdrop-blur">
+        <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-cyan-500/30 via-transparent to-fuchsia-500/30 opacity-70 blur-2xl" />
+        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/70">
+          <iframe
+            className="h-36 w-full origin-center scale-105 opacity-90 transition duration-700 ease-out group-hover:opacity-100"
+            src={embedUrl}
+            title={title}
+            allow="autoplay; encrypted-media"
+            allowFullScreen={false}
+            loading="lazy"
+          />
+        </div>
+        <div className="mt-3 text-[11px] uppercase tracking-[0.25em] text-cyan-100/80">{title}</div>
       </div>
-      <div className="mt-2 text-[11px] uppercase tracking-[0.2em] text-cyan-100/80">{title}</div>
     </motion.div>
   );
 }
