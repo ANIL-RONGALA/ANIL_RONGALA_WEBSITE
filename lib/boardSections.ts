@@ -5,7 +5,8 @@ export type ChipAnimation =
   | 'ssd'
   | 'media'
   | 'sensor'
-  | 'io';
+  | 'io'
+  | 'core';
 
 export type BoardSection = {
   id: string;
@@ -20,6 +21,15 @@ export type BoardSection = {
 
 export const boardSections: BoardSection[] = [
   {
+    id: 'core',
+    label: 'CORE',
+    subtitle: 'Identity Matrix',
+    href: '/',
+    color: '#00f5ff',
+    animation: 'core',
+    videoUrl: 'https://cdn.coverr.co/videos/coverr-digital-core-9722/1080p.mp4'
+  },
+  {
     id: 'cpu',
     label: 'CPU',
     subtitle: 'Projects',
@@ -33,7 +43,7 @@ export const boardSections: BoardSection[] = [
     label: 'GPU',
     subtitle: 'Research & AI',
     href: '/professional',
-    color: '#ff6bff',
+    color: '#ff66ff',
     animation: 'gpu',
     videoUrl: 'https://cdn.coverr.co/videos/coverr-glowing-vr-chip-7503/1080p.mp4'
   },
@@ -42,7 +52,7 @@ export const boardSections: BoardSection[] = [
     label: 'RAM',
     subtitle: 'Academics',
     href: '/academics',
-    color: '#00ffaa',
+    color: '#00ffff',
     animation: 'ram',
     videoUrl: 'https://cdn.coverr.co/videos/coverr-matrix-code-7802/1080p.mp4'
   },
@@ -78,7 +88,7 @@ export const boardSections: BoardSection[] = [
     label: 'I/O',
     subtitle: 'Contact',
     href: '/contact',
-    color: '#00c3ff',
+    color: '#00ccff',
     animation: 'io',
     videoUrl: 'https://cdn.coverr.co/videos/coverr-data-cables-6684/1080p.mp4'
   }
