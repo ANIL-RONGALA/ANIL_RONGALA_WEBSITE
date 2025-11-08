@@ -1,0 +1,35 @@
+name: Auto Resolve Codex Conflicts
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+
+jobs:
+  auto_resolve:
+    if: contains(github.event.pull_request.labels.*.name, 'codex')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Merge main into Codex branch
+        run: |
+          git fetch origin main
+          git merge origin/main || true
+
+      - name: Keep Codex (ours) version for holographic files
+        run: |
+          git checkout --ours components/Chip.tsx components/Motherboard.tsx lib/boardSections.ts lib/media.ts || true
+          git add components/Chip.tsx components/Motherboard.tsx lib/boardSections.ts lib/media.ts || true
+          git commit -m "Auto-resolved conflicts keeping Codex holographic versions" || echo "Nothing to commit"
+
+      - name: Push resolved branch
+        run: |
+          git push origin HEAD
