@@ -20,7 +20,7 @@ export default function HomePage() {
         <Motherboard />
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link
-            href={siteConfig.githubUrl}
+            href={siteConfig.githubUrl as string}
             target="_blank"
             rel="noreferrer"
             className="rounded-full border border-cyan-500/40 bg-cyan-500/10 px-6 py-3 text-sm font-semibold text-cyan-100 transition hover:bg-cyan-500/20"
