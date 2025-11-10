@@ -218,12 +218,12 @@ export function Motherboard() {
     <div className="relative mx-auto w-full max-w-6xl px-4 pb-20 pt-12">
       <MediaZone panels={PANELS_TOP} prefix="MEDIA CHANNEL" subtitle="ORBITAL BROADCAST UPLINK" />
 
-      <div className="relative mt-10 overflow-hidden rounded-[52px] border border-cyan-500/30 bg-slate-950/80 shadow-[0_50px_140px_rgba(6,182,212,0.2)]">
+      <div className="relative mt-10 min-h-[920px] overflow-visible rounded-[52px] border border-cyan-500/30 bg-slate-950/80 shadow-[0_50px_140px_rgba(6,182,212,0.2)] md:min-h-[1080px]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(45,212,191,0.14),_transparent_62%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_55%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(30,64,175,0.24),transparent_45%),linear-gradient(245deg,rgba(59,130,246,0.18),transparent_55%)] opacity-80" />
 
-        <div className="relative mx-auto h-[920px] w-full max-w-6xl overflow-hidden rounded-[48px] border border-cyan-500/40 bg-slate-950/60 backdrop-blur-xl">
+        <div className="relative mx-auto min-h-[920px] w-full max-w-6xl overflow-visible rounded-[48px] border border-cyan-500/40 bg-slate-950/60 backdrop-blur-xl md:min-h-[1080px]">
           <div className="radar-pulse radar-pulse--primary" />
           <div className="radar-pulse radar-pulse--secondary" />
 
@@ -299,7 +299,7 @@ export function Motherboard() {
             })}
           </div>
 
-          <div className="relative z-30 px-6 pb-28 pt-24 md:hidden">
+          <div className="relative z-30 max-h-screen overflow-y-auto px-6 pb-28 pt-24 md:hidden">
             <div className="grid gap-6">
               {modules.map((module) => (
                 <ModuleCard key={`stacked-${module.id}`} module={module} />
