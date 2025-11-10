@@ -42,14 +42,14 @@ type ModuleLayout = {
 };
 
 const MODULE_LAYOUT: Record<ModuleId, ModuleLayout> = {
-  core: { top: '50%', left: '50%', width: 230, height: 230 },
-  cpu: { top: '38%', left: '68%', width: 220, height: 220 },
-  ram: { top: '22%', left: '77%', width: 200, height: 180 },
-  ssd: { top: '66%', left: '74%', width: 210, height: 190 },
-  gpu: { top: '64%', left: '28%', width: 220, height: 200 },
-  io: { top: '52%', left: '20%', width: 200, height: 210 },
-  sensor: { top: '26%', left: '32%', width: 200, height: 180 },
-  media: { top: '80%', left: '50%', width: 230, height: 190 }
+  core: { top: '50%', left: '50%', width: 240, height: 240 },
+  cpu: { top: '37.5%', left: '71.5%', width: 230, height: 220 },
+  ram: { top: '21%', left: '74%', width: 210, height: 190 },
+  ssd: { top: '69%', left: '72.5%', width: 230, height: 210 },
+  gpu: { top: '69%', left: '30%', width: 230, height: 210 },
+  io: { top: '53%', left: '28%', width: 220, height: 210 },
+  sensor: { top: '27%', left: '24%', width: 210, height: 190 },
+  media: { top: '80%', left: '50%', width: 250, height: 210 }
 };
 
 const VIDEO_INTERVAL = 13000;
@@ -62,6 +62,51 @@ const PANELS_TOP: [string, string, string][] = [
 const PANELS_BOTTOM: [string, string, string][] = [
   ['f02mOEt11OQ', '9bZkp7q19f0', 'a3Z7zEc7AXQ'],
   ['P2sQWRrUyfM', 'kxopViU98Xo', 'Zp9tP-tQqpU']
+];
+
+type CircuitDefinition = {
+  id: string;
+  d: string;
+  label: string;
+  labelPosition: { x: number; y: number };
+  duration: number;
+};
+
+const CIRCUIT_PATHS: CircuitDefinition[] = [
+  {
+    id: 'cxl-link',
+    d: 'M600 450 C740 360 820 360 860 340 C940 300 960 520 860 620 C720 660 520 660 380 620',
+    label: 'CXL LINK',
+    labelPosition: { x: 760, y: 370 },
+    duration: 14
+  },
+  {
+    id: 'axi-bus',
+    d: 'M600 450 C700 340 780 280 860 220',
+    label: 'AXI BUS',
+    labelPosition: { x: 760, y: 260 },
+    duration: 9
+  },
+  {
+    id: 'ahb-pcie',
+    d: 'M600 450 C520 460 440 500 340 520 C240 520 240 360 260 260',
+    label: 'AHB / PCIe',
+    labelPosition: { x: 310, y: 360 },
+    duration: 11
+  },
+  {
+    id: 'fabric-channel',
+    d: 'M600 450 C600 560 600 640 600 720',
+    label: 'FABRIC CHANNEL',
+    labelPosition: { x: 612, y: 640 },
+    duration: 10
+  }
+];
+
+const STATUS_ITEMS = [
+  { id: 'signal', label: 'SIGNAL INTEGRITY', value: 'NOMINAL' },
+  { id: 'thermal', label: 'THERMALS', value: 'STABLE' },
+  { id: 'bandwidth', label: 'BANDWIDTH', value: 'PRIMED' }
 ];
 
 type VideoPanelProps = {
@@ -125,64 +170,62 @@ function VideoPanel({ videos, label }: VideoPanelProps) {
   );
 }
 
+type MediaZoneProps = {
+  panels: [string, string, string][];
+  prefix: string;
+  subtitle: string;
+};
+
+function MediaZone({ panels, prefix, subtitle }: MediaZoneProps) {
+  return (
+    <section className="media-zone">
+      <div className="media-zone__header">
+        <span className="media-zone__status">MEDIA FEED // ACTIVE</span>
+        <span className="media-zone__subtitle">{subtitle}</span>
+      </div>
+      <div className="media-zone__grid">
+        {panels.map((videos, index) => (
+          <VideoPanel key={`${prefix}-${index}`} videos={videos} label={`${prefix} ${index + 1}`} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ModuleCard({ module }: { module: ModuleDefinition }) {
+  return (
+    <Link href={module.href} className="module-link group block">
+      <div className="module-shadow" />
+      <motion.div
+        whileHover={{ y: -8, boxShadow: '0 28px 70px rgba(34,211,238,0.35)', filter: 'brightness(1.08)' }}
+        transition={{ type: 'spring', stiffness: 240, damping: 22 }}
+        className="module-card"
+      >
+        <span className="module-card__role">{module.role}</span>
+        <div className="module-slot" />
+        <span className="module-card__port">ACCESS PORT</span>
+        <span className="module-card__section">{module.section}</span>
+        <div className="module-card__glow" />
+      </motion.div>
+    </Link>
+  );
+}
+
 export function Motherboard() {
   const modules = useMemo(() => MODULES, []);
 
   return (
-    <div className="relative mx-auto w-full max-w-6xl px-4 pb-16 pt-12">
-      <div className="relative overflow-hidden rounded-[48px] border border-cyan-500/30 bg-slate-950/80 shadow-[0_40px_120px_rgba(6,182,212,0.18)]">
+    <div className="relative mx-auto w-full max-w-6xl px-4 pb-20 pt-12">
+      <MediaZone panels={PANELS_TOP} prefix="MEDIA CHANNEL" subtitle="ORBITAL BROADCAST UPLINK" />
+
+      <div className="relative mt-10 overflow-hidden rounded-[52px] border border-cyan-500/30 bg-slate-950/80 shadow-[0_50px_140px_rgba(6,182,212,0.2)]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(45,212,191,0.14),_transparent_62%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_55%)]" />
         <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(30,64,175,0.24),transparent_45%),linear-gradient(245deg,rgba(59,130,246,0.18),transparent_55%)] opacity-80" />
 
-        <div className="relative mx-auto h-[860px] w-full max-w-6xl overflow-hidden rounded-[44px] border border-cyan-500/40 bg-slate-950/60 backdrop-blur-md">
+        <div className="relative mx-auto h-[920px] w-full max-w-6xl overflow-hidden rounded-[48px] border border-cyan-500/40 bg-slate-950/60 backdrop-blur-xl">
           <div className="radar-pulse radar-pulse--primary" />
           <div className="radar-pulse radar-pulse--secondary" />
-
-          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1200 860" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="traceGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="rgba(34,211,238,0.8)" />
-                <stop offset="100%" stopColor="rgba(56,189,248,0.6)" />
-              </linearGradient>
-            </defs>
-            <g className="opacity-70">
-              <rect x="120" y="80" width="960" height="620" rx="48" className="circuit-trace circuit-trace--bold" />
-              <path d="M360 160 H840" className="circuit-trace" />
-              <path d="M360 160 V700" className="circuit-trace" />
-              <path d="M480 340 H720" className="circuit-trace" />
-              <path d="M600 320 L780 320" className="circuit-trace" />
-              <path d="M480 520 H760" className="circuit-trace" />
-              <path d="M320 480 L520 320" className="circuit-trace" />
-              <path d="M280 320 L280 520 L420 640" className="circuit-trace" />
-              <path d="M760 520 L900 620" className="circuit-trace" />
-              <path d="M520 440 L640 260" className="circuit-trace" />
-              <text x="640" y="305" className="circuit-label">CXL FABRIC</text>
-              <text x="660" y="560" className="circuit-label">AXI BUS</text>
-              <text x="320" y="360" className="circuit-label">AHB / PCIe</text>
-              <text x="880" y="450" className="circuit-label">CXL LINK</text>
-            </g>
-          </svg>
-
-          <div className="electron electron--ring" />
-          <div className="electron electron--core" />
-          <div className="electron electron--lateral" />
-
-          <div className="absolute left-1/2 top-[9%] z-20 w-[84%] -translate-x-1/2">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {PANELS_TOP.map((videos, index) => (
-                <VideoPanel key={`top-${index}`} videos={videos} label={`MEDIA CHANNEL ${index + 1}`} />
-              ))}
-            </div>
-          </div>
-
-          <div className="absolute bottom-[9%] left-1/2 z-20 w-[84%] -translate-x-1/2">
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {PANELS_BOTTOM.map((videos, index) => (
-                <VideoPanel key={`bottom-${index}`} videos={videos} label={`DATA STREAM ${index + 1}`} />
-              ))}
-            </div>
-          </div>
 
           <div className="absolute inset-0">
             <div className="heat-halo heat-halo--cpu" />
@@ -190,60 +233,94 @@ export function Motherboard() {
             <div className="heat-halo heat-halo--ssd" />
           </div>
 
-          <div className="absolute inset-0">
+          <div className="absolute left-1/2 top-[6%] z-30 -translate-x-1/2 rounded-full border border-cyan-400/40 bg-cyan-400/10 px-6 py-2 text-[11px] uppercase tracking-[0.4em] text-cyan-100/80 backdrop-blur">
+            Neural Board // {siteConfig.ownerName}
+          </div>
+
+          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1200 920" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="traceGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(34,211,238,0.92)" />
+                <stop offset="100%" stopColor="rgba(59,130,246,0.7)" />
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
+                <feMerge>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+            <g className="opacity-80">
+              <rect x="110" y="90" width="980" height="700" rx="56" className="circuit-frame" />
+              {CIRCUIT_PATHS.map((circuit) => (
+                <g key={circuit.id}>
+                  <path id={circuit.id} d={circuit.d} className="circuit-line" filter="url(#glow)" />
+                  <circle className="circuit-electron" r="5.5">
+                    <animateMotion dur={`${circuit.duration}s`} repeatCount="indefinite" rotate="auto">
+                      <mpath xlinkHref={`#${circuit.id}`} />
+                    </animateMotion>
+                  </circle>
+                  <circle className="circuit-electron circuit-electron--trail" r="4">
+                    <animateMotion
+                      dur={`${(circuit.duration * 1.2).toFixed(2)}s`}
+                      repeatCount="indefinite"
+                      begin={`-${(circuit.duration / 2).toFixed(2)}s`}
+                      rotate="auto"
+                    >
+                      <mpath xlinkHref={`#${circuit.id}`} />
+                    </animateMotion>
+                  </circle>
+                  <text x={circuit.labelPosition.x} y={circuit.labelPosition.y} className="circuit-label">
+                    {circuit.label}
+                  </text>
+                </g>
+              ))}
+            </g>
+          </svg>
+
+          <div className="absolute inset-0 hidden md:block">
             {modules.map((module) => {
               const layout = MODULE_LAYOUT[module.id];
               return (
-                <Link
+                <div
                   key={module.id}
-                  href={module.href}
-                  className="group"
+                  className="module-anchor"
                   style={{
-                    position: 'absolute',
                     top: layout.top,
                     left: layout.left,
-                    width: layout.width,
-                    height: layout.height,
-                    transform: 'translate(-50%, -50%)'
+                    width: `${layout.width}px`,
+                    height: `${layout.height}px`
                   }}
                 >
-                  <motion.div
-                    whileHover={{ scale: 1.04, boxShadow: '0 0 28px rgba(34,211,238,0.35)' }}
-                    transition={{ type: 'spring', stiffness: 220, damping: 20 }}
-                    className="relative flex h-full w-full flex-col justify-between rounded-[26px] border border-cyan-400/30 bg-[linear-gradient(145deg,rgba(13,27,44,0.92),rgba(9,19,30,0.86))] p-5 text-xs tracking-[0.32em] text-cyan-100/80 backdrop-blur"
-                  >
-                    <span className="text-[11px] uppercase text-cyan-100/90">{module.role}</span>
-                    <div className="module-slot" />
-                    <span className="text-[10px] uppercase text-slate-300/70">ACCESS PORT</span>
-                    <span className="text-[13px] font-semibold tracking-[0.24em] text-cyan-100/95">{module.section}</span>
-                    <div className="pointer-events-none absolute inset-0 rounded-[26px] border border-white/5 opacity-50 transition-opacity duration-300 group-hover:opacity-80" />
-                    <div className="pointer-events-none absolute inset-0 rounded-[26px] shadow-[0_0_35px_rgba(45,212,191,0.32)_inset] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  </motion.div>
-                </Link>
+                  <ModuleCard module={module} />
+                </div>
               );
             })}
           </div>
 
-          <div className="absolute left-1/2 top-[4.5%] z-30 -translate-x-1/2 rounded-full border border-cyan-400/40 bg-cyan-400/10 px-6 py-2 text-[11px] uppercase tracking-[0.4em] text-cyan-100/80 backdrop-blur">
-            Neural Board // {siteConfig.ownerName}
+          <div className="relative z-30 px-6 pb-28 pt-24 md:hidden">
+            <div className="grid gap-6">
+              {modules.map((module) => (
+                <ModuleCard key={`stacked-${module.id}`} module={module} />
+              ))}
+            </div>
           </div>
 
-          <div className="absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 gap-10 text-[11px] uppercase tracking-[0.38em] text-cyan-100/70">
-            <div className="status-indicator">
-              <span className="status-led status-led--signal" />
-              <span>SIGNAL INTEGRITY: NOMINAL</span>
-            </div>
-            <div className="status-indicator">
-              <span className="status-led status-led--thermal" />
-              <span>THERMALS: STABLE</span>
-            </div>
-            <div className="status-indicator">
-              <span className="status-led status-led--bandwidth" />
-              <span>BANDWIDTH: PRIMED</span>
-            </div>
+          <div className="info-strip">
+            {STATUS_ITEMS.map((status) => (
+              <div key={status.id} className="status-indicator">
+                <span className={`status-led status-led--${status.id}`} />
+                <span className="status-text">
+                  {status.label}: <span className="status-text__value">{status.value}</span>
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
+
+      <MediaZone panels={PANELS_BOTTOM} prefix="DATA STREAM" subtitle="QUANTUM DOWNLINK" />
     </div>
   );
 }
