@@ -1,290 +1,248 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
+import { motion } from 'framer-motion';
 
-import { boardSections } from '@/lib/boardSections';
-import { mediaItems } from '@/lib/media';
 import { siteConfig } from '@/lib/siteConfig';
 
-import { AdBoard } from './AdBoard';
-import { BusNetwork, type BusPath } from './BusNetwork';
-import { Chip } from './Chip';
+type ModuleId =
+  | 'core'
+  | 'cpu'
+  | 'gpu'
+  | 'ram'
+  | 'ssd'
+  | 'io'
+  | 'sensor'
+  | 'media';
 
-type ChipLayout = {
+type ModuleDefinition = {
+  id: ModuleId;
+  role: string;
+  section: string;
+  href: string;
+};
+
+const MODULES: ModuleDefinition[] = [
+  { id: 'core', role: 'CORE MODULE', section: 'IDENTITY MATRIX', href: '/' },
+  { id: 'cpu', role: 'CPU MODULE', section: 'PROJECTS', href: '/projects' },
+  { id: 'ram', role: 'RAM MODULE', section: 'ACADEMICS', href: '/academics' },
+  { id: 'ssd', role: 'SSD MODULE', section: 'ACHIEVEMENTS', href: '/achievements' },
+  { id: 'gpu', role: 'GPU MODULE', section: 'RESEARCH & AI', href: '/projects' },
+  { id: 'io', role: 'I/O MODULE', section: 'CONTACT', href: '/contact' },
+  { id: 'sensor', role: 'SENSOR MODULE', section: 'PERSONAL LOG', href: '/personal' },
+  { id: 'media', role: 'MEDIA MODULE', section: 'MEDIA HUB', href: '/media' }
+];
+
+type ModuleLayout = {
   top: string;
   left: string;
-  width: string;
-  height: string;
-  className?: string;
+  width: number;
+  height: number;
 };
 
-const chipLayout: Record<string, ChipLayout> = {
-  core: { top: '35%', left: '50%', width: '230px', height: '230px', className: 'rotate-[-2deg]' },
-  cpu: { top: '52%', left: '45%', width: '240px', height: '240px', className: 'rotate-[1.5deg]' },
-  gpu: { top: '72%', left: '25%', width: '210px', height: '210px', className: 'rotate-[-4deg]' },
-  ram: { top: '26%', left: '70%', width: '220px', height: '190px', className: 'rotate-[3deg]' },
-  ssd: { top: '64%', left: '72%', width: '210px', height: '190px', className: 'rotate-[2deg]' },
-  media: { top: '78%', left: '50%', width: '220px', height: '190px', className: 'rotate-[-1deg]' },
-  sensor: { top: '26%', left: '26%', width: '205px', height: '190px', className: 'rotate-[2deg]' },
-  io: { top: '50%', left: '12%', width: '180px', height: '220px', className: 'rotate-[-5deg]' }
+const MODULE_LAYOUT: Record<ModuleId, ModuleLayout> = {
+  core: { top: '50%', left: '50%', width: 230, height: 230 },
+  cpu: { top: '38%', left: '68%', width: 220, height: 220 },
+  ram: { top: '22%', left: '77%', width: 200, height: 180 },
+  ssd: { top: '66%', left: '74%', width: 210, height: 190 },
+  gpu: { top: '64%', left: '28%', width: 220, height: 200 },
+  io: { top: '52%', left: '20%', width: 200, height: 210 },
+  sensor: { top: '26%', left: '32%', width: 200, height: 180 },
+  media: { top: '80%', left: '50%', width: 230, height: 190 }
 };
 
-type AdSlot = { top: string; left: string; width?: string; rotation?: number };
+const VIDEO_INTERVAL = 13000;
 
-const adBoardSlots: AdSlot[] = [
-  { top: '32%', left: '42%', width: '260px', rotation: -6 },
-  { top: '58%', left: '66%', width: '240px', rotation: 5 },
-  { top: '68%', left: '44%', width: '230px', rotation: 9 }
+const PANELS_TOP: [string, string, string][] = [
+  ['K4TOrB7at0Y', 'lJIrF4YjHfQ', 'hHW1oY26kxQ'],
+  ['5qap5aO4i9A', '2LhoCfjm8R4', 'DWcJFNfaw9c']
 ];
 
-const chipOrder = ['core', 'cpu', 'gpu', 'ram', 'ssd', 'sensor', 'io', 'media'];
-
-const busPaths: BusPath[] = [
-  {
-    id: 'cxl-cpu-gpu',
-    type: 'cxl',
-    chips: ['cpu', 'gpu'],
-    d: 'M540 468 C470 540 390 600 300 630',
-    label: { text: 'CXL Link', x: 400, y: 560 }
-  },
-  {
-    id: 'cxl-gpu-ram',
-    type: 'cxl',
-    chips: ['gpu', 'ram'],
-    d: 'M300 630 C420 540 640 360 840 240',
-    label: { text: 'CXL Fabric', x: 560, y: 440 }
-  },
-  {
-    id: 'ddr-cpu-ram',
-    type: 'ddr',
-    chips: ['cpu', 'ram'],
-    d: 'M540 468 C640 420 730 340 840 250',
-    label: { text: 'DDR Channel', x: 690, y: 360 }
-  },
-  {
-    id: 'pcie-cpu-ssd',
-    type: 'pcie',
-    chips: ['cpu', 'ssd'],
-    d: 'M540 468 C620 500 720 540 840 585',
-    label: { text: 'PCIe Gen5', x: 700, y: 535 }
-  },
-  {
-    id: 'pcie-ssd-media',
-    type: 'pcie',
-    chips: ['ssd', 'media'],
-    d: 'M840 585 C760 640 680 675 600 690',
-    label: { text: 'Media Pipe', x: 710, y: 640 }
-  },
-  {
-    id: 'axi-cpu-sensor',
-    type: 'axi',
-    chips: ['cpu', 'sensor'],
-    d: 'M540 468 C480 400 400 320 300 250',
-    label: { text: 'AXI Bus', x: 420, y: 350 }
-  },
-  {
-    id: 'axi-sensor-io',
-    type: 'axi',
-    chips: ['sensor', 'io'],
-    d: 'M300 250 C220 320 180 380 130 450',
-    label: { text: 'Peripheral Link', x: 210, y: 360 }
-  },
-  {
-    id: 'ahb-cpu-media',
-    type: 'ahb',
-    chips: ['cpu', 'media'],
-    d: 'M540 468 C550 560 560 630 600 690',
-    label: { text: 'AHB/Peripheral', x: 560, y: 600 }
-  },
-  {
-    id: 'core-cpu-sync',
-    type: 'sync',
-    chips: ['core', 'cpu'],
-    d: 'M600 315 C580 360 560 410 540 468',
-    label: { text: 'Clock Mesh', x: 580, y: 380 }
-  }
+const PANELS_BOTTOM: [string, string, string][] = [
+  ['f02mOEt11OQ', '9bZkp7q19f0', 'a3Z7zEc7AXQ'],
+  ['P2sQWRrUyfM', 'kxopViU98Xo', 'Zp9tP-tQqpU']
 ];
 
-export function Motherboard() {
-  const [activeChip, setActiveChip] = useState<string | null>(null);
-  const [adIndex, setAdIndex] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-  const totalMedia = mediaItems.length;
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+type VideoPanelProps = {
+  videos: string[];
+  label: string;
+};
 
-  const rotateX = useMotionValue(0);
-  const rotateY = useMotionValue(0);
-  const tiltX = useSpring(rotateX, { stiffness: 80, damping: 16, restDelta: 0.01 });
-  const tiltY = useSpring(rotateY, { stiffness: 80, damping: 16, restDelta: 0.01 });
+function VideoPanel({ videos, label }: VideoPanelProps) {
+  const [showFront, setShowFront] = useState(true);
+  const [frontIndex, setFrontIndex] = useState(0);
+  const [backIndex, setBackIndex] = useState(videos.length > 1 ? 1 : 0);
 
   useEffect(() => {
-    const updateMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    updateMobile();
-    window.addEventListener('resize', updateMobile);
-    return () => window.removeEventListener('resize', updateMobile);
-  }, []);
+    if (videos.length <= 1) return;
 
-  useEffect(() => {
-    if (!totalMedia) return;
     const interval = setInterval(() => {
-      setAdIndex((prev) => (prev + 1) % totalMedia);
-    }, 15000);
+      setShowFront((current) => {
+        if (current) {
+          setBackIndex((frontIndex + 1) % videos.length);
+        } else {
+          setFrontIndex((backIndex + 1) % videos.length);
+        }
+        return !current;
+      });
+    }, VIDEO_INTERVAL);
+
     return () => clearInterval(interval);
-  }, [totalMedia]);
+  }, [backIndex, frontIndex, videos.length]);
 
-  useEffect(() => () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-  }, []);
-
-  const activeMedia = useMemo(() => {
-    if (!totalMedia) return [];
-    return adBoardSlots.map((_, slotIndex) => mediaItems[(adIndex + slotIndex) % totalMedia]);
-  }, [adIndex, totalMedia]);
-
-  const sections = useMemo(() => {
-    const map = new Map(boardSections.map((section) => [section.id, section]));
-    return chipOrder
-      .map((id) => map.get(id))
-      .filter((section): section is (typeof boardSections)[number] => Boolean(section));
-  }, []);
-
-  const handleMouseMove = (event: MouseEvent<HTMLDivElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const offsetX = (event.clientX - rect.left) / rect.width;
-    const offsetY = (event.clientY - rect.top) / rect.height;
-    rotateX.set((0.5 - offsetY) * 8);
-    rotateY.set((offsetX - 0.5) * 10);
-  };
-
-  const handleMouseLeave = () => {
-    rotateX.set(0);
-    rotateY.set(0);
-  };
-
-  const handleHoverStart = (id: string) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    setActiveChip(id);
-  };
-
-  const handleHoverEnd = (id: string) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    hoverTimeoutRef.current = setTimeout(() => {
-      setActiveChip((current) => (current === id ? null : current));
-    }, 2000);
-  };
+  const currentFront = videos[frontIndex % videos.length];
+  const currentBack = videos[backIndex % videos.length];
 
   return (
-    <div className="relative mx-auto flex w-full max-w-6xl justify-center">
-      <div className="w-full" style={{ perspective: 1600 }}>
-        <motion.div
-          className="relative h-[900px] w-full overflow-hidden rounded-[52px] border border-cyan-500/20 bg-gradient-to-br from-[#050505] via-[#06080a] to-[#0a0a0a] shadow-[0_40px_160px_rgba(0,255,255,0.12)]"
-          style={{ rotateX: tiltX, rotateY: tiltY, transformStyle: 'preserve-3d' }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-        >
-          <video
-            className="pointer-events-none absolute inset-0 -z-30 h-full w-full object-cover opacity-10 blur-[3px]"
-            src="/videos/anil-bg.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
+    <div className="video-panel">
+      <motion.div
+        className="video-panel-inner"
+        animate={{ rotateY: showFront ? 0 : 180 }}
+        transition={{ duration: 1.1, ease: 'easeInOut' }}
+      >
+        <div className="video-panel-face video-panel-face--front">
+          <iframe
+            key={`front-${currentFront}`}
+            src={`https://www.youtube.com/embed/${currentFront}?rel=0&modestbranding=1&controls=0`}
+            title={`${label} feed`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
           />
-          <div className="absolute inset-0 -z-20 bg-[radial-gradient(circle_at_center,_rgba(0,255,255,0.18)_0%,_rgba(3,9,16,0.8)_45%,_#030303_100%)]" />
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(135deg,rgba(94,234,212,0.05)_0%,transparent_40%),linear-gradient(315deg,rgba(217,119,6,0.04)_0%,transparent_55%)]" />
-          <motion.svg
-            viewBox="0 0 1200 900"
-            className="absolute inset-0 -z-5 h-full w-full opacity-35"
-            preserveAspectRatio="xMidYMid slice"
-            animate={{ x: ['0%', '1.8%', '0%'], y: ['0%', '-1.2%', '0%'] }}
-            transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <g stroke="rgba(148, 163, 184, 0.12)" strokeWidth="1.2" strokeDasharray="2 18">
-              {[120, 240, 360, 480, 600, 720, 840].map((y) => (
-                <line key={`h-${y}`} x1="0" x2="1200" y1={y} y2={y} />
-              ))}
-              {[140, 320, 520, 720, 900, 1080].map((x) => (
-                <line key={`v-${x}`} x1={x} x2={x} y1="0" y2="900" />
-              ))}
+        </div>
+        <div className="video-panel-face video-panel-face--back">
+          <iframe
+            key={`back-${currentBack}`}
+            src={`https://www.youtube.com/embed/${currentBack}?rel=0&modestbranding=1&controls=0`}
+            title={`${label} feed`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </motion.div>
+      <span className="video-panel-label">{label}</span>
+    </div>
+  );
+}
+
+export function Motherboard() {
+  const modules = useMemo(() => MODULES, []);
+
+  return (
+    <div className="relative mx-auto w-full max-w-6xl px-4 pb-16 pt-12">
+      <div className="relative overflow-hidden rounded-[48px] border border-cyan-500/30 bg-slate-950/80 shadow-[0_40px_120px_rgba(6,182,212,0.18)]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(45,212,191,0.14),_transparent_62%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_55%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(30,64,175,0.24),transparent_45%),linear-gradient(245deg,rgba(59,130,246,0.18),transparent_55%)] opacity-80" />
+
+        <div className="relative mx-auto h-[860px] w-full max-w-6xl overflow-hidden rounded-[44px] border border-cyan-500/40 bg-slate-950/60 backdrop-blur-md">
+          <div className="radar-pulse radar-pulse--primary" />
+          <div className="radar-pulse radar-pulse--secondary" />
+
+          <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1200 860" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="traceGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="rgba(34,211,238,0.8)" />
+                <stop offset="100%" stopColor="rgba(56,189,248,0.6)" />
+              </linearGradient>
+            </defs>
+            <g className="opacity-70">
+              <rect x="120" y="80" width="960" height="620" rx="48" className="circuit-trace circuit-trace--bold" />
+              <path d="M360 160 H840" className="circuit-trace" />
+              <path d="M360 160 V700" className="circuit-trace" />
+              <path d="M480 340 H720" className="circuit-trace" />
+              <path d="M600 320 L780 320" className="circuit-trace" />
+              <path d="M480 520 H760" className="circuit-trace" />
+              <path d="M320 480 L520 320" className="circuit-trace" />
+              <path d="M280 320 L280 520 L420 640" className="circuit-trace" />
+              <path d="M760 520 L900 620" className="circuit-trace" />
+              <path d="M520 440 L640 260" className="circuit-trace" />
+              <text x="640" y="305" className="circuit-label">CXL FABRIC</text>
+              <text x="660" y="560" className="circuit-label">AXI BUS</text>
+              <text x="320" y="360" className="circuit-label">AHB / PCIe</text>
+              <text x="880" y="450" className="circuit-label">CXL LINK</text>
             </g>
-            <g stroke="rgba(203, 213, 225, 0.14)" strokeWidth="2.2" strokeLinecap="round">
-              <path d="M160 120 h880 v660 h-880 z" fill="none" />
-              <rect x="480" y="180" width="240" height="180" rx="24" />
-              <rect x="220" y="520" width="280" height="220" rx="26" />
-            </g>
-          </motion.svg>
-          <div className="pointer-events-none absolute inset-0 -z-4 bg-[radial-gradient(circle_at_top,_rgba(0,255,255,0.15),_transparent_60%)]" />
-          <div className="pointer-events-none absolute inset-6 -z-3 rounded-[46px] border border-cyan-500/30 opacity-50" />
-          <div className="pointer-events-none absolute inset-0 -z-2 rounded-[52px] shadow-[0_0_120px_rgba(0,255,255,0.12)_inset]" />
+          </svg>
 
-          <BusNetwork paths={busPaths} activeChip={activeChip} showElectrons={!isMobile} />
+          <div className="electron electron--ring" />
+          <div className="electron electron--core" />
+          <div className="electron electron--lateral" />
 
-          <motion.div
-            className="absolute left-1/2 top-[16%] z-10 flex w-[320px] -translate-x-1/2 items-center justify-between rounded-full border border-white/10 bg-white/5 px-6 py-3 text-[11px] uppercase tracking-[0.3em] text-slate-200/80 backdrop-blur"
-            animate={{ opacity: [0.4, 0.9, 0.4], y: [-6, 4, -6] }}
-            transition={{ duration: 12, repeat: Infinity, ease: 'easeInOut' }}
-          >
-            <span>Neural mainboard</span>
-            <span>{siteConfig.ownerName}</span>
-          </motion.div>
-
-          {sections.map((section) => {
-            const layout = chipLayout[section.id];
-            if (!layout) return null;
-            return (
-              <Chip
-                key={section.id}
-                {...section}
-                className={layout.className}
-                style={{
-                  top: layout.top,
-                  left: layout.left,
-                  width: layout.width,
-                  height: layout.height
-                }}
-                onHoverStart={() => handleHoverStart(section.id)}
-                onHoverEnd={() => handleHoverEnd(section.id)}
-              />
-            );
-          })}
-
-          <div className="hidden lg:block">
-            {activeMedia.map((media, index) => (
-              <AdBoard
-                key={`${media.youtubeUrl}-${index}`}
-                youtubeUrl={media.youtubeUrl}
-                title={media.title}
-                position={adBoardSlots[index]}
-                rotation={adBoardSlots[index]?.rotation ?? 0}
-                isActive={index === 0}
-              />
-            ))}
+          <div className="absolute left-1/2 top-[9%] z-20 w-[84%] -translate-x-1/2">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {PANELS_TOP.map((videos, index) => (
+                <VideoPanel key={`top-${index}`} videos={videos} label={`MEDIA CHANNEL ${index + 1}`} />
+              ))}
+            </div>
           </div>
 
-          <div className="absolute bottom-10 left-1/2 z-30 flex -translate-x-1/2 flex-wrap items-center justify-center gap-6 text-[11px] uppercase tracking-[0.3em] text-cyan-100/70">
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 animate-ping rounded-full bg-cyan-400" />
-              <span>Signal integrity nominal</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
-              <span>Thermals stable</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-2 w-2 animate-pulse rounded-full bg-fuchsia-400" />
-              <span>Bandwidth primed</span>
+          <div className="absolute bottom-[9%] left-1/2 z-20 w-[84%] -translate-x-1/2">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {PANELS_BOTTOM.map((videos, index) => (
+                <VideoPanel key={`bottom-${index}`} videos={videos} label={`DATA STREAM ${index + 1}`} />
+              ))}
             </div>
           </div>
-        </motion.div>
+
+          <div className="absolute inset-0">
+            <div className="heat-halo heat-halo--cpu" />
+            <div className="heat-halo heat-halo--gpu" />
+            <div className="heat-halo heat-halo--ssd" />
+          </div>
+
+          <div className="absolute inset-0">
+            {modules.map((module) => {
+              const layout = MODULE_LAYOUT[module.id];
+              return (
+                <Link
+                  key={module.id}
+                  href={module.href}
+                  className="group"
+                  style={{
+                    position: 'absolute',
+                    top: layout.top,
+                    left: layout.left,
+                    width: layout.width,
+                    height: layout.height,
+                    transform: 'translate(-50%, -50%)'
+                  }}
+                >
+                  <motion.div
+                    whileHover={{ scale: 1.04, boxShadow: '0 0 28px rgba(34,211,238,0.35)' }}
+                    transition={{ type: 'spring', stiffness: 220, damping: 20 }}
+                    className="relative flex h-full w-full flex-col justify-between rounded-[26px] border border-cyan-400/30 bg-[linear-gradient(145deg,rgba(13,27,44,0.92),rgba(9,19,30,0.86))] p-5 text-xs tracking-[0.32em] text-cyan-100/80 backdrop-blur"
+                  >
+                    <span className="text-[11px] uppercase text-cyan-100/90">{module.role}</span>
+                    <div className="module-slot" />
+                    <span className="text-[10px] uppercase text-slate-300/70">ACCESS PORT</span>
+                    <span className="text-[13px] font-semibold tracking-[0.24em] text-cyan-100/95">{module.section}</span>
+                    <div className="pointer-events-none absolute inset-0 rounded-[26px] border border-white/5 opacity-50 transition-opacity duration-300 group-hover:opacity-80" />
+                    <div className="pointer-events-none absolute inset-0 rounded-[26px] shadow-[0_0_35px_rgba(45,212,191,0.32)_inset] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  </motion.div>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="absolute left-1/2 top-[4.5%] z-30 -translate-x-1/2 rounded-full border border-cyan-400/40 bg-cyan-400/10 px-6 py-2 text-[11px] uppercase tracking-[0.4em] text-cyan-100/80 backdrop-blur">
+            Neural Board // {siteConfig.ownerName}
+          </div>
+
+          <div className="absolute bottom-6 left-1/2 z-30 flex -translate-x-1/2 gap-10 text-[11px] uppercase tracking-[0.38em] text-cyan-100/70">
+            <div className="status-indicator">
+              <span className="status-led status-led--signal" />
+              <span>SIGNAL INTEGRITY: NOMINAL</span>
+            </div>
+            <div className="status-indicator">
+              <span className="status-led status-led--thermal" />
+              <span>THERMALS: STABLE</span>
+            </div>
+            <div className="status-indicator">
+              <span className="status-led status-led--bandwidth" />
+              <span>BANDWIDTH: PRIMED</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

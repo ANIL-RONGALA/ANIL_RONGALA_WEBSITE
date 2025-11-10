@@ -44,3 +44,287 @@ a:hover {
   background-size: cover, 120px 120px, 120px 120px;
   background-position: center, 0 0, 0 0;
 }
+
+/* Motherboard cinematic interface */
+.video-panel {
+  position: relative;
+  perspective: 1600px;
+  border-radius: 22px;
+  border: 1px solid rgba(34, 211, 238, 0.35);
+  background: linear-gradient(160deg, rgba(10, 20, 32, 0.92), rgba(4, 12, 20, 0.9));
+  box-shadow: inset 0 0 30px rgba(8, 145, 178, 0.18), 0 18px 44px rgba(6, 182, 212, 0.18);
+  overflow: hidden;
+}
+
+.video-panel-inner {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  transform-style: preserve-3d;
+}
+
+.video-panel-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.video-panel-face iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.video-panel-face--back {
+  transform: rotateY(180deg);
+}
+
+.video-panel-label {
+  position: absolute;
+  bottom: 12px;
+  left: 18px;
+  padding: 6px 12px;
+  font-size: 0.6rem;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(165, 243, 252, 0.8);
+  background: rgba(15, 118, 110, 0.22);
+  border-radius: 9999px;
+  border: 1px solid rgba(45, 212, 191, 0.35);
+  backdrop-filter: blur(6px);
+}
+
+.module-slot {
+  width: 100%;
+  height: 24px;
+  border-radius: 9px;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.6));
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: inset 0 0 8px rgba(14, 116, 144, 0.32);
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(165, 243, 252, 0.7);
+  transition: color 200ms ease;
+}
+
+.status-indicator:hover {
+  color: rgba(165, 243, 252, 0.95);
+}
+
+.status-indicator span {
+  transition: opacity 1.4s ease-in-out;
+  animation: statusPulse 5s ease-in-out infinite;
+}
+
+.status-led {
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  box-shadow: 0 0 12px currentColor;
+  animation: statusBlink 1.8s ease-in-out infinite;
+}
+
+.status-led--signal {
+  color: #22d3ee;
+  background: rgba(34, 211, 238, 0.9);
+}
+
+.status-led--thermal {
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.9);
+  animation-duration: 2.6s;
+}
+
+.status-led--bandwidth {
+  color: #f472b6;
+  background: rgba(244, 114, 182, 0.9);
+  animation-duration: 2.1s;
+}
+
+@keyframes statusBlink {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes statusPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.95;
+  }
+}
+
+.circuit-trace {
+  fill: none;
+  stroke: url(#traceGradient);
+  stroke-width: 2.2;
+  stroke-dasharray: 14 18;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 14px rgba(34, 211, 238, 0.45));
+  animation: traceFlow 14s linear infinite;
+}
+
+.circuit-trace--bold {
+  stroke-width: 3.5;
+  stroke-dasharray: 18 28;
+}
+
+.circuit-label {
+  font-family: 'Share Tech Mono', 'Space Mono', monospace;
+  fill: rgba(165, 243, 252, 0.75);
+  letter-spacing: 0.32em;
+  font-size: 12px;
+}
+
+@keyframes traceFlow {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -320;
+  }
+}
+
+.electron {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: rgba(224, 242, 254, 0.95);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.9);
+  offset-rotate: 0deg;
+}
+
+.electron::after {
+  content: '';
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.55), transparent 70%);
+}
+
+.electron--ring {
+  offset-path: path('M140 120 H1060 V700 H140 Z');
+  animation: electronTravel 18s linear infinite;
+}
+
+.electron--core {
+  offset-path: path('M600 430 L760 320');
+  animation: electronTravel 6s linear infinite;
+}
+
+.electron--lateral {
+  offset-path: path('M320 320 L320 520 L460 640');
+  animation: electronTravel 10s linear infinite;
+}
+
+@keyframes electronTravel {
+  0% {
+    offset-distance: 0%;
+  }
+  100% {
+    offset-distance: 100%;
+  }
+}
+
+.radar-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 480px;
+  height: 480px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.14), transparent 70%);
+  transform: translate(-50%, -50%);
+  filter: blur(2px);
+}
+
+.radar-pulse--primary {
+  animation: radarSweep 16s ease-in-out infinite;
+}
+
+.radar-pulse--secondary {
+  width: 620px;
+  height: 620px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.1), transparent 75%);
+  animation: radarSweep 22s linear infinite;
+  opacity: 0.35;
+}
+
+@keyframes radarSweep {
+  0% {
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0.35;
+  }
+}
+
+.heat-halo {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(40px);
+  opacity: 0.35;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  animation: heatPulse 8s ease-in-out infinite;
+}
+
+.heat-halo--cpu {
+  top: 36%;
+  left: 67%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.35), transparent 70%);
+}
+
+.heat-halo--gpu {
+  top: 64%;
+  left: 28%;
+  width: 240px;
+  height: 240px;
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.28), transparent 70%);
+  animation-duration: 11s;
+}
+
+.heat-halo--ssd {
+  top: 66%;
+  left: 74%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.32), transparent 70%);
+  animation-duration: 9s;
+}
+
+@keyframes heatPulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 0.45;
+  }
+}
