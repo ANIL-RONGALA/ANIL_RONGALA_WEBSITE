@@ -59,60 +59,229 @@ const PANELS_BOTTOM: [string, string, string][] = [
   ['P2sQWRrUyfM', 'kxopViU98Xo', 'Zp9tP-tQqpU']
 ];
 
+type CircuitSpeed = 'fast' | 'medium' | 'slow';
+
+type CircuitConnection = {
+  id: string;
+  start: ModuleId;
+  end: ModuleId;
+  type: string;
+  speed: CircuitSpeed;
+  d: string;
+  labelPosition: { x: number; y: number };
+  electrons?: number;
+};
+
+const CIRCUIT_CONNECTIONS: CircuitConnection[] = [
+  {
+    id: 'core-cpu',
+    start: 'core',
+    end: 'cpu',
+    type: 'CXL LINK',
+    speed: 'medium',
+    d: 'M600 470 C712 430 810 382 890 340',
+    labelPosition: { x: 760, y: 410 },
+    electrons: 3
+  },
+  {
+    id: 'cpu-ram',
+    start: 'cpu',
+    end: 'ram',
+    type: 'DDR FABRIC',
+    speed: 'fast',
+    d: 'M890 340 C920 290 880 230 780 200',
+    labelPosition: { x: 860, y: 270 }
+  },
+  {
+    id: 'core-gpu',
+    start: 'core',
+    end: 'gpu',
+    type: 'NVLINK',
+    speed: 'medium',
+    d: 'M600 470 C540 540 500 620 460 720',
+    labelPosition: { x: 520, y: 610 }
+  },
+  {
+    id: 'core-ssd',
+    start: 'core',
+    end: 'ssd',
+    type: 'PCIE RAID',
+    speed: 'medium',
+    d: 'M600 470 C700 560 780 640 840 730',
+    labelPosition: { x: 740, y: 640 }
+  },
+  {
+    id: 'core-io',
+    start: 'core',
+    end: 'io',
+    type: 'AXI BUS',
+    speed: 'medium',
+    d: 'M600 470 C520 450 430 430 360 500',
+    labelPosition: { x: 470, y: 450 }
+  },
+  {
+    id: 'io-sensor',
+    start: 'io',
+    end: 'sensor',
+    type: 'I/O SENSOR LINK',
+    speed: 'slow',
+    d: 'M360 500 C330 420 340 330 380 250',
+    labelPosition: { x: 340, y: 360 },
+    electrons: 2
+  },
+  {
+    id: 'core-media',
+    start: 'core',
+    end: 'media',
+    type: 'FABRIC CHANNEL',
+    speed: 'slow',
+    d: 'M600 470 C600 620 600 730 600 820',
+    labelPosition: { x: 612, y: 720 }
+  }
+];
+
 const STATUS_ITEMS = [
   { id: 'signal', label: 'SIGNAL INTEGRITY', value: 'NOMINAL' },
   { id: 'thermal', label: 'THERMALS', value: 'STABLE' },
   { id: 'bandwidth', label: 'BANDWIDTH', value: 'PRIMED' }
 ];
 
-const createInitialPulseState = (): Record<ModuleId, ModulePulseState> =>
-  MODULE_IDS.reduce((acc, moduleId) => {
-    acc[moduleId] = { active: false, strong: false };
+type ModulePulseState = {
+  active: boolean;
+  strong: boolean;
+};
+
+const SPEED_DURATION: Record<CircuitSpeed, number> = {
+  fast: 5.2,
+  medium: 7.4,
+  slow: 10.2
+};
+
+const ELECTRONS_PER_SPEED: Record<CircuitSpeed, number> = {
+  fast: 3,
+  medium: 2,
+  slow: 2
+};
+
+const createPulseState = (): Record<ModuleId, ModulePulseState> =>
+  MODULES.reduce((acc, module) => {
+    acc[module.id] = { active: false, strong: false };
     return acc;
   }, {} as Record<ModuleId, ModulePulseState>);
 
-function ModuleCard({
-  module,
-  isActive,
-  isStrong,
-  onHover,
-  onLeave
-}: {
-  module: Module;
-  isActive: boolean;
-  isStrong: boolean;
-  onHover: () => void;
-  onLeave: () => void;
-}) {
-  const cardClassName = ['module-card'];
-  if (isActive) {
-    cardClassName.push('module-card--pulse');
-  }
-  if (isStrong) {
-    cardClassName.push('module-card--surge');
-  }
+type CircuitLineProps = {
+  connection: CircuitConnection;
+  onSurge: (module: ModuleId, strong?: boolean) => void;
+};
+
+function CircuitLine({ connection, onSurge }: CircuitLineProps) {
+  const { d, id, start, end, speed, type, labelPosition } = connection;
+  const duration = SPEED_DURATION[speed];
+  const electronCount = connection.electrons ?? ELECTRONS_PER_SPEED[speed];
+
+  useEffect(() => {
+    const intervalTimers: ReturnType<typeof setInterval>[] = [];
+    const startTimers: ReturnType<typeof setTimeout>[] = [];
+    const arrivalTimers: ReturnType<typeof setTimeout>[] = [];
+
+    const schedulePulse = (delaySeconds: number) => {
+      const kickoff = setTimeout(() => {
+        const startStrong = speed === 'fast' || start === 'core';
+        const endStrong = speed === 'fast' || end === 'core';
+
+        onSurge(start, startStrong);
+        const arrival = setTimeout(() => onSurge(end, endStrong), duration * 0.92 * 1000);
+        arrivalTimers.push(arrival);
+
+        const interval = setInterval(() => {
+          onSurge(start, startStrong);
+          const endTimer = setTimeout(() => onSurge(end, endStrong), duration * 0.92 * 1000);
+          arrivalTimers.push(endTimer);
+        }, duration * 1000);
+
+        intervalTimers.push(interval);
+      }, delaySeconds * 1000);
+
+      startTimers.push(kickoff);
+    };
+
+    for (let index = 0; index < electronCount; index += 1) {
+      const stagger = (duration / electronCount) * index;
+      schedulePulse(stagger);
+    }
+
+    return () => {
+      startTimers.forEach((timer) => clearTimeout(timer));
+      intervalTimers.forEach((timer) => clearInterval(timer));
+      arrivalTimers.forEach((timer) => clearTimeout(timer));
+    };
+  }, [duration, electronCount, end, onSurge, speed, start]);
 
   return (
-    <Link
-      href={module.href}
-      className="module-link"
-      onMouseEnter={onHover}
-      onFocus={onHover}
-      onMouseLeave={onLeave}
-      onBlur={onLeave}
+    <g className="circuit-line-group" aria-hidden>
+      <motion.path
+        id={id}
+        d={d}
+        className={`circuit-line circuit-line--${speed}`}
+        stroke="#00ffff"
+        strokeWidth={2}
+        strokeOpacity={0.8}
+        fill="none"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 1.2, ease: 'easeOut' }}
+      />
+
+      {Array.from({ length: electronCount }).map((_, index) => (
+        <motion.circle
+          key={`${id}-electron-${index}`}
+          r={index % 2 === 0 ? 3 : 2.4}
+          className={`circuit-electron ${index % 2 === 1 ? 'circuit-electron--secondary' : ''}`}
+          fill="url(#electronGradient)"
+          style={{ offsetPath: `path('${d}')`, offsetRotate: 'auto' }}
+          initial={{ offsetDistance: '0%' }}
+          animate={{ offsetDistance: '100%' }}
+          transition={{
+            duration,
+            repeat: Infinity,
+            ease: 'linear',
+            delay: (duration / electronCount) * index
+          }}
+        />
+      ))}
+
+      <text x={labelPosition.x} y={labelPosition.y} className="circuit-label">
+        {type}
+      </text>
+    </g>
+  );
+}
+
+type CircuitNetworkProps = {
+  connections: CircuitConnection[];
+  onSurge: (module: ModuleId, strong?: boolean) => void;
+};
+
+function CircuitNetwork({ connections, onSurge }: CircuitNetworkProps) {
+  return (
+    <svg
+      className="circuit-network pointer-events-none absolute inset-0 h-full w-full"
+      viewBox="0 0 1200 920"
+      preserveAspectRatio="none"
     >
-      <div className="module-shadow" />
-      <motion.div
-        whileHover={{ translateY: -4, scale: 1.03, boxShadow: '0 0 20px rgba(34,211,238,0.55)' }}
-        transition={{ type: 'spring', stiffness: 220, damping: 22 }}
-        className={cardClassName.join(' ')}
-      >
-        <span className="module-card__title">{module.title}</span>
-        <span className="module-card__subtitle">{module.subtitle}</span>
-        <span className="module-card__port">ACCESS PORT</span>
-        <div className="module-card__glow" />
-      </motion.div>
-    </Link>
+      <defs>
+        <radialGradient id="electronGradient" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#00ffff" stopOpacity="0.6" />
+        </radialGradient>
+      </defs>
+      <rect x="110" y="90" width="980" height="700" rx="56" className="circuit-frame" />
+      <g>
+        {connections.map((connection) => (
+          <CircuitLine key={connection.id} connection={connection} onSurge={onSurge} />
+        ))}
+      </g>
+    </svg>
   );
 }
 
@@ -197,111 +366,92 @@ function MediaZone({ panels, prefix, subtitle }: MediaZoneProps) {
   );
 }
 
-export function Motherboard() {
-  const modules = useMemo<Module[]>(() => {
-    return boardSections
-      .filter((section) => (MODULE_IDS as string[]).includes(section.id))
-      .map((section) => ({
-        id: section.id as ModuleId,
-        title: section.label,
-        subtitle: section.subtitle,
-        href: section.href,
-        position: MODULE_POSITIONS[section.id as ModuleId]
-      }));
-  }, []);
+function ModuleCard({
+  module,
+  isActive,
+  isStrong
+}: {
+  module: ModuleDefinition;
+  isActive: boolean;
+  isStrong: boolean;
+}) {
+  const cardClassName = ['module-card'];
+  if (isActive) {
+    cardClassName.push('module-card--pulse');
+  }
+  if (isStrong) {
+    cardClassName.push('module-card--surge');
+  }
 
-  const moduleCoordinates = useMemo(
-    () =>
-      modules.reduce<Record<ModuleId, { x: number; y: number }>>((acc, module) => {
-        acc[module.id] = {
-          x: (module.position.x / 100) * BOARD_DIMENSIONS.width,
-          y: (module.position.y / 100) * BOARD_DIMENSIONS.height
-        };
-        return acc;
-      }, {} as Record<ModuleId, { x: number; y: number }>),
-    [modules]
+  return (
+    <Link href={module.href} className="module-link group block">
+      <div className="module-shadow" />
+      <motion.div
+        whileHover={{ y: -8, boxShadow: '0 28px 70px rgba(34,211,238,0.35)', filter: 'brightness(1.08)' }}
+        transition={{ type: 'spring', stiffness: 240, damping: 22 }}
+        className={cardClassName.join(' ')}
+      >
+        <span className="module-card__role">{module.role}</span>
+        <div className="module-slot" />
+        <span className="module-card__port">ACCESS PORT</span>
+        <span className="module-card__section">{module.section}</span>
+        <div className="module-card__glow" />
+      </motion.div>
+    </Link>
   );
 
-  const [modulePulseState, setModulePulseState] = useState<Record<ModuleId, ModulePulseState>>(createInitialPulseState);
-  const [hoveredModule, setHoveredModule] = useState<ModuleId | null>(null);
-  const [pulseHighlights, setPulseHighlights] = useState<Set<BusId>>(new Set());
-  const moduleReleaseTimers = useRef<Record<ModuleId, ReturnType<typeof setTimeout> | null>>(
-    MODULE_IDS.reduce((acc, moduleId) => {
-      acc[moduleId] = null;
+export function Motherboard() {
+  const modules = useMemo(() => MODULES, []);
+  const [pulseStates, setPulseStates] = useState<Record<ModuleId, ModulePulseState>>(() => createPulseState());
+  const pulseTimeouts = useRef<Record<ModuleId, ReturnType<typeof setTimeout> | null>>(
+    MODULES.reduce((acc, module) => {
+      acc[module.id] = null;
       return acc;
     }, {} as Record<ModuleId, ReturnType<typeof setTimeout> | null>)
   );
-  const busTimers = useRef<Record<BusId, ReturnType<typeof setTimeout> | null>>(
-    (['axi', 'ahb', 'apb'] as BusId[]).reduce((acc, bus) => {
-      acc[bus] = null;
-      return acc;
-    }, {} as Record<BusId, ReturnType<typeof setTimeout> | null>)
+
+  const triggerModulePulse = useCallback(
+    (moduleId: ModuleId, strong = false) => {
+      setPulseStates((previous) => ({
+        ...previous,
+        [moduleId]: { active: true, strong }
+      }));
+
+      const timers = pulseTimeouts.current;
+      if (timers[moduleId]) {
+        clearTimeout(timers[moduleId]!);
+      }
+
+      timers[moduleId] = setTimeout(() => {
+        setPulseStates((previous) => ({
+          ...previous,
+          [moduleId]: { active: false, strong: false }
+        }));
+        timers[moduleId] = null;
+      }, strong ? 820 : 620);
+    },
+    []
   );
-  const sequenceTimers = useRef<Record<BusId, ReturnType<typeof setTimeout>[]>>({
-    axi: [],
-    ahb: [],
-    apb: []
-  });
-  const [parallax, setParallax] = useState(0);
 
-  const moduleToBuses = useMemo(() => {
-    const mapping = MODULE_IDS.reduce<Record<ModuleId, BusId[]>>((acc, moduleId) => {
-      acc[moduleId] = [];
-      return acc;
-    }, {} as Record<ModuleId, BusId[]>);
+  useEffect(() => {
+    const heartbeat = setInterval(() => {
+      triggerModulePulse('core', true);
+    }, 3600);
 
-    (Object.entries(BUS_ASSIGNMENTS) as Array<[BusId, ModuleId[]]>).forEach(([bus, moduleIds]) => {
-      moduleIds.forEach((moduleId) => {
-        if (!mapping[moduleId].includes(bus)) {
-          mapping[moduleId].push(bus);
+    return () => clearInterval(heartbeat);
+  }, [triggerModulePulse]);
+
+  useEffect(() => {
+    triggerModulePulse('core', true);
+
+    return () => {
+      Object.values(pulseTimeouts.current).forEach((timer) => {
+        if (timer) {
+          clearTimeout(timer);
         }
       });
-    });
-
-    return mapping;
-  }, []);
-
-  const triggerModulePulse = useCallback((moduleId: ModuleId, strong = false) => {
-    setModulePulseState((previous) => ({
-      ...previous,
-      [moduleId]: { active: true, strong }
-    }));
-
-    const timers = moduleReleaseTimers.current;
-    if (timers[moduleId]) {
-      clearTimeout(timers[moduleId]!);
-    }
-
-    timers[moduleId] = setTimeout(() => {
-      setModulePulseState((previous) => ({
-        ...previous,
-        [moduleId]: { active: false, strong: false }
-      }));
-      timers[moduleId] = null;
-    }, strong ? 840 : 620);
-  }, []);
-
-  const triggerBusHighlight = useCallback((bus: BusId, duration: number) => {
-    setPulseHighlights((previous) => {
-      const next = new Set(previous);
-      next.add(bus);
-      return next;
-    });
-
-    const timers = busTimers.current;
-    if (timers[bus]) {
-      clearTimeout(timers[bus]!);
-    }
-
-    timers[bus] = setTimeout(() => {
-      setPulseHighlights((previous) => {
-        const next = new Set(previous);
-        next.delete(bus);
-        return next;
-      });
-      timers[bus] = null;
-    }, duration);
-  }, []);
+    };
+  }, [triggerModulePulse]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -322,116 +472,43 @@ export function Motherboard() {
       triggerBusHighlight('ahb', 1600);
     }, 3600);
 
-    return () => clearInterval(heartbeat);
-  }, [triggerBusHighlight, triggerModulePulse]);
+          <CircuitNetwork connections={CIRCUIT_CONNECTIONS} onSurge={triggerModulePulse} />
 
-  useEffect(() => {
-    const intervals = BUS_PULSE_LOOPS.map(({ bus, cadence, modules: route }) => {
-      const runSequence = () => {
-        triggerBusHighlight(bus, 2200);
-        if (sequenceTimers.current[bus]?.length) {
-          sequenceTimers.current[bus].forEach((timer) => clearTimeout(timer));
-          sequenceTimers.current[bus] = [];
-        }
-        route.forEach((moduleId, index) => {
-          const timeout = setTimeout(() => {
-            triggerModulePulse(moduleId, moduleId === 'core' || bus === 'axi');
-          }, index * 320);
-          sequenceTimers.current[bus].push(timeout);
-        });
-      };
-
-      runSequence();
-      return setInterval(runSequence, cadence);
-    });
-
-    return () => {
-      intervals.forEach((interval) => clearInterval(interval));
-      (Object.keys(sequenceTimers.current) as BusId[]).forEach((bus) => {
-        sequenceTimers.current[bus].forEach((timer) => clearTimeout(timer));
-        sequenceTimers.current[bus] = [];
-      });
-      Object.values(moduleReleaseTimers.current).forEach((timer) => {
-        if (timer) {
-          clearTimeout(timer);
-        }
-      });
-      Object.values(busTimers.current).forEach((timer) => {
-        if (timer) {
-          clearTimeout(timer);
-        }
-      });
-    };
-  }, [triggerBusHighlight, triggerModulePulse]);
-
-  const activeModules = useMemo(
-    () => Object.entries(modulePulseState).filter(([, state]) => state.active).map(([moduleId]) => moduleId),
-    [modulePulseState]
-  );
-
-  const highlightedBuses = useMemo(() => {
-    const combined = new Set(pulseHighlights);
-    if (hoveredModule) {
-      moduleToBuses[hoveredModule].forEach((bus) => combined.add(bus));
-    }
-    return combined;
-  }, [hoveredModule, moduleToBuses, pulseHighlights]);
-
-  return (
-    <div className="pcb-wrapper">
-      <MediaZone panels={PANELS_TOP} prefix="MEDIA CHANNEL" subtitle="ORBITAL BROADCAST UPLINK" />
-
-      <section className="pcb-board">
-        <div className="pcb-surface">
-          <div className="pcb-grid" />
-          <motion.div className="pcb-bus-layer" style={{ transform: `translateY(${-(parallax * 0.4)}px)` }}>
-            <BusNetwork
-              coordinates={moduleCoordinates}
-              busAssignments={BUS_ASSIGNMENTS}
-              highlightedBuses={highlightedBuses}
-              activeModules={activeModules}
-            />
-          </motion.div>
-
-          <motion.div className="pcb-glow-layer" style={{ transform: `translateY(${parallax * 0.2}px)` }} />
-
-          <div className="pcb-module-layer hidden md:block">
-            {modules.map((module) => (
-              <div
-                key={module.id}
-                className="module-anchor"
-                style={{ left: `${module.position.x}%`, top: `${module.position.y}%` }}
-              >
-                <ModuleCard
-                  module={module}
-                  isActive={modulePulseState[module.id].active}
-                  isStrong={modulePulseState[module.id].strong}
-                  onHover={() => {
-                    setHoveredModule(module.id);
-                    triggerModulePulse(module.id, true);
+          <div className="absolute inset-0 hidden md:block">
+            {modules.map((module) => {
+              const layout = MODULE_LAYOUT[module.id];
+              return (
+                <div
+                  key={module.id}
+                  className="module-anchor"
+                  style={{
+                    top: layout.top,
+                    left: layout.left,
+                    width: `${layout.width}px`,
+                    height: `${layout.height}px`
                   }}
-                  onLeave={() => setHoveredModule((current) => (current === module.id ? null : current))}
+                >
+                  <ModuleCard
+                    module={module}
+                    isActive={pulseStates[module.id].active}
+                    isStrong={pulseStates[module.id].strong}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="relative z-30 max-h-screen overflow-y-auto px-6 pb-28 pt-24 md:hidden">
+            <div className="grid gap-6">
+              {modules.map((module) => (
+                <ModuleCard
+                  key={`stacked-${module.id}`}
+                  module={module}
+                  isActive={pulseStates[module.id].active}
+                  isStrong={pulseStates[module.id].strong}
                 />
-              </div>
-            ))}
-          </div>
-
-          <div className="pcb-module-stack md:hidden">
-            {modules.map((module) => (
-              <ModuleCard
-                key={`stacked-${module.id}`}
-                module={module}
-                isActive={modulePulseState[module.id].active}
-                isStrong={modulePulseState[module.id].strong}
-                onHover={() => triggerModulePulse(module.id, true)}
-                onLeave={() => undefined}
-              />
-            ))}
-          </div>
-
-          <div className="pcb-header">
-            <span>Neural Board //</span>
-            <span>{siteConfig.ownerName}</span>
+              ))}
+            </div>
           </div>
 
           <div className="pcb-status-strip">

@@ -339,6 +339,34 @@ a:hover {
   color: rgba(45, 212, 191, 0.75);
 }
 
+.module-card--pulse {
+  border-color: rgba(34, 211, 238, 0.55);
+  box-shadow: 0 26px 78px rgba(0, 255, 255, 0.18);
+}
+
+.module-card--pulse::after {
+  opacity: 0.9;
+  animation: moduleSurge 0.65s ease-out;
+}
+
+.module-card--pulse .module-card__glow {
+  opacity: 0.34;
+}
+
+.module-card--surge {
+  border-color: rgba(34, 211, 238, 0.68);
+  box-shadow: 0 32px 88px rgba(0, 255, 255, 0.24);
+}
+
+.module-card--surge::after {
+  opacity: 1;
+  animation: moduleSurge 0.78s ease-out;
+}
+
+.module-card--surge .module-card__glow {
+  opacity: 0.45;
+}
+
 .module-card__glow {
   position: absolute;
   inset: 0;
@@ -397,61 +425,69 @@ a:hover {
   }
 }
 
-@keyframes pcbDrift {
-  0%,
-  100% {
-    transform: translate(-5%, -4%) scale(1.05);
+@keyframes moduleSurge {
+  0% {
+    opacity: 0.95;
+    transform: scale(0.92);
+    box-shadow: 0 0 0 rgba(0, 255, 255, 0.24);
   }
-  50% {
-    transform: translate(5%, 6%) scale(1.1);
+  45% {
+    opacity: 0.5;
+    transform: scale(1.02);
+    box-shadow: 0 0 28px rgba(0, 255, 255, 0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.12);
+    box-shadow: 0 0 0 rgba(0, 255, 255, 0);
   }
 }
 
-/* Bus network */
-.bus-group {
+.circuit-network {
   mix-blend-mode: screen;
 }
 
-.bus-line {
+.circuit-frame {
   fill: none;
+  stroke: rgba(34, 211, 238, 0.28);
+  stroke-width: 3;
+  stroke-dasharray: 22 28;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.22));
+  animation: circuitFramePulse 8s ease-in-out infinite;
+}
+
+.circuit-line-group {
+  opacity: 0.88;
+}
+
+.circuit-line {
+  --flow-duration: 12s;
+  --pulse-duration: 3.6s;
+  fill: none;
+  stroke: #00ffff;
+  stroke-width: 2px;
+  stroke-opacity: 0.8;
   stroke-linecap: round;
   stroke-linejoin: round;
-  filter: drop-shadow(0 0 6px rgba(0, 255, 255, 0.7));
-  animation: flow 4s linear infinite;
-  opacity: 0.85;
+  stroke-dasharray: 18 30;
+  filter: drop-shadow(0 0 8px #0ff);
+  animation: circuitFlow var(--flow-duration) linear infinite, circuitPulse var(--pulse-duration) ease-in-out infinite;
 }
 
-.bus-line[data-highlighted='true'] {
-  animation-duration: 2.6s;
-  opacity: 1;
-  filter: drop-shadow(0 0 16px rgba(0, 255, 255, 0.9));
+.circuit-line--fast {
+  --flow-duration: 8.5s;
+  --pulse-duration: 3s;
 }
 
-.bus-branch {
-  fill: none;
-  stroke-linecap: round;
-  opacity: 0.55;
-  transition: opacity 220ms ease, stroke-width 220ms ease;
+.circuit-line--medium {
+  --flow-duration: 11s;
+  --pulse-duration: 3.4s;
 }
 
-.bus-branch[data-active='true'] {
-  opacity: 0.95;
-  stroke-width: 3.2px;
-}
-
-.bus-axi {
-  stroke: #00ffff;
-  stroke-width: 4px;
-}
-
-.bus-ahb {
-  stroke: #007bff;
-  stroke-width: 3px;
-}
-
-.bus-apb {
-  stroke: #ff00ff;
-  stroke-width: 2px;
+.circuit-line--slow {
+  --flow-duration: 14s;
+  --pulse-duration: 4s;
 }
 
 .electron {
@@ -483,34 +519,44 @@ a:hover {
   }
 }
 
-@keyframes move-electron {
+@keyframes circuitPulse {
   0%,
   100% {
-    opacity: 0.5;
+    stroke-opacity: 0.74;
+    filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
   }
-  50% {
-    opacity: 1;
+  45% {
+    stroke-opacity: 1;
+    filter: drop-shadow(0 0 14px rgba(0, 255, 255, 0.9));
   }
 }
 
-/* Board chrome */
-.pcb-header {
-  position: absolute;
-  top: 18px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-flex;
-  gap: 0.6rem;
-  padding: 0.5rem 1.6rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(34, 211, 238, 0.32);
-  background: rgba(15, 23, 42, 0.68);
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  font-size: 0.58rem;
-  color: rgba(165, 243, 252, 0.85);
-  backdrop-filter: blur(8px);
-  z-index: 20;
+@keyframes circuitFramePulse {
+  0%,
+  100% {
+    stroke-opacity: 0.25;
+  }
+  50% {
+    stroke-opacity: 0.5;
+  }
+}
+
+.circuit-label {
+  font-family: 'Share Tech Mono', 'Space Mono', monospace;
+  fill: rgba(165, 243, 252, 0.7);
+  letter-spacing: 0.32em;
+  font-size: 11px;
+  filter: drop-shadow(0 0 6px rgba(12, 74, 110, 0.45));
+}
+
+.circuit-electron {
+  filter: blur(1px);
+  mix-blend-mode: screen;
+}
+
+.circuit-electron--secondary {
+  opacity: 0.72;
+  filter: blur(1.2px);
 }
 
 .pcb-status-strip {
