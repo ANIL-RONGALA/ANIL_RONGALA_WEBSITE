@@ -4,55 +4,50 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
+import { boardSections } from '@/lib/boardSections';
 import { siteConfig } from '@/lib/siteConfig';
 
-type ModuleId =
-  | 'core'
-  | 'cpu'
-  | 'gpu'
-  | 'ram'
-  | 'ssd'
-  | 'io'
-  | 'sensor'
-  | 'media';
+import { BusNetwork, BOARD_DIMENSIONS, type BusId } from './BusNetwork';
 
-type ModuleDefinition = {
+type ModuleId = 'core' | 'cpu' | 'gpu' | 'ram' | 'ssd' | 'io' | 'sensor' | 'media';
+
+type Module = {
   id: ModuleId;
-  role: string;
-  section: string;
+  title: string;
+  subtitle: string;
   href: string;
+  position: { x: number; y: number };
 };
 
-const MODULES: ModuleDefinition[] = [
-  { id: 'core', role: 'CORE MODULE', section: 'IDENTITY MATRIX', href: '/' },
-  { id: 'cpu', role: 'CPU MODULE', section: 'PROJECTS', href: '/projects' },
-  { id: 'ram', role: 'RAM MODULE', section: 'ACADEMICS', href: '/academics' },
-  { id: 'ssd', role: 'SSD MODULE', section: 'ACHIEVEMENTS', href: '/achievements' },
-  { id: 'gpu', role: 'GPU MODULE', section: 'RESEARCH & AI', href: '/projects' },
-  { id: 'io', role: 'I/O MODULE', section: 'CONTACT', href: '/contact' },
-  { id: 'sensor', role: 'SENSOR MODULE', section: 'PERSONAL LOG', href: '/personal' },
-  { id: 'media', role: 'MEDIA MODULE', section: 'MEDIA HUB', href: '/media' }
+type ModulePulseState = {
+  active: boolean;
+  strong: boolean;
+};
+
+const MODULE_IDS: ModuleId[] = ['core', 'cpu', 'gpu', 'ram', 'ssd', 'io', 'sensor', 'media'];
+
+const MODULE_POSITIONS: Record<ModuleId, { x: number; y: number }> = {
+  cpu: { x: 24, y: 30 },
+  gpu: { x: 50, y: 26 },
+  ssd: { x: 76, y: 30 },
+  core: { x: 50, y: 55 },
+  ram: { x: 32, y: 55 },
+  io: { x: 24, y: 78 },
+  sensor: { x: 50, y: 82 },
+  media: { x: 76, y: 78 }
+};
+
+const BUS_ASSIGNMENTS: Record<BusId, ModuleId[]> = {
+  axi: ['core', 'cpu', 'gpu', 'ssd'],
+  ahb: ['core', 'ram', 'gpu'],
+  apb: ['core', 'io', 'sensor', 'media']
+};
+
+const BUS_PULSE_LOOPS: Array<{ bus: BusId; cadence: number; modules: ModuleId[] }> = [
+  { bus: 'axi', cadence: 5400, modules: ['core', 'cpu', 'gpu', 'ssd'] },
+  { bus: 'ahb', cadence: 6200, modules: ['core', 'ram', 'gpu'] },
+  { bus: 'apb', cadence: 7100, modules: ['core', 'io', 'sensor', 'media'] }
 ];
-
-type ModuleLayout = {
-  top: string;
-  left: string;
-  width: number;
-  height: number;
-};
-
-const MODULE_LAYOUT: Record<ModuleId, ModuleLayout> = {
-  core: { top: '50%', left: '50%', width: 240, height: 240 },
-  cpu: { top: '37.5%', left: '71.5%', width: 230, height: 220 },
-  ram: { top: '21%', left: '74%', width: 210, height: 190 },
-  ssd: { top: '69%', left: '72.5%', width: 230, height: 210 },
-  gpu: { top: '69%', left: '30%', width: 230, height: 210 },
-  io: { top: '53%', left: '28%', width: 220, height: 210 },
-  sensor: { top: '27%', left: '24%', width: 210, height: 190 },
-  media: { top: '80%', left: '50%', width: 250, height: 210 }
-};
-
-const VIDEO_INTERVAL = 13000;
 
 const PANELS_TOP: [string, string, string][] = [
   ['K4TOrB7at0Y', 'lJIrF4YjHfQ', 'hHW1oY26kxQ'],
@@ -296,37 +291,35 @@ type VideoPanelProps = {
 };
 
 function VideoPanel({ videos, label }: VideoPanelProps) {
+  const [front, setFront] = useState(0);
+  const [back, setBack] = useState(videos.length > 1 ? 1 : 0);
   const [showFront, setShowFront] = useState(true);
-  const [frontIndex, setFrontIndex] = useState(0);
-  const [backIndex, setBackIndex] = useState(videos.length > 1 ? 1 : 0);
 
   useEffect(() => {
-    if (videos.length <= 1) return;
+    if (videos.length <= 1) {
+      return;
+    }
 
-    const interval = setInterval(() => {
+    const timer = setInterval(() => {
       setShowFront((current) => {
         if (current) {
-          setBackIndex((frontIndex + 1) % videos.length);
+          setBack((front + 1) % videos.length);
         } else {
-          setFrontIndex((backIndex + 1) % videos.length);
+          setFront((back + 1) % videos.length);
         }
         return !current;
       });
-    }, VIDEO_INTERVAL);
+    }, 13000);
 
-    return () => clearInterval(interval);
-  }, [backIndex, frontIndex, videos.length]);
+    return () => clearInterval(timer);
+  }, [back, front, videos.length]);
 
-  const currentFront = videos[frontIndex % videos.length];
-  const currentBack = videos[backIndex % videos.length];
+  const currentFront = videos[front % videos.length];
+  const currentBack = videos[back % videos.length];
 
   return (
     <div className="video-panel">
-      <motion.div
-        className="video-panel-inner"
-        animate={{ rotateY: showFront ? 0 : 180 }}
-        transition={{ duration: 1.1, ease: 'easeInOut' }}
-      >
+      <motion.div className="video-panel-inner" animate={{ rotateY: showFront ? 0 : 180 }} transition={{ duration: 1.1 }}>
         <div className="video-panel-face video-panel-face--front">
           <iframe
             key={`front-${currentFront}`}
@@ -406,7 +399,6 @@ function ModuleCard({
       </motion.div>
     </Link>
   );
-}
 
 export function Motherboard() {
   const modules = useMemo(() => MODULES, []);
@@ -461,28 +453,24 @@ export function Motherboard() {
     };
   }, [triggerModulePulse]);
 
-  return (
-    <div className="relative mx-auto w-full max-w-6xl px-4 pb-20 pt-12">
-      <MediaZone panels={PANELS_TOP} prefix="MEDIA CHANNEL" subtitle="ORBITAL BROADCAST UPLINK" />
+  useEffect(() => {
+    const handleScroll = () => {
+      setParallax(window.scrollY * 0.035);
+    };
 
-      <div className="relative mt-10 min-h-[920px] overflow-visible rounded-[52px] border border-cyan-500/30 bg-slate-950/80 shadow-[0_50px_140px_rgba(6,182,212,0.2)] md:min-h-[1080px]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(45,212,191,0.14),_transparent_62%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.18),_transparent_55%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(30,64,175,0.24),transparent_45%),linear-gradient(245deg,rgba(59,130,246,0.18),transparent_55%)] opacity-80" />
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
 
-        <div className="relative mx-auto min-h-[920px] w-full max-w-6xl overflow-visible rounded-[48px] border border-cyan-500/40 bg-slate-950/60 backdrop-blur-xl md:min-h-[1080px]">
-          <div className="radar-pulse radar-pulse--primary" />
-          <div className="radar-pulse radar-pulse--secondary" />
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-          <div className="absolute inset-0">
-            <div className="heat-halo heat-halo--cpu" />
-            <div className="heat-halo heat-halo--gpu" />
-            <div className="heat-halo heat-halo--ssd" />
-          </div>
+  useEffect(() => {
+    triggerModulePulse('core', true);
 
-          <div className="absolute left-1/2 top-[6%] z-30 -translate-x-1/2 rounded-full border border-cyan-400/40 bg-cyan-400/10 px-6 py-2 text-[11px] uppercase tracking-[0.4em] text-cyan-100/80 backdrop-blur">
-            Neural Board // {siteConfig.ownerName}
-          </div>
+    const heartbeat = setInterval(() => {
+      triggerModulePulse('core', true);
+      triggerBusHighlight('ahb', 1600);
+    }, 3600);
 
           <CircuitNetwork connections={CIRCUIT_CONNECTIONS} onSurge={triggerModulePulse} />
 
@@ -523,7 +511,7 @@ export function Motherboard() {
             </div>
           </div>
 
-          <div className="info-strip">
+          <div className="pcb-status-strip">
             {STATUS_ITEMS.map((status) => (
               <div key={status.id} className="status-indicator">
                 <span className={`status-led status-led--${status.id}`} />
@@ -534,7 +522,7 @@ export function Motherboard() {
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
       <MediaZone panels={PANELS_BOTTOM} prefix="DATA STREAM" subtitle="QUANTUM DOWNLINK" />
     </div>
