@@ -29,15 +29,15 @@ const MODULES: ModuleDefinition[] = [
   { id: 'media', title: 'Media Module', section: 'Media Hub', href: '/media' }
 ];
 
-const MODULE_LAYOUT: Record<ModuleId, { x: number; y: number; width: number; height: number }> = {
-  core: { x: 600, y: 430, width: 220, height: 210 },
-  cpu: { x: 860, y: 420, width: 190, height: 170 },
-  gpu: { x: 820, y: 250, width: 190, height: 170 },
-  ssd: { x: 1040, y: 420, width: 190, height: 170 },
-  ram: { x: 420, y: 250, width: 190, height: 170 },
-  io: { x: 340, y: 540, width: 190, height: 170 },
-  sensor: { x: 520, y: 640, width: 190, height: 170 },
-  media: { x: 260, y: 660, width: 190, height: 170 }
+const MODULE_LAYOUT: Record<ModuleId, { top: number; left: number; width: number; height: number }> = {
+  core: { top: 430, left: 600, width: 220, height: 210 },
+  cpu: { top: 420, left: 860, width: 190, height: 170 },
+  gpu: { top: 250, left: 820, width: 190, height: 170 },
+  ssd: { top: 420, left: 1040, width: 190, height: 170 },
+  ram: { top: 250, left: 420, width: 190, height: 170 },
+  io: { top: 540, left: 340, width: 190, height: 170 },
+  sensor: { top: 640, left: 520, width: 190, height: 170 },
+  media: { top: 660, left: 260, width: 190, height: 170 }
 };
 
 const BUS_ASSIGNMENTS: Record<BusId, ModuleId[]> = {
@@ -201,7 +201,7 @@ export function Motherboard() {
     () =>
       modules.reduce((acc, module) => {
         const layout = MODULE_LAYOUT[module.id];
-        acc[module.id] = { x: layout.x, y: layout.y };
+        acc[module.id] = { x: layout.left, y: layout.top };
         return acc;
       }, {} as Record<ModuleId, { x: number; y: number }>),
     [modules]
@@ -253,42 +253,52 @@ export function Motherboard() {
 
   return (
     <div className="pcb-wrapper">
-      <MediaZone panels={PANELS_TOP} prefix="MEDIA CHANNEL" subtitle="SATELLITE UPLINK" />
+      <div className="pcb-board pcb-grid relative mx-auto w-full max-w-6xl px-4 pb-20 pt-12 overflow-visible">
+        <MediaZone panels={PANELS_TOP} prefix="MEDIA CHANNEL" subtitle="SATELLITE UPLINK" />
 
-      <section className="motherboard-stage">
-        <div className="pcb-board pcb-grid">
-          <div className="hidden md:block">
-            <div
-              className="pcb-surface"
-              style={{ width: '100%', maxWidth: `${BOARD_DIMENSIONS.width}px` }}
-            >
-              <div className="absolute inset-0 pointer-events-none">
-                <BusNetwork moduleAnchors={moduleAnchors} busAssignments={BUS_ASSIGNMENTS} onModulePulse={handleModulePulse} />
-              </div>
+        <div className="relative mt-10">
+          <div
+            className="pcb-surface relative hidden overflow-visible rounded-[48px] border border-cyan-400/40 bg-slate-950/70 shadow-[0_0_80px_rgba(34,211,238,0.3)] backdrop-blur-xl md:block"
+            style={{ width: '100%', maxWidth: `${BOARD_DIMENSIONS.width}px` }}
+          >
+            <div className="pcb-grid-layer absolute inset-0" />
+            <div className="pcb-halo absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(14,165,233,0.2),transparent_70%)]" />
 
-              <div className="absolute inset-0 z-20">
-                {modules.map((module) => {
-                  const layout = MODULE_LAYOUT[module.id];
-                  return (
-                    <div
-                      key={module.id}
-                      className="module-anchor"
-                      style={{
-                        top: `${layout.y}px`,
-                        left: `${layout.x}px`,
-                        width: `${layout.width}px`,
-                        height: `${layout.height}px`
-                      }}
-                    >
-                      <ModuleCard
-                        module={module}
-                        isActive={pulseStates[module.id].active}
-                        isStrong={pulseStates[module.id].strong}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
+            <BusNetwork moduleAnchors={moduleAnchors} busAssignments={BUS_ASSIGNMENTS} onModulePulse={handleModulePulse} />
+
+            <div className="relative z-20">
+              {modules.map((module) => {
+                const layout = MODULE_LAYOUT[module.id];
+                return (
+                  <div
+                    key={module.id}
+                    className="module-anchor"
+                    style={{
+                      top: layout.top,
+                      left: layout.left,
+                      width: `${layout.width}px`,
+                      height: `${layout.height}px`
+                    }}
+                  >
+                    <ModuleCard
+                      module={module}
+                      isActive={pulseStates[module.id].active}
+                      isStrong={pulseStates[module.id].strong}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="info-strip pcb-status-strip absolute bottom-6 left-1/2 z-30 -translate-x-1/2">
+              {STATUS_ITEMS.map((status) => (
+                <div key={status.id} className="status-indicator">
+                  <span className={`status-led status-led--${status.id}`} />
+                  <span className="status-text">
+                    {status.label}: <span className="status-text__value">{status.value}</span>
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -303,22 +313,22 @@ export function Motherboard() {
                 />
               ))}
             </div>
-          </div>
 
-          <div className="pcb-status-strip">
-            {STATUS_ITEMS.map((status) => (
-              <div key={status.id} className="status-indicator">
-                <span className={`status-led status-led--${status.id}`} />
-                <span className="status-text">
-                  {status.label}: <span className="status-text__value">{status.value}</span>
-                </span>
-              </div>
-            ))}
+            <div className="pcb-status-strip mt-6">
+              {STATUS_ITEMS.map((status) => (
+                <div key={status.id} className="status-indicator">
+                  <span className={`status-led status-led--${status.id}`} />
+                  <span className="status-text">
+                    {status.label}: <span className="status-text__value">{status.value}</span>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </section>
 
-      <MediaZone panels={PANELS_BOTTOM} prefix="DATA STREAM" subtitle="QUANTUM DOWNLINK" />
+        <MediaZone panels={PANELS_BOTTOM} prefix="DATA STREAM" subtitle="QUANTUM DOWNLINK" />
+      </div>
     </div>
   );
 }

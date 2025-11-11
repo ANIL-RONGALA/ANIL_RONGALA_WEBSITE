@@ -8,7 +8,7 @@ export type ModuleId = 'core' | 'cpu' | 'gpu' | 'ram' | 'ssd' | 'io' | 'sensor' 
 
 export const BOARD_DIMENSIONS = {
   width: 1200,
-  height: 860
+  height: 920
 } as const;
 
 type ModuleAnchors = Record<ModuleId, { x: number; y: number }>;
@@ -250,7 +250,7 @@ export function BusNetwork({ moduleAnchors, busAssignments, onModulePulse }: Bus
 
   return (
     <svg
-      className="bus-network absolute inset-0 h-full w-full"
+      className="bus-layer bus-network absolute inset-0 h-full w-full pointer-events-none z-10"
       viewBox={`0 0 ${BOARD_DIMENSIONS.width} ${BOARD_DIMENSIONS.height}`}
       preserveAspectRatio="none"
       aria-hidden
