@@ -24,27 +24,6 @@ a:hover {
   @apply text-sky-300;
 }
 
-.neon-border {
-  position: relative;
-  overflow: hidden;
-}
-
-.neon-border::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 0 20px rgba(14, 165, 233, 0.15);
-  pointer-events: none;
-}
-
-.circuit-background {
-  background-image: var(--circuit-bg);
-  background-size: cover, 120px 120px, 120px 120px;
-  background-position: center, 0 0, 0 0;
-}
-
 /* Media feeds */
 .video-panel {
   position: relative;
@@ -157,27 +136,55 @@ a:hover {
 .pcb-wrapper {
   position: relative;
   display: grid;
-  gap: 3.5rem;
-  padding: 3.5rem 1.5rem 5rem;
+  gap: clamp(2.5rem, 5vw, 4rem);
+  padding: clamp(2.5rem, 4vw, 4rem) 1.5rem 5rem;
 }
 
 @media (min-width: 768px) {
   .pcb-wrapper {
-    padding: 4rem 2rem 6rem;
+    padding-inline: clamp(2rem, 6vw, 4rem);
   }
+}
+
+.motherboard-stage {
+  display: flex;
+  justify-content: center;
 }
 
 .pcb-board {
   position: relative;
+  width: 100%;
   max-width: 78rem;
-  margin-inline: auto;
   border-radius: 48px;
-  border: 1px solid rgba(34, 211, 238, 0.32);
-  padding: clamp(1.5rem, 4vw, 2.5rem);
-  background: radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.18), transparent 62%),
-    radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.18), transparent 65%),
-    rgba(2, 8, 18, 0.88);
-  box-shadow: 0 40px 140px rgba(6, 182, 212, 0.18);
+  padding: clamp(2rem, 4vw, 3rem);
+  border: 1px solid rgba(34, 211, 238, 0.28);
+  background: radial-gradient(circle at center, rgba(14, 165, 233, 0.05), transparent 70%),
+    linear-gradient(115deg, rgba(59, 130, 246, 0.12), transparent 45%),
+    rgba(2, 8, 18, 0.92);
+  box-shadow: 0 0 60px rgba(6, 182, 212, 0.25);
+  overflow: visible;
+  isolation: isolate;
+}
+
+.pcb-board > * {
+  position: relative;
+  z-index: 1;
+}
+
+.pcb-grid {
+  position: relative;
+}
+
+.pcb-grid::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(to right, rgba(6, 182, 212, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 182, 212, 0.08) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.75;
 }
 
 .pcb-surface {
@@ -186,57 +193,113 @@ a:hover {
   max-width: min(72rem, 100%);
   aspect-ratio: 1200 / 860;
   margin-inline: auto;
-  border-radius: 44px;
-  border: 1px solid rgba(34, 211, 238, 0.35);
-  background: linear-gradient(135deg, rgba(8, 16, 28, 0.9), rgba(2, 8, 20, 0.92));
-  overflow: hidden;
-  box-shadow: inset 0 0 38px rgba(14, 165, 233, 0.22);
+  border-radius: 40px;
+  border: 1px solid rgba(34, 211, 238, 0.32);
+  background: linear-gradient(160deg, rgba(5, 14, 26, 0.94), rgba(2, 8, 18, 0.96));
+  box-shadow: inset 0 0 42px rgba(14, 165, 233, 0.26), 0 0 70px rgba(6, 182, 212, 0.14);
+  overflow: visible;
 }
 
 .pcb-surface::after {
   content: '';
   position: absolute;
-  inset: -20%;
-  background: radial-gradient(circle at 50% 20%, rgba(34, 211, 238, 0.16), transparent 58%),
-    radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.12), transparent 70%);
-  opacity: 0.8;
+  inset: -15%;
+  background: radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.16), transparent 62%),
+    radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.14), transparent 65%),
+    radial-gradient(circle at 50% 80%, rgba(34, 211, 238, 0.12), transparent 70%);
   pointer-events: none;
-}
-
-.pcb-grid {
-  position: absolute;
-  inset: 0;
-  background-image: repeating-linear-gradient(90deg, rgba(13, 148, 136, 0.12) 0 1px, transparent 1px 80px),
-    repeating-linear-gradient(0deg, rgba(6, 182, 212, 0.1) 0 1px, transparent 1px 80px);
-  opacity: 0.18;
-  mix-blend-mode: screen;
-  pointer-events: none;
-}
-
-.pcb-bus-layer,
-.pcb-glow-layer,
-.pcb-module-layer {
-  position: absolute;
-  inset: 0;
-}
-
-.pcb-bus-layer {
-  mix-blend-mode: screen;
-}
-
-.pcb-glow-layer::before {
-  content: '';
-  position: absolute;
-  inset: -25%;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.12), transparent 65%);
   opacity: 0.6;
-  animation: pcbDrift 18s ease-in-out infinite;
 }
 
-.pcb-module-layer {
+/* Bus network */
+.bus-network {
+  mix-blend-mode: screen;
+}
+
+.bus-group {
   pointer-events: none;
+  mix-blend-mode: screen;
 }
 
+.bus-line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-opacity: 0.9;
+  filter: drop-shadow(0 0 6px currentColor);
+  stroke-dasharray: 8 12;
+  animation: busFlow 6s linear infinite;
+}
+
+.bus-line--connector {
+  stroke-dasharray: 6 10;
+  opacity: 0.75;
+}
+
+.bus-axi {
+  stroke: #00ffff;
+  stroke-width: 2.8px;
+}
+
+.bus-ahb {
+  stroke: #38bdf8;
+  stroke-width: 2.4px;
+}
+
+.bus-apb {
+  stroke: #e879f9;
+  stroke-width: 2px;
+}
+
+.bus-electron {
+  filter: drop-shadow(0 0 6px currentColor);
+  animation: electronPulse 1.6s ease-in-out infinite;
+}
+
+.bus-electron--axi {
+  fill: #00ffff;
+}
+
+.bus-electron--ahb {
+  fill: #38bdf8;
+}
+
+.bus-electron--apb {
+  fill: #e879f9;
+}
+
+.bus-label {
+  font-family: 'Share Tech Mono', 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  fill: rgba(165, 243, 252, 0.78);
+  opacity: 0.9;
+  filter: drop-shadow(0 0 6px rgba(12, 74, 110, 0.45));
+  text-transform: uppercase;
+}
+
+@keyframes busFlow {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -1200;
+  }
+}
+
+@keyframes electronPulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    filter: brightness(1.1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.6);
+  }
+}
+
+/* Module layout */
 .pcb-module-stack {
   position: relative;
   display: grid;
@@ -246,32 +309,36 @@ a:hover {
 
 .module-anchor {
   position: absolute;
+  top: 0;
+  left: 0;
   transform: translate(-50%, -50%);
-  width: clamp(180px, 19vw, 240px);
-  min-height: clamp(180px, 20vw, 240px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: auto;
 }
 
 .module-link {
   position: relative;
   display: block;
-  text-decoration: none;
+  width: 100%;
   height: 100%;
+  text-decoration: none;
 }
 
 .module-shadow {
   position: absolute;
-  inset: auto 18% -24px 18%;
-  height: 32px;
+  inset: auto 18% -26px 18%;
+  height: 34px;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.4), transparent 70%);
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.45), transparent 70%);
   opacity: 0.55;
   filter: blur(4px);
   transition: transform 220ms ease, opacity 220ms ease;
 }
 
 .module-link:hover .module-shadow {
-  transform: translateY(6px) scaleX(1.05);
+  transform: translateY(8px) scaleX(1.08);
   opacity: 0.85;
 }
 
@@ -279,18 +346,18 @@ a:hover {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.65rem;
+  gap: 0.75rem;
   height: 100%;
-  padding: 1.45rem 1.6rem;
+  padding: 1.6rem 1.8rem;
   border-radius: 30px;
-  border: 1px solid rgba(34, 211, 238, 0.38);
-  background: linear-gradient(155deg, rgba(5, 14, 26, 0.92), rgba(2, 8, 16, 0.94));
-  box-shadow: 0 18px 52px rgba(15, 118, 110, 0.24);
-  color: rgba(203, 213, 225, 0.88);
+  border: 1px solid rgba(34, 211, 238, 0.45);
+  background: linear-gradient(155deg, rgba(4, 12, 20, 0.92), rgba(2, 8, 16, 0.94));
+  box-shadow: 0 0 16px rgba(34, 211, 238, 0.36), 0 32px 90px rgba(34, 211, 238, 0.14);
+  color: rgba(226, 232, 240, 0.92);
   text-transform: uppercase;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.3em;
   overflow: hidden;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
 }
 
 .module-card::before {
@@ -298,80 +365,51 @@ a:hover {
   position: absolute;
   inset: 1px;
   border-radius: 28px;
-  background: linear-gradient(120deg, rgba(14, 165, 233, 0.15), transparent 55%);
-  opacity: 0.9;
+  background: linear-gradient(120deg, rgba(14, 165, 233, 0.18), transparent 55%);
+  opacity: 0.95;
   pointer-events: none;
 }
 
-.module-card::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 32px;
-  border: 1px solid rgba(34, 211, 238, 0.5);
-  opacity: 0;
-  pointer-events: none;
-  box-shadow: 0 0 0 rgba(34, 211, 238, 0.45);
+.module-card__title,
+.module-card__subtitle,
+.module-card__port {
+  position: relative;
+  z-index: 1;
 }
 
 .module-card__title {
-  position: relative;
-  z-index: 1;
   font-size: 0.78rem;
-  letter-spacing: 0.34em;
+  letter-spacing: 0.36em;
   color: rgba(165, 243, 252, 0.95);
 }
 
 .module-card__subtitle {
-  position: relative;
-  z-index: 1;
   font-size: 0.64rem;
   letter-spacing: 0.32em;
   color: rgba(148, 163, 184, 0.75);
 }
 
-.module-card__port {
+.module-card__divider {
   position: relative;
   z-index: 1;
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.6), transparent);
+  margin-block: 0.5rem;
+}
+
+.module-card__port {
   margin-top: auto;
   font-size: 0.56rem;
-  letter-spacing: 0.36em;
-  color: rgba(45, 212, 191, 0.75);
-}
-
-.module-card--pulse {
-  border-color: rgba(34, 211, 238, 0.55);
-  box-shadow: 0 26px 78px rgba(0, 255, 255, 0.18);
-}
-
-.module-card--pulse::after {
-  opacity: 0.9;
-  animation: moduleSurge 0.65s ease-out;
-}
-
-.module-card--pulse .module-card__glow {
-  opacity: 0.34;
-}
-
-.module-card--surge {
-  border-color: rgba(34, 211, 238, 0.68);
-  box-shadow: 0 32px 88px rgba(0, 255, 255, 0.24);
-}
-
-.module-card--surge::after {
-  opacity: 1;
-  animation: moduleSurge 0.78s ease-out;
-}
-
-.module-card--surge .module-card__glow {
-  opacity: 0.45;
+  letter-spacing: 0.38em;
+  color: rgba(45, 212, 191, 0.78);
 }
 
 .module-card__glow {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset 0 0 40px rgba(34, 211, 238, 0.28);
+  box-shadow: inset 0 0 40px rgba(34, 211, 238, 0.32);
   opacity: 0;
   transition: opacity 220ms ease;
   pointer-events: none;
@@ -381,193 +419,48 @@ a:hover {
   opacity: 0.38;
 }
 
-.module-card--pulse::after {
-  opacity: 0.65;
+.module-card--pulse {
+  border-color: rgba(34, 211, 238, 0.6);
+  box-shadow: 0 0 26px rgba(34, 211, 238, 0.45), 0 40px 120px rgba(34, 211, 238, 0.2);
   animation: modulePulse 0.8s ease-out;
 }
 
-.module-card--pulse .module-card__glow {
-  opacity: 0.32;
-}
-
 .module-card--surge {
-  box-shadow: 0 0 22px rgba(34, 211, 238, 0.4);
-}
-
-.module-card--surge::after {
-  opacity: 1;
+  border-color: rgba(34, 211, 238, 0.75);
+  box-shadow: 0 0 34px rgba(34, 211, 238, 0.55), 0 50px 140px rgba(34, 211, 238, 0.24);
   animation: moduleSurge 0.85s ease-out;
 }
 
 @keyframes modulePulse {
   0% {
     transform: scale(0.96);
-    box-shadow: 0 0 0 rgba(34, 211, 238, 0.5);
   }
   100% {
-    transform: scale(1.08);
-    box-shadow: 0 0 26px rgba(34, 211, 238, 0);
+    transform: scale(1);
   }
 }
 
 @keyframes moduleSurge {
   0% {
-    transform: scale(0.94);
-    box-shadow: 0 0 0 rgba(0, 255, 255, 0.45);
-  }
-  60% {
-    transform: scale(1.04);
-    box-shadow: 0 0 32px rgba(0, 255, 255, 0.55);
-  }
-  100% {
-    transform: scale(1.08);
-    box-shadow: 0 0 0 rgba(0, 255, 255, 0);
-  }
-}
-
-@keyframes moduleSurge {
-  0% {
-    opacity: 0.95;
-    transform: scale(0.92);
-    box-shadow: 0 0 0 rgba(0, 255, 255, 0.24);
-  }
-  45% {
-    opacity: 0.5;
-    transform: scale(1.02);
-    box-shadow: 0 0 28px rgba(0, 255, 255, 0.4);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.12);
-    box-shadow: 0 0 0 rgba(0, 255, 255, 0);
-  }
-}
-
-.circuit-network {
-  mix-blend-mode: screen;
-}
-
-.circuit-frame {
-  fill: none;
-  stroke: rgba(34, 211, 238, 0.28);
-  stroke-width: 3;
-  stroke-dasharray: 22 28;
-  stroke-linecap: round;
-  filter: drop-shadow(0 0 18px rgba(34, 211, 238, 0.22));
-  animation: circuitFramePulse 8s ease-in-out infinite;
-}
-
-.circuit-line-group {
-  opacity: 0.88;
-}
-
-.circuit-line {
-  --flow-duration: 12s;
-  --pulse-duration: 3.6s;
-  fill: none;
-  stroke: #00ffff;
-  stroke-width: 2px;
-  stroke-opacity: 0.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-dasharray: 18 30;
-  filter: drop-shadow(0 0 8px #0ff);
-  animation: circuitFlow var(--flow-duration) linear infinite, circuitPulse var(--pulse-duration) ease-in-out infinite;
-}
-
-.circuit-line--fast {
-  --flow-duration: 8.5s;
-  --pulse-duration: 3s;
-}
-
-.circuit-line--medium {
-  --flow-duration: 11s;
-  --pulse-duration: 3.4s;
-}
-
-.circuit-line--slow {
-  --flow-duration: 14s;
-  --pulse-duration: 4s;
-}
-
-.electron {
-  fill: cyan;
-  filter: drop-shadow(0 0 8px cyan);
-  animation: move-electron 6s linear infinite;
-  mix-blend-mode: screen;
-  opacity: 0.8;
-}
-
-.electron--axi {
-  fill: #8dfdff;
-}
-
-.electron--ahb {
-  fill: #8db7ff;
-}
-
-.electron--apb {
-  fill: #ff8dff;
-}
-
-@keyframes flow {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -240;
-  }
-}
-
-@keyframes circuitPulse {
-  0%,
-  100% {
-    stroke-opacity: 0.74;
-    filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
-  }
-  45% {
-    stroke-opacity: 1;
-    filter: drop-shadow(0 0 14px rgba(0, 255, 255, 0.9));
-  }
-}
-
-@keyframes circuitFramePulse {
-  0%,
-  100% {
-    stroke-opacity: 0.25;
+    transform: scale(0.95);
   }
   50% {
-    stroke-opacity: 0.5;
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 
-.circuit-label {
-  font-family: 'Share Tech Mono', 'Space Mono', monospace;
-  fill: rgba(165, 243, 252, 0.7);
-  letter-spacing: 0.32em;
-  font-size: 11px;
-  filter: drop-shadow(0 0 6px rgba(12, 74, 110, 0.45));
-}
-
-.circuit-electron {
-  filter: blur(1px);
-  mix-blend-mode: screen;
-}
-
-.circuit-electron--secondary {
-  opacity: 0.72;
-  filter: blur(1.2px);
-}
-
+/* Status strip */
 .pcb-status-strip {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
+  position: relative;
+  margin: clamp(2rem, 4vw, 3rem) auto 0;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 2.5rem;
+  gap: 2rem;
   padding: 1rem 2.8rem;
   border-radius: 9999px;
   border: 1px solid rgba(34, 211, 238, 0.32);
@@ -576,17 +469,15 @@ a:hover {
   letter-spacing: 0.34em;
   text-transform: uppercase;
   color: rgba(148, 163, 184, 0.78);
-  transform: translateX(-50%);
-  z-index: 25;
 }
 
-@media (max-width: 767px) {
+@media (min-width: 768px) {
   .pcb-status-strip {
-    position: relative;
-    inset: auto;
-    transform: none;
-    margin: 2rem auto 0;
-    gap: 1.5rem;
+    position: absolute;
+    bottom: clamp(1.5rem, 4vw, 2.5rem);
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
   }
 }
 
