@@ -26,14 +26,14 @@ type ModuleLayout = {
 };
 
 const MODULE_LAYOUT: Record<ModuleId, ModuleLayout> = {
-  core: { top: '43%', left: '50%', width: 240, height: 240 },
-  cpu: { top: '38%', left: '72%', width: 230, height: 210 },
-  gpu: { top: '42%', left: '30%', width: 230, height: 210 },
-  ram: { top: '26%', left: '72%', width: 210, height: 190 },
-  ssd: { top: '56%', left: '75%', width: 230, height: 210 },
-  io: { top: '46%', left: '24%', width: 220, height: 210 },
-  sensor: { top: '59%', left: '50%', width: 230, height: 210 },
-  media: { top: '68%', left: '50%', width: 250, height: 210 }
+  core: { top: '45%', left: '50%', width: 240, height: 240 },
+  cpu: { top: '38%', left: '72%', width: 220, height: 200 },
+  gpu: { top: '55%', left: '72%', width: 220, height: 200 },
+  ssd: { top: '72%', left: '72%', width: 220, height: 200 },
+  ram: { top: '38%', left: '28%', width: 220, height: 200 },
+  io: { top: '55%', left: '28%', width: 220, height: 200 },
+  sensor: { top: '72%', left: '28%', width: 220, height: 200 },
+  media: { top: '88%', left: '50%', width: 240, height: 200 }
 };
 
 const MODULES: ModuleDefinition[] = [
@@ -62,9 +62,6 @@ const MODULE_PLACEMENT: Record<ModuleId, Placement> = Object.entries(MODULE_LAYO
   {} as Record<ModuleId, Placement>
 );
 
-const ROTATION_INTERVAL_MS = 15 * 60 * 1000;
-const FADE_DURATION_MS = 1000;
-
 const PANELS_TOP: [string, string, string][] = [
   ['ysz5S6PUM-U', 'aqz-KE-bpKQ', 'oHg5SJYRHA0'],
   ['jNQXAC9IVRw', 'M7lc1UVf-VE', 'dQw4w9WgXcQ']
@@ -80,85 +77,37 @@ type VideoPanelProps = {
   label: string;
 };
 
-const extractYouTubeId = (source: string) => {
-  if (/^[A-Za-z0-9_-]{11}$/.test(source)) {
-    return source;
-  }
-
-  try {
-    const url = new URL(source);
-    if (url.hostname === 'youtu.be') {
-      return url.pathname.slice(1);
-    }
-
-    const videoParam = url.searchParams.get('v');
-    if (videoParam) {
-      return videoParam;
-    }
-
-    const pathSegments = url.pathname.split('/');
-    return pathSegments[pathSegments.length - 1] ?? source;
-  } catch (error) {
-    return source;
-  }
-};
-
 function VideoPanel({ videos, label }: VideoPanelProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [exitingIndex, setExitingIndex] = useState<number | null>(null);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    setActiveIndex(0);
-    setExitingIndex(null);
-  }, [videos]);
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % videos.length);
+    }, 15000);
 
-  useEffect(() => {
-    if (videos.length <= 1) {
-      return undefined;
-    }
-
-    const timer = window.setInterval(() => {
-      setActiveIndex((current) => {
-        const nextIndex = (current + 1) % videos.length;
-        setExitingIndex(current);
-        return nextIndex;
-      });
-    }, ROTATION_INTERVAL_MS);
-
-    return () => window.clearInterval(timer);
+    return () => clearInterval(timer);
   }, [videos.length]);
 
-  useEffect(() => {
-    if (exitingIndex === null) {
-      return undefined;
-    }
-
-    const timeout = window.setTimeout(() => setExitingIndex(null), FADE_DURATION_MS);
-    return () => window.clearTimeout(timeout);
-  }, [exitingIndex]);
-
   return (
-    <div className="video-panel">
-      <div className="video-panel-viewport">
-        {videos.map((source, index) => {
-          const isActive = index === activeIndex;
-          const isExiting = index === exitingIndex;
-          const videoId = extractYouTubeId(source);
-
-          return (
-            <iframe
-              key={`${label}-${videoId}-${index}`}
-              className={`video-panel-media${isActive ? ' video-panel-media--active' : ''}${
-                isExiting ? ' video-panel-media--exiting' : ''
-              }`}
-              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0`}
-              title={`${label} feed`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          );
-        })}
-      </div>
+    <div className="video-panel relative">
+      <motion.div
+        key={videos[index]}
+        initial={{ opacity: 0, rotateY: -90 }}
+        animate={{ opacity: 1, rotateY: 0 }}
+        exit={{ opacity: 0, rotateY: 90 }}
+        transition={{ duration: 1.2, ease: 'easeInOut' }}
+        className="absolute inset-0"
+      >
+        <iframe
+          src={`https://www.youtube.com/embed/${videos[index]}?autoplay=1&mute=1&loop=1&playlist=${videos[index]}&controls=0&modestbranding=1&rel=0`}
+          title={label}
+          allow="autoplay; encrypted-media; fullscreen"
+          className="w-full h-full rounded-2xl border-0"
+        />
+      </motion.div>
+      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-cyan-300 text-xs tracking-widest uppercase">
+        {label}
+      </span>
     </div>
   );
 }
