@@ -44,6 +44,34 @@ a:hover {
   border-radius: 18px;
 }
 
+.video-panel-viewport {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.video-panel-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1000ms ease;
+  filter: saturate(1.05);
+}
+
+.video-panel-media--active {
+  opacity: 1;
+  z-index: 2;
+}
+
+.video-panel-media--exiting {
+  opacity: 0;
+  z-index: 1;
+}
+
 .video-panel-face {
   position: absolute;
   inset: 0;
@@ -162,12 +190,7 @@ a:hover {
 .media-zone__grid {
   display: grid;
   gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .media-zone__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+  grid-template-columns: minmax(0, 1fr);
 }
 
 /* PCB motherboard */
@@ -340,9 +363,9 @@ a:hover {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.7rem;
+  gap: 0.6rem;
   height: 100%;
-  padding: 1.5rem 1.75rem;
+  padding: 1.4rem 1.75rem 1.95rem;
   border-radius: 26px;
   border: 1px solid rgba(34, 211, 238, 0.45);
   background: linear-gradient(150deg, rgba(3, 10, 22, 0.95), rgba(1, 6, 14, 0.92));
@@ -400,6 +423,7 @@ a:hover {
 
 .module-card__port {
   margin-top: auto;
+  margin-bottom: 0.2rem;
   font-size: 0.58rem;
   letter-spacing: 0.4em;
   color: rgba(45, 212, 191, 0.8);
