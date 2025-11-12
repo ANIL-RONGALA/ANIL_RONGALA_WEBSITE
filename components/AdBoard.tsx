@@ -60,14 +60,16 @@ export function AdBoard({ youtubeUrl, title, position, rotation = 0, isActive = 
       <div className="relative overflow-hidden rounded-3xl border border-cyan-500/30 bg-white/5 p-2 shadow-[0_0_30px_rgba(34,211,238,0.35)] backdrop-blur">
         <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-cyan-500/30 via-transparent to-fuchsia-500/30 opacity-70 blur-2xl" />
         <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/70">
-          <iframe
-            className="h-36 w-full origin-center scale-105 opacity-90 transition duration-700 ease-out group-hover:opacity-100"
-            src={embedUrl}
-            title={title}
-            allow="autoplay; encrypted-media"
-            allowFullScreen={false}
-            loading="lazy"
-          />
+          <div className="relative aspect-video">
+            <iframe
+              className="absolute inset-0 h-full w-full origin-center scale-105 opacity-90 transition duration-700 ease-out group-hover:opacity-100"
+              src={embedUrl}
+              title={title}
+              allow="autoplay; encrypted-media"
+              allowFullScreen={false}
+              loading="lazy"
+            />
+          </div>
         </div>
         <div className="mt-3 text-[11px] uppercase tracking-[0.25em] text-cyan-100/80">{title}</div>
       </div>
