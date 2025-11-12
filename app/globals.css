@@ -98,6 +98,32 @@ a:hover {
   pointer-events: none;
 }
 
+.media-zone--top {
+  border-color: rgba(248, 113, 113, 0.45);
+  background: linear-gradient(155deg, rgba(40, 10, 20, 0.94), rgba(17, 6, 20, 0.9));
+  box-shadow: inset 0 0 28px rgba(248, 113, 113, 0.22), 0 26px 68px rgba(248, 113, 113, 0.18);
+}
+
+.media-zone--top::before {
+  border-color: rgba(248, 113, 113, 0.32);
+}
+
+.media-zone--top .video-panel {
+  border-color: rgba(248, 113, 113, 0.6);
+  background: linear-gradient(160deg, rgba(58, 10, 18, 0.88), rgba(26, 6, 18, 0.92));
+  box-shadow: inset 0 0 26px rgba(248, 113, 113, 0.24), 0 16px 40px rgba(248, 113, 113, 0.22);
+}
+
+.media-zone--top .video-panel-label {
+  background: rgba(248, 113, 113, 0.18);
+  border-color: rgba(248, 113, 113, 0.35);
+  color: rgba(254, 226, 226, 0.9);
+}
+
+.media-zone--bottom .video-panel {
+  border-color: rgba(34, 211, 238, 0.38);
+}
+
 .media-zone__header {
   display: flex;
   flex-wrap: wrap;
@@ -133,117 +159,100 @@ a:hover {
 }
 
 /* PCB motherboard */
-.pcb-wrapper {
-  position: relative;
-  display: grid;
+.motherboard-layout {
+  display: flex;
+  flex-direction: column;
   gap: clamp(2.5rem, 5vw, 4rem);
   padding: clamp(2.5rem, 4vw, 4rem) 1.5rem 5rem;
 }
 
 @media (min-width: 768px) {
-  .pcb-wrapper {
+  .motherboard-layout {
     padding-inline: clamp(2rem, 6vw, 4rem);
   }
 }
 
 .motherboard-stage {
-  display: flex;
+  display: none;
   justify-content: center;
 }
 
-.pcb-board {
-  position: relative;
-  width: 100%;
-  max-width: 78rem;
-  border-radius: 48px;
-  padding: clamp(2rem, 4vw, 3rem);
-  border: 1px solid rgba(34, 211, 238, 0.28);
-  background: radial-gradient(circle at center, rgba(14, 165, 233, 0.05), transparent 70%),
-    linear-gradient(115deg, rgba(59, 130, 246, 0.12), transparent 45%),
-    rgba(2, 8, 18, 0.92);
-  box-shadow: 0 0 60px rgba(6, 182, 212, 0.25);
-  overflow: visible;
-  isolation: isolate;
+@media (min-width: 768px) {
+  .motherboard-stage {
+    display: flex;
+  }
 }
 
-.pcb-board > * {
+.pcb-layer {
   position: relative;
-  z-index: 1;
+  width: 100%;
+  max-width: 70rem;
+  padding: clamp(2rem, 4vw, 3rem);
+  border-radius: 32px;
+  background: radial-gradient(circle at center, rgba(6, 182, 212, 0.08), #020617 70%);
+  border: 2px solid rgba(34, 211, 238, 0.3);
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.2);
+  overflow: hidden;
+}
+
+.pcb-layer::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border-radius: 26px;
+  border: 1px solid rgba(34, 211, 238, 0.2);
+  pointer-events: none;
 }
 
 .pcb-grid {
-  position: relative;
-}
-
-.pcb-grid::before {
-  content: '';
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(to right, rgba(6, 182, 212, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(6, 182, 212, 0.08) 1px, transparent 1px);
-  background-size: 32px 32px;
+  background-image: linear-gradient(to right, rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.5;
   pointer-events: none;
-  z-index: 0;
-  opacity: 0.75;
+  z-index: 5;
 }
 
-.pcb-surface {
+.pcb-modules {
   position: relative;
   width: 100%;
-  max-width: min(72rem, 100%);
-  aspect-ratio: 1200 / 920;
-  margin-inline: auto;
-  border-radius: 40px;
-  border: 1px solid rgba(34, 211, 238, 0.32);
-  background: linear-gradient(160deg, rgba(5, 14, 26, 0.94), rgba(2, 8, 18, 0.96));
-  box-shadow: inset 0 0 42px rgba(14, 165, 233, 0.26), 0 0 70px rgba(6, 182, 212, 0.14);
-  overflow: visible;
+  height: 100%;
+  z-index: 20;
 }
 
-.pcb-surface::after {
-  content: '';
-  position: absolute;
-  inset: -15%;
-  background: radial-gradient(circle at 20% 20%, rgba(14, 165, 233, 0.16), transparent 62%),
-    radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.14), transparent 65%),
-    radial-gradient(circle at 50% 80%, rgba(34, 211, 238, 0.12), transparent 70%);
-  pointer-events: none;
-  opacity: 0.6;
-}
-
-/* Bus network */
 .bus-network {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
   mix-blend-mode: screen;
+  z-index: 10;
 }
 
 .bus-group {
   pointer-events: none;
-  mix-blend-mode: screen;
 }
 
 .bus-line {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-opacity: 0.9;
+  stroke-dasharray: 18 28;
+  animation: flow 6s linear infinite;
   filter: drop-shadow(0 0 6px currentColor);
-  stroke-dasharray: 8 12;
-  animation: busFlow 6s linear infinite;
-}
-
-.bus-line--connector {
-  stroke-dasharray: 6 10;
-  opacity: 0.75;
 }
 
 .bus-axi {
-  stroke: #00ffff;
-  stroke-width: 2.8px;
+  stroke: #22d3ee;
+  stroke-width: 3.5px;
 }
 
 .bus-ahb {
-  stroke: #38bdf8;
-  stroke-width: 2.4px;
+  stroke: #3b82f6;
+  stroke-width: 2.5px;
 }
 
 .bus-apb {
@@ -252,65 +261,38 @@ a:hover {
 }
 
 .bus-electron {
+  r: 3px;
+  fill: currentColor;
   filter: drop-shadow(0 0 6px currentColor);
-  animation: electronPulse 1.6s ease-in-out infinite;
-}
-
-.bus-electron--axi {
-  fill: #00ffff;
-}
-
-.bus-electron--ahb {
-  fill: #38bdf8;
-}
-
-.bus-electron--apb {
-  fill: #e879f9;
 }
 
 .bus-label {
   font-family: 'Share Tech Mono', 'Space Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 0.32em;
-  fill: rgba(165, 243, 252, 0.78);
-  opacity: 0.9;
-  filter: drop-shadow(0 0 6px rgba(12, 74, 110, 0.45));
+  fill: rgba(165, 243, 252, 0.82);
   text-transform: uppercase;
+  filter: drop-shadow(0 0 6px rgba(12, 74, 110, 0.45));
 }
 
-@keyframes busFlow {
+@keyframes flow {
   0% {
+    stroke-dashoffset: 120;
+  }
+  100% {
     stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -1200;
-  }
-}
-
-@keyframes electronPulse {
-  0%,
-  100% {
-    opacity: 0.7;
-    filter: brightness(1.1);
-  }
-  50% {
-    opacity: 1;
-    filter: brightness(1.6);
   }
 }
 
 /* Module layout */
 .pcb-module-stack {
-  position: relative;
   display: grid;
-  gap: 1.25rem;
-  padding: 1.75rem 1.5rem 2.5rem;
+  gap: 1.5rem;
+  padding: 1.5rem 1.25rem 3rem;
 }
 
 .module-anchor {
   position: absolute;
-  top: 0;
-  left: 0;
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
@@ -328,12 +310,12 @@ a:hover {
 
 .module-shadow {
   position: absolute;
-  inset: auto 18% -26px 18%;
+  inset: auto 18% -28px 18%;
   height: 34px;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(34, 211, 238, 0.45), transparent 70%);
-  opacity: 0.55;
-  filter: blur(4px);
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.5), transparent 70%);
+  opacity: 0.6;
+  filter: blur(6px);
   transition: transform 220ms ease, opacity 220ms ease;
 }
 
@@ -346,28 +328,32 @@ a:hover {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.7rem;
   height: 100%;
-  padding: 1.6rem 1.8rem;
-  border-radius: 30px;
+  padding: 1.5rem 1.75rem;
+  border-radius: 26px;
   border: 1px solid rgba(34, 211, 238, 0.45);
-  background: linear-gradient(155deg, rgba(4, 12, 20, 0.92), rgba(2, 8, 16, 0.94));
-  box-shadow: 0 0 16px rgba(34, 211, 238, 0.36), 0 32px 90px rgba(34, 211, 238, 0.14);
+  background: linear-gradient(150deg, rgba(3, 10, 22, 0.95), rgba(1, 6, 14, 0.92));
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.38);
   color: rgba(226, 232, 240, 0.92);
   text-transform: uppercase;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.28em;
   overflow: hidden;
-  backdrop-filter: blur(10px);
+  transition: box-shadow 180ms ease, border-color 180ms ease;
 }
 
 .module-card::before {
   content: '';
   position: absolute;
   inset: 1px;
-  border-radius: 28px;
-  background: linear-gradient(120deg, rgba(14, 165, 233, 0.18), transparent 55%);
-  opacity: 0.95;
+  border-radius: 24px;
+  background: linear-gradient(125deg, rgba(34, 211, 238, 0.18), transparent 55%);
   pointer-events: none;
+}
+
+.module-link:hover .module-card {
+  box-shadow: 0 0 24px rgba(34, 211, 238, 0.6);
+  border-color: rgba(34, 211, 238, 0.6);
 }
 
 .module-card__title,
@@ -377,16 +363,16 @@ a:hover {
   z-index: 1;
 }
 
-.module-card__title {
-  font-size: 0.78rem;
-  letter-spacing: 0.36em;
-  color: rgba(165, 243, 252, 0.95);
+.module-card__subtitle {
+  font-size: 0.6rem;
+  letter-spacing: 0.34em;
+  color: rgba(148, 163, 184, 0.78);
 }
 
-.module-card__subtitle {
-  font-size: 0.64rem;
-  letter-spacing: 0.32em;
-  color: rgba(148, 163, 184, 0.75);
+.module-card__title {
+  font-size: 0.82rem;
+  letter-spacing: 0.38em;
+  color: rgba(165, 243, 252, 0.96);
 }
 
 .module-card__divider {
@@ -394,88 +380,15 @@ a:hover {
   z-index: 1;
   height: 1px;
   width: 100%;
-  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.6), transparent);
-  margin-block: 0.5rem;
-}
-
-.pcb-board {
-  position: relative;
-  overflow: visible;
-  z-index: 0;
-}
-
-.pcb-surface {
-  position: relative;
-  z-index: 10;
-}
-
-.pcb-grid-layer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(to right, rgba(6, 182, 212, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(6, 182, 212, 0.06) 1px, transparent 1px);
-  background-size: 36px 36px;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.module-anchor {
-  transform: translate(-50%, -50%);
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.65), transparent);
+  margin-block: 0.6rem;
 }
 
 .module-card__port {
   margin-top: auto;
-  font-size: 0.56rem;
-  letter-spacing: 0.38em;
-  color: rgba(45, 212, 191, 0.78);
-}
-
-.module-card__glow {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  box-shadow: inset 0 0 40px rgba(34, 211, 238, 0.32);
-  opacity: 0;
-  transition: opacity 220ms ease;
-  pointer-events: none;
-}
-
-.module-link:hover .module-card__glow {
-  opacity: 0.38;
-}
-
-.module-card--pulse {
-  border-color: rgba(34, 211, 238, 0.6);
-  box-shadow: 0 0 26px rgba(34, 211, 238, 0.45), 0 40px 120px rgba(34, 211, 238, 0.2);
-  animation: modulePulse 0.8s ease-out;
-}
-
-.module-card--surge {
-  border-color: rgba(34, 211, 238, 0.75);
-  box-shadow: 0 0 34px rgba(34, 211, 238, 0.55), 0 50px 140px rgba(34, 211, 238, 0.24);
-  animation: moduleSurge 0.85s ease-out;
-}
-
-@keyframes modulePulse {
-  0% {
-    transform: scale(0.96);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-
-@keyframes moduleSurge {
-  0% {
-    transform: scale(0.95);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-  100% {
-    transform: scale(1);
-  }
+  font-size: 0.58rem;
+  letter-spacing: 0.4em;
+  color: rgba(45, 212, 191, 0.8);
 }
 
 /* Status strip */
