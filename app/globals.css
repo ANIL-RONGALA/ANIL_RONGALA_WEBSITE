@@ -187,12 +187,6 @@ a:hover {
   color: rgba(94, 234, 212, 0.68);
 }
 
-.media-zone__grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: minmax(0, 1fr);
-}
-
 /* PCB motherboard */
 .motherboard-layout {
   display: flex;
@@ -357,6 +351,35 @@ a:hover {
 .module-link:hover .module-shadow {
   transform: translateY(8px) scaleX(1.08);
   opacity: 0.85;
+}
+
+.media-zone__grid {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 2rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+}
+
+.video-panel {
+  width: 320px;
+  height: 180px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.video-panel:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.5);
+}
+
+.video-panel iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 .module-card {

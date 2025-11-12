@@ -18,9 +18,22 @@ type Placement = {
   y: number;
 };
 
-type Size = {
+type ModuleLayout = {
+  top: string;
+  left: string;
   width: number;
   height: number;
+};
+
+const MODULE_LAYOUT: Record<ModuleId, ModuleLayout> = {
+  core: { top: '43%', left: '50%', width: 240, height: 240 },
+  cpu: { top: '38%', left: '72%', width: 230, height: 210 },
+  gpu: { top: '42%', left: '30%', width: 230, height: 210 },
+  ram: { top: '26%', left: '72%', width: 210, height: 190 },
+  ssd: { top: '56%', left: '75%', width: 230, height: 210 },
+  io: { top: '46%', left: '24%', width: 220, height: 210 },
+  sensor: { top: '59%', left: '50%', width: 230, height: 210 },
+  media: { top: '68%', left: '50%', width: 250, height: 210 }
 };
 
 const MODULES: ModuleDefinition[] = [
@@ -34,57 +47,60 @@ const MODULES: ModuleDefinition[] = [
   { id: 'media', title: 'Media Module', section: 'Media Hub', href: '/media' }
 ];
 
-const MODULE_PLACEMENT: Record<ModuleId, Placement> = {
-  core: { x: 560, y: 150 },
-  cpu: { x: 870, y: 320 },
-  gpu: { x: 560, y: 320 },
-  ram: { x: 250, y: 510 },
-  ssd: { x: 870, y: 150 },
-  io: { x: 250, y: 320 },
-  sensor: { x: 560, y: 510 },
-  media: { x: 870, y: 510 }
-};
+const MODULE_PLACEMENT: Record<ModuleId, Placement> = Object.entries(MODULE_LAYOUT).reduce(
+  (acc, [moduleId, layout]) => {
+    const normalizedTop = Number.parseFloat(layout.top) / 100;
+    const normalizedLeft = Number.parseFloat(layout.left) / 100;
 
-const MODULE_SIZE: Record<ModuleId, Size> = MODULES.reduce(
-  (acc, module) => {
-    acc[module.id] = { width: 208, height: 132 };
+    acc[moduleId as ModuleId] = {
+      x: BOARD_DIMENSIONS.width * (Number.isFinite(normalizedLeft) ? normalizedLeft : 0),
+      y: BOARD_DIMENSIONS.height * (Number.isFinite(normalizedTop) ? normalizedTop : 0)
+    };
+
     return acc;
   },
-  {} as Record<ModuleId, Size>
+  {} as Record<ModuleId, Placement>
 );
 
 const ROTATION_INTERVAL_MS = 15 * 60 * 1000;
 const FADE_DURATION_MS = 1000;
 
 const PANELS_TOP: [string, string, string][] = [
-  [
-    'https://cdn.coverr.co/videos/coverr-stream-of-light-6430/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-circuit-board-technology-1654795518988/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-neon-lights-in-the-city-8084/1080p.mp4'
-  ],
-  [
-    'https://cdn.coverr.co/videos/coverr-planet-earth-looks-incredible-from-space-3132/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-flying-through-hyperspace-1109/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-digital-globe-3128/1080p.mp4'
-  ]
+  ['ysz5S6PUM-U', 'aqz-KE-bpKQ', 'oHg5SJYRHA0'],
+  ['jNQXAC9IVRw', 'M7lc1UVf-VE', 'dQw4w9WgXcQ']
 ];
 
 const PANELS_BOTTOM: [string, string, string][] = [
-  [
-    'https://cdn.coverr.co/videos/coverr-glowing-neon-cubes-1656069478360/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-clouds-above-earth-1656070253019/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-cyberpunk-car-journey-1656947769820/1080p.mp4'
-  ],
-  [
-    'https://cdn.coverr.co/videos/coverr-digital-particles-1656069253038/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-earth-rotation-1656070188551/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-night-city-drive-1656946896280/1080p.mp4'
-  ]
+  ['aqz-KE-bpKQ', 'ysz5S6PUM-U', 'M7lc1UVf-VE'],
+  ['dQw4w9WgXcQ', 'oHg5SJYRHA0', 'jNQXAC9IVRw']
 ];
 
 type VideoPanelProps = {
   videos: string[];
   label: string;
+};
+
+const extractYouTubeId = (source: string) => {
+  if (/^[A-Za-z0-9_-]{11}$/.test(source)) {
+    return source;
+  }
+
+  try {
+    const url = new URL(source);
+    if (url.hostname === 'youtu.be') {
+      return url.pathname.slice(1);
+    }
+
+    const videoParam = url.searchParams.get('v');
+    if (videoParam) {
+      return videoParam;
+    }
+
+    const pathSegments = url.pathname.split('/');
+    return pathSegments[pathSegments.length - 1] ?? source;
+  } catch (error) {
+    return source;
+  }
 };
 
 function VideoPanel({ videos, label }: VideoPanelProps) {
@@ -123,29 +139,26 @@ function VideoPanel({ videos, label }: VideoPanelProps) {
 
   return (
     <div className="video-panel">
-      <div className="video-panel-inner">
-        <div className="video-panel-viewport">
-          {videos.map((source, index) => {
-            const isActive = index === activeIndex;
-            const isExiting = index === exitingIndex;
+      <div className="video-panel-viewport">
+        {videos.map((source, index) => {
+          const isActive = index === activeIndex;
+          const isExiting = index === exitingIndex;
+          const videoId = extractYouTubeId(source);
 
-            return (
-              <video
-                key={`${label}-${index}`}
-                className={`video-panel-media${isActive ? ' video-panel-media--active' : ''}${
-                  isExiting ? ' video-panel-media--exiting' : ''
-                }`}
-                src={source}
-                autoPlay
-                loop
-                muted
-                playsInline
-              />
-            );
-          })}
-        </div>
+          return (
+            <iframe
+              key={`${label}-${videoId}-${index}`}
+              className={`video-panel-media${isActive ? ' video-panel-media--active' : ''}${
+                isExiting ? ' video-panel-media--exiting' : ''
+              }`}
+              src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&rel=0`}
+              title={`${label} feed`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          );
+        })}
       </div>
-      <span className="video-panel-label">{label}</span>
     </div>
   );
 }
@@ -164,9 +177,14 @@ function MediaZone({ panels, prefix, subtitle, variant }: MediaZoneProps) {
         <span className="media-zone__status">MEDIA FEED // ACTIVE</span>
         <span className="media-zone__subtitle">{subtitle}</span>
       </div>
-      <div className="media-zone__grid">
+      <div className="media-zone__grid flex flex-row justify-center gap-8 flex-wrap md:flex-nowrap">
         {panels.map((videos, index) => (
-          <VideoPanel key={`${prefix}-${index}`} videos={videos} label={`${prefix} ${index + 1}`} />
+          <div key={`${prefix}-${index}`} className="flex flex-col items-center">
+            <VideoPanel videos={videos} label={`${prefix} ${index + 1}`} />
+            <span className="mt-2 text-cyan-200/80 text-xs tracking-widest uppercase">
+              {prefix} {index + 1}
+            </span>
+          </div>
         ))}
       </div>
     </section>
@@ -222,18 +240,17 @@ export function Motherboard() {
 
           <div className="pcb-modules">
             {modules.map((module) => {
-              const placement = MODULE_PLACEMENT[module.id];
-              const size = MODULE_SIZE[module.id];
+              const layout = MODULE_LAYOUT[module.id];
 
               return (
                 <div
                   key={module.id}
                   className="module-anchor"
                   style={{
-                    top: placement.y,
-                    left: placement.x,
-                    width: `${size.width}px`,
-                    height: `${size.height}px`
+                    top: layout.top,
+                    left: layout.left,
+                    width: `${layout.width}px`,
+                    height: `${layout.height}px`
                   }}
                 >
                   <ModuleCard module={module} />
