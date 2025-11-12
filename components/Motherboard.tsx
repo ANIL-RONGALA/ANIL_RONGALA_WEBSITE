@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
@@ -53,14 +53,33 @@ const MODULE_SIZE: Record<ModuleId, Size> = MODULES.reduce(
   {} as Record<ModuleId, Size>
 );
 
+const ROTATION_INTERVAL_MS = 15 * 60 * 1000;
+const FADE_DURATION_MS = 1000;
+
 const PANELS_TOP: [string, string, string][] = [
-  ['K4TOrB7at0Y', 'lJIrF4YjHfQ', 'hHW1oY26kxQ'],
-  ['5qap5aO4i9A', '2LhoCfjm8R4', 'DWcJFNfaw9c']
+  [
+    'https://cdn.coverr.co/videos/coverr-stream-of-light-6430/1080p.mp4',
+    'https://cdn.coverr.co/videos/coverr-circuit-board-technology-1654795518988/1080p.mp4',
+    'https://cdn.coverr.co/videos/coverr-neon-lights-in-the-city-8084/1080p.mp4'
+  ],
+  [
+    'https://cdn.coverr.co/videos/coverr-planet-earth-looks-incredible-from-space-3132/1080p.mp4',
+    'https://cdn.coverr.co/videos/coverr-flying-through-hyperspace-1109/1080p.mp4',
+    'https://cdn.coverr.co/videos/coverr-digital-globe-3128/1080p.mp4'
+  ]
 ];
 
 const PANELS_BOTTOM: [string, string, string][] = [
-  ['f02mOEt11OQ', '9bZkp7q19f0', 'a3Z7zEc7AXQ'],
-  ['P2sQWRrUyfM', 'kxopViU98Xo', 'Zp9tP-tQqpU']
+  [
+    'https://cdn.coverr.co/videos/coverr-glowing-neon-cubes-1656069478360/1080p.mp4',
+    'https://cdn.coverr.co/videos/coverr-clouds-above-earth-1656070253019/1080p.mp4',
+    'https://cdn.coverr.co/videos/coverr-cyberpunk-car-journey-1656947769820/1080p.mp4'
+  ],
+  [
+    'https://cdn.coverr.co/videos/coverr-digital-particles-1656069253038/1080p.mp4',
+    'https://cdn.coverr.co/videos/coverr-earth-rotation-1656070188551/1080p.mp4',
+    'https://cdn.coverr.co/videos/coverr-night-city-drive-1656946896280/1080p.mp4'
+  ]
 ];
 
 type VideoPanelProps = {
@@ -69,19 +88,61 @@ type VideoPanelProps = {
 };
 
 function VideoPanel({ videos, label }: VideoPanelProps) {
-  const current = useMemo(() => videos[0], [videos]);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [exitingIndex, setExitingIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    setActiveIndex(0);
+    setExitingIndex(null);
+  }, [videos]);
+
+  useEffect(() => {
+    if (videos.length <= 1) {
+      return undefined;
+    }
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((current) => {
+        const nextIndex = (current + 1) % videos.length;
+        setExitingIndex(current);
+        return nextIndex;
+      });
+    }, ROTATION_INTERVAL_MS);
+
+    return () => window.clearInterval(timer);
+  }, [videos.length]);
+
+  useEffect(() => {
+    if (exitingIndex === null) {
+      return undefined;
+    }
+
+    const timeout = window.setTimeout(() => setExitingIndex(null), FADE_DURATION_MS);
+    return () => window.clearTimeout(timeout);
+  }, [exitingIndex]);
 
   return (
     <div className="video-panel">
       <div className="video-panel-inner">
-        <div className="video-panel-face">
-          <iframe
-            className="video-panel-frame"
-            src={`https://www.youtube.com/embed/${current}?rel=0&modestbranding=1&controls=0`}
-            title={`${label} feed`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          />
+        <div className="video-panel-viewport">
+          {videos.map((source, index) => {
+            const isActive = index === activeIndex;
+            const isExiting = index === exitingIndex;
+
+            return (
+              <video
+                key={`${label}-${index}`}
+                className={`video-panel-media${isActive ? ' video-panel-media--active' : ''}${
+                  isExiting ? ' video-panel-media--exiting' : ''
+                }`}
+                src={source}
+                autoPlay
+                loop
+                muted
+                playsInline
+              />
+            );
+          })}
         </div>
       </div>
       <span className="video-panel-label">{label}</span>
