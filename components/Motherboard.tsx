@@ -74,12 +74,15 @@ function VideoPanel({ videos, label }: VideoPanelProps) {
   return (
     <div className="video-panel">
       <div className="video-panel-inner">
-        <iframe
-          src={`https://www.youtube.com/embed/${current}?rel=0&modestbranding=1&controls=0`}
-          title={`${label} feed`}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
+        <div className="video-panel-face">
+          <iframe
+            className="video-panel-frame"
+            src={`https://www.youtube.com/embed/${current}?rel=0&modestbranding=1&controls=0`}
+            title={`${label} feed`}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
       </div>
       <span className="video-panel-label">{label}</span>
     </div>
