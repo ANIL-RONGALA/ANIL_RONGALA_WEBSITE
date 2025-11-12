@@ -25,97 +25,6 @@ a:hover {
 }
 
 /* Media feeds */
-.video-panel {
-  position: relative;
-  perspective: 1600px;
-  border-radius: 22px;
-  border: 1px solid rgba(34, 211, 238, 0.35);
-  background: linear-gradient(160deg, rgba(10, 20, 32, 0.92), rgba(4, 12, 20, 0.9));
-  box-shadow: inset 0 0 30px rgba(8, 145, 178, 0.18), 0 18px 44px rgba(6, 182, 212, 0.18);
-  overflow: hidden;
-}
-
-.video-panel-inner {
-  position: relative;
-  width: 100%;
-  padding-top: 56.25%;
-  transform-style: preserve-3d;
-  overflow: hidden;
-  border-radius: 18px;
-}
-
-.video-panel-viewport {
-  position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  overflow: hidden;
-}
-
-.video-panel-media {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  opacity: 0;
-  transition: opacity 1000ms ease;
-  filter: saturate(1.05);
-}
-
-.video-panel-media--active {
-  opacity: 1;
-  z-index: 2;
-}
-
-.video-panel-media--exiting {
-  opacity: 0;
-  z-index: 1;
-}
-
-.video-panel-face {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
-  border-radius: 18px;
-  overflow: hidden;
-}
-
-.video-panel-frame {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-  display: block;
-  object-fit: cover;
-}
-
-.video-panel-face iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.video-panel-face--back {
-  transform: rotateY(180deg);
-}
-
-.video-panel-label {
-  position: absolute;
-  bottom: 12px;
-  left: 18px;
-  padding: 6px 12px;
-  font-size: 0.6rem;
-  letter-spacing: 0.38em;
-  text-transform: uppercase;
-  color: rgba(165, 243, 252, 0.8);
-  background: rgba(15, 118, 110, 0.22);
-  border-radius: 9999px;
-  border: 1px solid rgba(45, 212, 191, 0.35);
-  backdrop-filter: blur(6px);
-}
-
 .media-zone {
   position: relative;
   margin-inline: auto;
@@ -327,6 +236,7 @@ a:hover {
   align-items: center;
   justify-content: center;
   pointer-events: auto;
+  z-index: 20;
 }
 
 .module-link {
@@ -363,23 +273,21 @@ a:hover {
 }
 
 .video-panel {
-  width: 320px;
-  height: 180px;
+  position: relative;
+  width: 360px;
+  height: 200px;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 0 30px rgba(6, 182, 212, 0.3);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.video-panel:hover {
-  transform: scale(1.03);
-  box-shadow: 0 0 40px rgba(34, 211, 238, 0.5);
+  background: rgba(0, 10, 20, 0.6);
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.3);
+  transform-style: preserve-3d;
 }
 
 .video-panel iframe {
   width: 100%;
   height: 100%;
   border: none;
+  pointer-events: none;
 }
 
 .module-card {
@@ -397,7 +305,7 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.28em;
   overflow: hidden;
-  transition: box-shadow 180ms ease, border-color 180ms ease;
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 180ms ease;
 }
 
 .module-card::before {
@@ -409,8 +317,10 @@ a:hover {
   pointer-events: none;
 }
 
-.module-link:hover .module-card {
-  box-shadow: 0 0 24px rgba(34, 211, 238, 0.6);
+.module-link:hover .module-card,
+.module-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 0 35px rgba(34, 211, 238, 0.6);
   border-color: rgba(34, 211, 238, 0.6);
 }
 
