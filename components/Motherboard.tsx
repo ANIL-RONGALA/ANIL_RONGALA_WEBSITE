@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { BusNetwork, BOARD_DIMENSIONS, type ModuleId } from './BusNetwork';
 
@@ -26,14 +26,14 @@ type ModuleLayout = {
 };
 
 const MODULE_LAYOUT: Record<ModuleId, ModuleLayout> = {
-  core: { top: '45%', left: '50%', width: 240, height: 240 },
-  cpu: { top: '38%', left: '72%', width: 220, height: 200 },
-  gpu: { top: '55%', left: '72%', width: 220, height: 200 },
-  ssd: { top: '72%', left: '72%', width: 220, height: 200 },
-  ram: { top: '38%', left: '28%', width: 220, height: 200 },
-  io: { top: '55%', left: '28%', width: 220, height: 200 },
-  sensor: { top: '72%', left: '28%', width: 220, height: 200 },
-  media: { top: '88%', left: '50%', width: 240, height: 200 }
+  core: { top: '50%', left: '50%', width: 240, height: 220 },
+  cpu: { top: '20%', left: '77%', width: 220, height: 180 },
+  gpu: { top: '50%', left: '77%', width: 220, height: 180 },
+  ssd: { top: '80%', left: '77%', width: 220, height: 180 },
+  ram: { top: '20%', left: '23%', width: 220, height: 180 },
+  io: { top: '50%', left: '23%', width: 220, height: 180 },
+  sensor: { top: '80%', left: '23%', width: 220, height: 180 },
+  media: { top: '84%', left: '50%', width: 320, height: 190 }
 };
 
 const MODULES: ModuleDefinition[] = [
@@ -74,10 +74,9 @@ const PANELS_BOTTOM: [string, string, string][] = [
 
 type VideoPanelProps = {
   videos: string[];
-  label: string;
 };
 
-function VideoPanel({ videos, label }: VideoPanelProps) {
+function VideoPanel({ videos }: VideoPanelProps) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -90,49 +89,45 @@ function VideoPanel({ videos, label }: VideoPanelProps) {
 
   return (
     <div className="video-panel relative">
-      <motion.div
-        key={videos[index]}
-        initial={{ opacity: 0, rotateY: -90 }}
-        animate={{ opacity: 1, rotateY: 0 }}
-        exit={{ opacity: 0, rotateY: 90 }}
-        transition={{ duration: 1.2, ease: 'easeInOut' }}
-        className="absolute inset-0"
-      >
-        <iframe
-          src={`https://www.youtube.com/embed/${videos[index]}?autoplay=1&mute=1&loop=1&playlist=${videos[index]}&controls=0&modestbranding=1&rel=0`}
-          title={label}
-          allow="autoplay; encrypted-media; fullscreen"
-          className="w-full h-full rounded-2xl border-0"
-        />
-      </motion.div>
-      <span className="absolute bottom-2 left-1/2 -translate-x-1/2 text-cyan-300 text-xs tracking-widest uppercase">
-        {label}
-      </span>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={videos[index]}
+          initial={{ opacity: 0, rotateY: -92 }}
+          animate={{ opacity: 1, rotateY: 0 }}
+          exit={{ opacity: 0, rotateY: 92 }}
+          transition={{ duration: 1, ease: 'easeInOut' }}
+          className="video-panel__frame"
+        >
+          <iframe
+            src={`https://www.youtube.com/embed/${videos[index]}?autoplay=1&mute=1&loop=1&playlist=${videos[index]}&controls=0&modestbranding=1&rel=0&playsinline=1`}
+            title="autoplaying media panel"
+            allow="autoplay; encrypted-media; fullscreen"
+            allowFullScreen
+            className="w-full h-full rounded-2xl border-0"
+          />
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
 
 type MediaZoneProps = {
   panels: [string, string, string][];
-  prefix: string;
   subtitle: string;
   variant: 'top' | 'bottom';
 };
 
-function MediaZone({ panels, prefix, subtitle, variant }: MediaZoneProps) {
+function MediaZone({ panels, subtitle, variant }: MediaZoneProps) {
   return (
     <section className={`media-zone media-zone--${variant}`}>
       <div className="media-zone__header">
         <span className="media-zone__status">MEDIA FEED // ACTIVE</span>
         <span className="media-zone__subtitle">{subtitle}</span>
       </div>
-      <div className="media-zone__grid flex flex-row justify-center gap-8 flex-wrap md:flex-nowrap">
+      <div className="media-zone__grid">
         {panels.map((videos, index) => (
-          <div key={`${prefix}-${index}`} className="flex flex-col items-center">
-            <VideoPanel videos={videos} label={`${prefix} ${index + 1}`} />
-            <span className="mt-2 text-cyan-200/80 text-xs tracking-widest uppercase">
-              {prefix} {index + 1}
-            </span>
+          <div key={`${variant}-panel-${index}`} className="media-zone__panel">
+            <VideoPanel videos={videos} />
           </div>
         ))}
       </div>
@@ -177,7 +172,7 @@ export function Motherboard() {
 
   return (
     <div className="motherboard-layout">
-      <MediaZone panels={PANELS_TOP} prefix="MEDIA CHANNEL" subtitle="SATELLITE UPLINK" variant="top" />
+      <MediaZone panels={PANELS_TOP} subtitle="SATELLITE UPLINK" variant="top" />
 
       <div className="motherboard-stage">
         <div
@@ -210,7 +205,7 @@ export function Motherboard() {
         </div>
       </div>
 
-      <MediaZone panels={PANELS_BOTTOM} prefix="DATA STREAM" subtitle="QUANTUM DOWNLINK" variant="bottom" />
+      <MediaZone panels={PANELS_BOTTOM} subtitle="QUANTUM DOWNLINK" variant="bottom" />
 
       <div className="pcb-module-stack md:hidden">
         {modules.map((module) => (
