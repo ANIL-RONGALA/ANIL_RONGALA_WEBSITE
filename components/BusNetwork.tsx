@@ -17,22 +17,39 @@ type BusNetworkProps = {
   moduleAnchors: ModuleAnchors;
 };
 
+type PathDefinition = {
+  points: Array<[number, number]>;
+  duration?: number;
+  delay?: number;
+};
+
+type ElectronDefinition = {
+  points: Array<[number, number]>;
+  duration: number;
+  delay: number;
+};
+
 type BusGroup = {
   id: BusId;
-  polylines: Array<{ points: string; delay?: number }>;
-  electrons: Array<{ path: string; duration: number; delay: number }>;
+  paths: PathDefinition[];
+  electrons: ElectronDefinition[];
   label: { text: string; x: number; y: number };
 };
 
-const OFFSET_DISTANCE_KEY = '--offset-distance';
+const STROKE_WIDTH: Record<BusId, number> = {
+  axi: 3,
+  ahb: 2.2,
+  apb: 1.6
+};
 
-const toPoints = (points: Array<[number, number]>) => points.map(([x, y]) => `${x},${y}`).join(' ');
+const STROKE_OPACITY: Record<BusId, number> = {
+  axi: 0.85,
+  ahb: 0.8,
+  apb: 0.75
+};
 
 const toPath = (points: Array<[number, number]>) =>
   points.reduce((acc, [x, y], index) => (index === 0 ? `M${x} ${y}` : `${acc} L${x} ${y}`), '');
-
-const offsetPoints = (points: Array<[number, number]>, dx: number, dy: number) =>
-  points.map(([x, y]) => [x + dx, y + dy] as [number, number]);
 
 export function BusNetwork({ moduleAnchors }: BusNetworkProps) {
   const groups = useMemo<BusGroup[]>(() => {
@@ -45,74 +62,329 @@ export function BusNetwork({ moduleAnchors }: BusNetworkProps) {
     const media = moduleAnchors.media;
     const sensor = moduleAnchors.sensor;
 
-    const axiMain: Array<[number, number]> = [
-      [core.x, core.y],
-      [cpu.x - 110, core.y],
-      [cpu.x - 110, cpu.y],
-      [cpu.x, cpu.y],
-      [cpu.x, ssd.y],
-      [ssd.x, ssd.y],
-      [gpu.x, ssd.y],
-      [gpu.x, gpu.y]
+    const CORE_HALF_WIDTH = 120;
+    const CORE_HALF_HEIGHT = 110;
+    const MODULE_HALF_WIDTH = 110;
+    const MODULE_HALF_HEIGHT = 90;
+    const MEDIA_HALF_HEIGHT = 95;
+    const RAIL_MARGIN = 32;
+    const BRANCH_MARGIN = 28;
+
+    const leftRail = core.x - CORE_HALF_WIDTH - RAIL_MARGIN;
+    const rightRail = core.x + CORE_HALF_WIDTH + RAIL_MARGIN;
+    const topLane = Math.max(24, ram.y - MODULE_HALF_HEIGHT - BRANCH_MARGIN);
+    const bottomLane = Math.min(BOARD_DIMENSIONS.height - 36, sensor.y + MODULE_HALF_HEIGHT + BRANCH_MARGIN);
+    const mediaLane = Math.min(media.y - MEDIA_HALF_HEIGHT - 24, bottomLane - 32);
+    const upperBridgeY = core.y - CORE_HALF_HEIGHT - 32;
+    const lowerBridgeY = core.y + CORE_HALF_HEIGHT + 32;
+    const innerLeft = ram.x + MODULE_HALF_WIDTH + 20;
+    const innerRight = gpu.x - MODULE_HALF_WIDTH - 20;
+    const mediaTop = media.y - MEDIA_HALF_HEIGHT;
+
+    const axiPaths: PathDefinition[] = [
+      { points: [[rightRail, topLane], [rightRail, bottomLane]], duration: 7.2 },
+      { points: [[rightRail + 10, topLane + 32], [rightRail + 10, bottomLane - 32]], duration: 7.6, delay: 0.45 },
+      { points: [[rightRail - 12, topLane + 18], [rightRail - 12, bottomLane - 56]], duration: 6.9, delay: 0.85 },
+      { points: [[core.x + CORE_HALF_WIDTH, core.y], [rightRail, core.y]], duration: 6.1, delay: 0.2 },
+      { points: [[core.x + CORE_HALF_WIDTH, upperBridgeY], [rightRail - 18, upperBridgeY], [rightRail - 18, core.y - 36]], duration: 6.5, delay: 0.6 },
+      {
+        points: [
+          [rightRail, topLane + 4],
+          [cpu.x + MODULE_HALF_WIDTH + 24, topLane + 4],
+          [cpu.x + MODULE_HALF_WIDTH + 24, cpu.y - MODULE_HALF_HEIGHT - 8]
+        ],
+        duration: 6,
+        delay: 1.1
+      },
+      {
+        points: [
+          [rightRail, gpu.y - MODULE_HALF_HEIGHT - 18],
+          [gpu.x, gpu.y - MODULE_HALF_HEIGHT - 18],
+          [gpu.x, gpu.y - MODULE_HALF_HEIGHT - 6]
+        ],
+        duration: 6.3,
+        delay: 1.6
+      },
+      {
+        points: [
+          [rightRail - 18, gpu.y - MODULE_HALF_HEIGHT - 18],
+          [gpu.x - MODULE_HALF_WIDTH - 24, gpu.y - MODULE_HALF_HEIGHT - 18],
+          [gpu.x - MODULE_HALF_WIDTH - 24, gpu.y + MODULE_HALF_HEIGHT + 18],
+          [core.x + CORE_HALF_WIDTH + 18, gpu.y + MODULE_HALF_HEIGHT + 18],
+          [core.x + CORE_HALF_WIDTH + 18, core.y - 48]
+        ],
+        duration: 6.7,
+        delay: 2.1
+      },
+      {
+        points: [
+          [rightRail, ssd.y + MODULE_HALF_HEIGHT + 12],
+          [ssd.x, ssd.y + MODULE_HALF_HEIGHT + 12],
+          [ssd.x, ssd.y + MODULE_HALF_HEIGHT + 4]
+        ],
+        duration: 7,
+        delay: 2.6
+      },
+      {
+        points: [
+          [rightRail - 6, mediaLane],
+          [media.x + 160, mediaLane],
+          [media.x + 160, mediaTop]
+        ],
+        duration: 6.9,
+        delay: 3
+      }
     ];
 
-    const ahbMain: Array<[number, number]> = [
-      [core.x, core.y],
-      [core.x, ram.y - 120],
-      [ram.x, ram.y - 120],
-      [ram.x, ram.y],
-      [gpu.x, ram.y],
-      [gpu.x, gpu.y]
+    const axiElectrons: ElectronDefinition[] = [
+      { points: [[rightRail, topLane], [rightRail, bottomLane]], duration: 7.4, delay: 0.3 },
+      {
+        points: [
+          [rightRail, topLane + 4],
+          [cpu.x + MODULE_HALF_WIDTH + 24, topLane + 4],
+          [cpu.x + MODULE_HALF_WIDTH + 24, cpu.y - MODULE_HALF_HEIGHT - 8]
+        ],
+        duration: 6.2,
+        delay: 1.2
+      },
+      {
+        points: [
+          [rightRail, gpu.y - MODULE_HALF_HEIGHT - 18],
+          [gpu.x, gpu.y - MODULE_HALF_HEIGHT - 18],
+          [gpu.x, gpu.y - MODULE_HALF_HEIGHT - 6]
+        ],
+        duration: 6.6,
+        delay: 2.1
+      },
+      {
+        points: [
+          [rightRail - 6, mediaLane],
+          [media.x + 160, mediaLane],
+          [media.x + 160, mediaTop]
+        ],
+        duration: 6.9,
+        delay: 2.9
+      }
     ];
 
-    const apbMain: Array<[number, number]> = [
-      [core.x, core.y],
-      [core.x, io.y - 80],
-      [io.x, io.y - 80],
-      [io.x, io.y],
-      [media.x, io.y],
-      [media.x, media.y],
-      [sensor.x, media.y],
-      [sensor.x, sensor.y]
+    const ahbPaths: PathDefinition[] = [
+      { points: [[leftRail, topLane], [leftRail, bottomLane]], duration: 7.1 },
+      { points: [[leftRail - 12, topLane + 30], [leftRail - 12, bottomLane - 36]], duration: 7.5, delay: 0.4 },
+      { points: [[leftRail + 12, topLane + 18], [leftRail + 12, bottomLane - 52]], duration: 6.8, delay: 0.8 },
+      { points: [[core.x - CORE_HALF_WIDTH, core.y], [leftRail, core.y]], duration: 6, delay: 0.2 },
+      { points: [[core.x - CORE_HALF_WIDTH, upperBridgeY], [leftRail + 18, upperBridgeY], [leftRail + 18, core.y - 40]], duration: 6.4, delay: 0.6 },
+      {
+        points: [
+          [leftRail, topLane + 4],
+          [ram.x - MODULE_HALF_WIDTH - 24, topLane + 4],
+          [ram.x - MODULE_HALF_WIDTH - 24, ram.y - MODULE_HALF_HEIGHT - 8]
+        ],
+        duration: 6.1,
+        delay: 1.1
+      },
+      {
+        points: [
+          [leftRail, topLane + 4],
+          [ram.x - MODULE_HALF_WIDTH - 60, topLane + 4],
+          [ram.x - MODULE_HALF_WIDTH - 60, io.y - MODULE_HALF_HEIGHT - 10],
+          [io.x - MODULE_HALF_WIDTH - 16, io.y - MODULE_HALF_HEIGHT - 10],
+          [io.x - MODULE_HALF_WIDTH - 16, io.y + MODULE_HALF_HEIGHT + 14]
+        ],
+        duration: 6.6,
+        delay: 1.7
+      },
+      {
+        points: [
+          [core.x - CORE_HALF_WIDTH - 24, ram.y - MODULE_HALF_HEIGHT - 10],
+          [ram.x + MODULE_HALF_WIDTH + 20, ram.y - MODULE_HALF_HEIGHT - 10],
+          [ram.x + MODULE_HALF_WIDTH + 20, ram.y + MODULE_HALF_HEIGHT + 16],
+          [core.x - CORE_HALF_WIDTH - 24, ram.y + MODULE_HALF_HEIGHT + 16]
+        ],
+        duration: 6.8,
+        delay: 2.1
+      },
+      {
+        points: [
+          [core.x - CORE_HALF_WIDTH, lowerBridgeY],
+          [leftRail + 16, lowerBridgeY],
+          [leftRail + 16, sensor.y + MODULE_HALF_HEIGHT + 24]
+        ],
+        duration: 6.9,
+        delay: 2.6
+      },
+      {
+        points: [
+          [leftRail, sensor.y + MODULE_HALF_HEIGHT + 12],
+          [sensor.x - MODULE_HALF_WIDTH - 24, sensor.y + MODULE_HALF_HEIGHT + 12],
+          [sensor.x - MODULE_HALF_WIDTH - 24, sensor.y + MODULE_HALF_HEIGHT + 4]
+        ],
+        duration: 7.2,
+        delay: 3.1
+      }
+    ];
+
+    const ahbElectrons: ElectronDefinition[] = [
+      { points: [[leftRail, topLane], [leftRail, bottomLane]], duration: 7.3, delay: 0.5 },
+      {
+        points: [
+          [leftRail, topLane + 4],
+          [ram.x - MODULE_HALF_WIDTH - 24, topLane + 4],
+          [ram.x - MODULE_HALF_WIDTH - 24, ram.y - MODULE_HALF_HEIGHT - 8]
+        ],
+        duration: 6.4,
+        delay: 1.3
+      },
+      {
+        points: [
+          [leftRail, topLane + 4],
+          [ram.x - MODULE_HALF_WIDTH - 60, topLane + 4],
+          [ram.x - MODULE_HALF_WIDTH - 60, io.y - MODULE_HALF_HEIGHT - 10],
+          [io.x - MODULE_HALF_WIDTH - 16, io.y - MODULE_HALF_HEIGHT - 10],
+          [io.x - MODULE_HALF_WIDTH - 16, io.y + MODULE_HALF_HEIGHT + 14]
+        ],
+        duration: 6.9,
+        delay: 2.1
+      },
+      {
+        points: [
+          [leftRail, sensor.y + MODULE_HALF_HEIGHT + 12],
+          [sensor.x - MODULE_HALF_WIDTH - 24, sensor.y + MODULE_HALF_HEIGHT + 12],
+          [sensor.x - MODULE_HALF_WIDTH - 24, sensor.y + MODULE_HALF_HEIGHT + 4]
+        ],
+        duration: 7.4,
+        delay: 3
+      }
+    ];
+
+    const apbPaths: PathDefinition[] = [
+      {
+        points: [
+          [innerLeft, upperBridgeY - 28],
+          [core.x, upperBridgeY - 28],
+          [innerRight, upperBridgeY - 28]
+        ],
+        duration: 6.4,
+        delay: 0.2
+      },
+      {
+        points: [
+          [core.x - CORE_HALF_WIDTH, core.y - 56],
+          [core.x - CORE_HALF_WIDTH - 26, core.y - 56],
+          [core.x - CORE_HALF_WIDTH - 26, ram.y + MODULE_HALF_HEIGHT + 18],
+          [ram.x + MODULE_HALF_WIDTH + 14, ram.y + MODULE_HALF_HEIGHT + 18]
+        ],
+        duration: 6.7,
+        delay: 0.8
+      },
+      {
+        points: [
+          [core.x + CORE_HALF_WIDTH, core.y + 56],
+          [core.x + CORE_HALF_WIDTH + 26, core.y + 56],
+          [core.x + CORE_HALF_WIDTH + 26, gpu.y + MODULE_HALF_HEIGHT + 18],
+          [gpu.x - MODULE_HALF_WIDTH - 14, gpu.y + MODULE_HALF_HEIGHT + 18]
+        ],
+        duration: 6.7,
+        delay: 1.2
+      },
+      {
+        points: [
+          [ram.x + MODULE_HALF_WIDTH + 24, sensor.y + MODULE_HALF_HEIGHT + 16],
+          [core.x, sensor.y + MODULE_HALF_HEIGHT + 16],
+          [ssd.x - MODULE_HALF_WIDTH - 24, sensor.y + MODULE_HALF_HEIGHT + 16]
+        ],
+        duration: 7.1,
+        delay: 1.8
+      },
+      {
+        points: [[media.x - 160, mediaTop], [media.x + 160, mediaTop]],
+        duration: 6.2,
+        delay: 2.4
+      },
+      {
+        points: [
+          [sensor.x, sensor.y + MODULE_HALF_HEIGHT + 12],
+          [media.x, sensor.y + MODULE_HALF_HEIGHT + 12],
+          [media.x, media.y + MEDIA_HALF_HEIGHT]
+        ],
+        duration: 7.3,
+        delay: 2.9
+      },
+      {
+        points: [[media.x - 120, mediaTop], [media.x - 120, media.y + MEDIA_HALF_HEIGHT]],
+        duration: 6.6,
+        delay: 3.4
+      },
+      {
+        points: [[media.x + 120, mediaTop], [media.x + 120, media.y + MEDIA_HALF_HEIGHT]],
+        duration: 6.6,
+        delay: 3.8
+      }
+    ];
+
+    const apbElectrons: ElectronDefinition[] = [
+      {
+        points: [
+          [innerLeft, upperBridgeY - 28],
+          [core.x, upperBridgeY - 28],
+          [innerRight, upperBridgeY - 28]
+        ],
+        duration: 6.6,
+        delay: 0.6
+      },
+      {
+        points: [
+          [core.x - CORE_HALF_WIDTH, core.y - 56],
+          [core.x - CORE_HALF_WIDTH - 26, core.y - 56],
+          [core.x - CORE_HALF_WIDTH - 26, ram.y + MODULE_HALF_HEIGHT + 18],
+          [ram.x + MODULE_HALF_WIDTH + 14, ram.y + MODULE_HALF_HEIGHT + 18]
+        ],
+        duration: 6.9,
+        delay: 1.4
+      },
+      {
+        points: [
+          [core.x + CORE_HALF_WIDTH, core.y + 56],
+          [core.x + CORE_HALF_WIDTH + 26, core.y + 56],
+          [core.x + CORE_HALF_WIDTH + 26, gpu.y + MODULE_HALF_HEIGHT + 18],
+          [gpu.x - MODULE_HALF_WIDTH - 14, gpu.y + MODULE_HALF_HEIGHT + 18]
+        ],
+        duration: 7.1,
+        delay: 2
+      },
+      {
+        points: [
+          [ram.x + MODULE_HALF_WIDTH + 24, sensor.y + MODULE_HALF_HEIGHT + 16],
+          [core.x, sensor.y + MODULE_HALF_HEIGHT + 16],
+          [ssd.x - MODULE_HALF_WIDTH - 24, sensor.y + MODULE_HALF_HEIGHT + 16]
+        ],
+        duration: 7.4,
+        delay: 2.6
+      },
+      {
+        points: [[media.x, mediaTop], [media.x, media.y + MEDIA_HALF_HEIGHT]],
+        duration: 6.8,
+        delay: 3.2
+      }
     ];
 
     return [
       {
         id: 'axi',
-        polylines: [
-          { points: toPoints(axiMain) },
-          { points: toPoints(offsetPoints(axiMain, 0, -6)), delay: 0.2 },
-          { points: toPoints(offsetPoints(axiMain, 0, 6)), delay: 0.4 }
-        ],
-        electrons: [
-          { path: toPath(axiMain), duration: 7.2, delay: 0.3 },
-          { path: toPath(offsetPoints(axiMain, 0, 6)), duration: 7.8, delay: 1.4 }
-        ],
-        label: { text: 'AXI', x: (cpu.x + ssd.x) / 2, y: ssd.y - 36 }
+        paths: axiPaths,
+        electrons: axiElectrons,
+        label: { text: 'AXI', x: rightRail + 52, y: upperBridgeY - 28 }
       },
       {
         id: 'ahb',
-        polylines: [
-          { points: toPoints(ahbMain) },
-          { points: toPoints(offsetPoints(ahbMain, -6, 0)), delay: 0.25 }
-        ],
-        electrons: [
-          { path: toPath(ahbMain), duration: 6.6, delay: 0.6 },
-          { path: toPath(offsetPoints(ahbMain, -6, 0)), duration: 7.1, delay: 1.6 }
-        ],
-        label: { text: 'AHB', x: ram.x + 40, y: ram.y - 130 }
+        paths: ahbPaths,
+        electrons: ahbElectrons,
+        label: { text: 'AHB', x: leftRail - 58, y: upperBridgeY - 28 }
       },
       {
         id: 'apb',
-        polylines: [
-          { points: toPoints(apbMain) },
-          { points: toPoints(offsetPoints(apbMain, 0, 6)), delay: 0.2 }
-        ],
-        electrons: [
-          { path: toPath(apbMain), duration: 7.4, delay: 0.5 },
-          { path: toPath(offsetPoints(apbMain, 0, 6)), duration: 8.1, delay: 1.8 }
-        ],
-        label: { text: 'APB', x: media.x + 48, y: media.y + 48 }
+        paths: apbPaths,
+        electrons: apbElectrons,
+        label: { text: 'APB', x: core.x, y: mediaTop - 28 }
       }
     ];
   }, [moduleAnchors]);
@@ -126,14 +398,19 @@ export function BusNetwork({ moduleAnchors }: BusNetworkProps) {
     >
       {groups.map((group) => (
         <g key={group.id} className={`bus-group bus-group--${group.id}`}>
-          {group.polylines.map((line, index) => (
-            <polyline
-              key={`${group.id}-line-${index}`}
-              points={line.points}
+          {group.paths.map((path, index) => (
+            <motion.path
+              key={`${group.id}-path-${index}`}
+              d={toPath(path.points)}
               className={`bus-line bus-${group.id}`}
+              strokeWidth={STROKE_WIDTH[group.id]}
+              strokeOpacity={STROKE_OPACITY[group.id]}
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ animationDelay: `${line.delay ?? 0}s` }}
+              style={{
+                animationDelay: `${path.delay ?? 0}s`,
+                animationDuration: `${path.duration ?? 6}s`
+              }}
             />
           ))}
 
@@ -146,10 +423,11 @@ export function BusNetwork({ moduleAnchors }: BusNetworkProps) {
               key={`${group.id}-electron-${index}`}
               r={3}
               className={`bus-electron bus-${group.id}`}
-              style={{ offsetPath: `path('${electron.path}')`, offsetDistance: 'var(--offset-distance)' }}
-              initial={{ [OFFSET_DISTANCE_KEY]: '0%' }}
-              animate={{ [OFFSET_DISTANCE_KEY]: '100%' }}
-              transition={{ duration: electron.duration, delay: electron.delay, ease: 'linear', repeat: Infinity }}
+              style={{
+                offsetPath: `path('${toPath(electron.points)}')`,
+                animationDelay: `${electron.delay}s`,
+                animationDuration: `${electron.duration}s`
+              }}
             />
           ))}
         </g>

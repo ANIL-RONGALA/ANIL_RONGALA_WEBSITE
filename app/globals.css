@@ -63,12 +63,6 @@ a:hover {
   box-shadow: inset 0 0 26px rgba(248, 113, 113, 0.24), 0 16px 40px rgba(248, 113, 113, 0.22);
 }
 
-.media-zone--top .video-panel-label {
-  background: rgba(248, 113, 113, 0.18);
-  border-color: rgba(248, 113, 113, 0.35);
-  color: rgba(254, 226, 226, 0.9);
-}
-
 .media-zone--bottom .video-panel {
   border-color: rgba(34, 211, 238, 0.38);
 }
@@ -178,30 +172,33 @@ a:hover {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-dasharray: 18 28;
-  animation: flow 6s linear infinite;
-  filter: drop-shadow(0 0 6px currentColor);
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.4));
+  stroke-dasharray: 26 34;
+  animation: dash 6s linear infinite;
 }
 
 .bus-axi {
-  stroke: #22d3ee;
-  stroke-width: 3.5px;
+  stroke: #00ffff;
+  stroke-width: 3px;
+  opacity: 0.85;
 }
 
 .bus-ahb {
   stroke: #3b82f6;
-  stroke-width: 2.5px;
+  stroke-width: 2.2px;
+  opacity: 0.8;
 }
 
 .bus-apb {
   stroke: #e879f9;
-  stroke-width: 2px;
+  stroke-width: 1.6px;
+  opacity: 0.75;
 }
 
 .bus-electron {
-  r: 3px;
-  fill: currentColor;
-  filter: drop-shadow(0 0 6px currentColor);
+  fill: #fff;
+  filter: drop-shadow(0 0 4px cyan);
+  animation: flow 6s linear infinite;
 }
 
 .bus-label {
@@ -213,12 +210,23 @@ a:hover {
   filter: drop-shadow(0 0 6px rgba(12, 74, 110, 0.45));
 }
 
-@keyframes flow {
+@keyframes dash {
   0% {
-    stroke-dashoffset: 120;
+    stroke-dashoffset: 140;
   }
   100% {
-    stroke-dashoffset: 0;
+    stroke-dashoffset: -140;
+  }
+}
+
+@keyframes flow {
+  0% {
+    offset-distance: 0%;
+    opacity: 0.6;
+  }
+  100% {
+    offset-distance: 100%;
+    opacity: 1;
   }
 }
 
@@ -264,23 +272,39 @@ a:hover {
 }
 
 .media-zone__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  .media-zone__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.media-zone__panel {
   display: flex;
   justify-content: center;
-  align-items: start;
-  gap: 2rem;
-  flex-wrap: wrap;
-  padding-top: 1rem;
 }
 
 .video-panel {
   position: relative;
-  width: 360px;
-  height: 200px;
+  width: min(100%, 360px);
+  aspect-ratio: 16 / 9;
   border-radius: 16px;
   overflow: hidden;
   background: rgba(0, 10, 20, 0.6);
   box-shadow: 0 0 40px rgba(34, 211, 238, 0.3);
   transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+.video-panel__frame {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
 }
 
 .video-panel iframe {
