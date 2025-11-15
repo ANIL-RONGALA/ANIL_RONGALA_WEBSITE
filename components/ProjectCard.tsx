@@ -17,7 +17,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="neon-border flex h-full flex-col rounded-2xl border border-white/5 bg-white/5 p-6 backdrop-blur"
+      className="flex h-full flex-col rounded-2xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 shadow-lg transition-colors duration-500 backdrop-blur dark:shadow-[0_0_24px_rgba(34,211,238,0.2)]"
     >
       {project.image ? (
         <div className="relative mb-4 h-40 w-full overflow-hidden rounded-xl border border-white/10">
@@ -25,12 +25,15 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
       ) : null}
       <div className="flex flex-1 flex-col">
-        <h3 className="text-xl font-semibold text-white">{project.title}</h3>
-        <p className="mt-2 text-sm text-slate-300">{project.shortDescription}</p>
-        <p className="mt-3 text-sm text-slate-400">{project.longDescription}</p>
+        <h3 className="text-xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">{project.title}</h3>
+        <p className="mt-2 text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">{project.shortDescription}</p>
+        <p className="mt-3 text-sm text-slate-600 transition-colors duration-300 dark:text-slate-400">{project.longDescription}</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {project.tags.map((tag) => (
-            <span key={tag} className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs text-cyan-200">
+            <span
+              key={tag}
+              className="rounded-full bg-blue-200/50 px-3 py-1 text-xs text-blue-800 transition-colors duration-300 dark:bg-cyan-500/10 dark:text-cyan-200"
+            >
               {tag}
             </span>
           ))}
@@ -40,7 +43,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             href={project.externalUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-cyan-500/20 px-4 py-2 text-sm font-medium text-cyan-100 transition hover:bg-cyan-500/30"
+            className="inline-flex items-center gap-2 rounded-full bg-blue-100 px-4 py-2 text-sm font-medium text-blue-800 transition-colors duration-300 hover:bg-blue-200 dark:bg-cyan-500/20 dark:text-cyan-100 dark:hover:bg-cyan-500/30"
           >
             <FaExternalLinkAlt className="text-xs" />
             View Project
@@ -50,7 +53,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
               href={project.youtubeUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-red-400/50 px-4 py-2 text-sm text-red-200 transition hover:bg-red-500/10"
+              className="inline-flex items-center gap-2 rounded-full border border-rose-400/60 px-4 py-2 text-sm text-rose-600 transition-colors duration-300 hover:bg-rose-100 dark:border-red-400/50 dark:text-red-200 dark:hover:bg-red-500/10"
             >
               <FaYoutube /> Watch Demo
             </Link>

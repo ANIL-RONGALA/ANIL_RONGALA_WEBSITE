@@ -126,7 +126,7 @@ function MediaZone({ panels, subtitle, variant }: MediaZoneProps) {
         <span className="media-zone__status">MEDIA FEED // ACTIVE</span>
         <span className="media-zone__subtitle">{subtitle}</span>
       </div>
-      <div className="media-zone__grid flex flex-row justify-between gap-6 flex-wrap md:flex-nowrap">
+      <div className="media-zone__grid">
         {panels.map((videos, index) => (
           <VideoPanel key={`${variant}-panel-${index}`} videos={videos} />
         ))}
@@ -146,7 +146,7 @@ function ModuleCard({ module }: ModuleCardProps) {
       <motion.div
         whileHover={{ y: -6, scale: 1.03 }}
         transition={{ type: 'spring', stiffness: 260, damping: 24 }}
-        className="module-card"
+        className="module-card w-full max-w-[360px] aspect-square md:h-[200px] md:w-[220px] md:max-w-none lg:h-full lg:w-full lg:aspect-auto"
       >
         <span className="module-card__subtitle">{module.section}</span>
         <span className="module-card__title">{module.title}</span>
@@ -174,44 +174,46 @@ export function Motherboard() {
     <div className="motherboard-layout">
       <MediaZone panels={PANELS_TOP} subtitle="SATELLITE UPLINK" variant="top" />
 
-      <div className="motherboard-stage">
-        <div
-          className="pcb-layer"
-          style={{ width: `${BOARD_DIMENSIONS.width}px`, height: `${BOARD_DIMENSIONS.height}px` }}
-        >
-          <div className="pcb-grid" />
-          <BusNetwork moduleAnchors={moduleAnchors} />
+      <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="motherboard-stage hidden lg:flex">
+          <div
+            className="pcb-layer"
+            style={{ width: `${BOARD_DIMENSIONS.width}px`, height: `${BOARD_DIMENSIONS.height}px` }}
+          >
+            <div className="pcb-grid" />
+            <BusNetwork moduleAnchors={moduleAnchors} />
 
-          <div className="pcb-modules">
-            {modules.map((module) => {
-              const layout = MODULE_LAYOUT[module.id];
+            <div className="pcb-modules">
+              {modules.map((module) => {
+                const layout = MODULE_LAYOUT[module.id];
 
-              return (
-                <div
-                  key={module.id}
-                  className="module-anchor"
-                  style={{
-                    top: layout.top,
-                    left: layout.left,
-                    width: `${layout.width}px`,
-                    height: `${layout.height}px`
-                  }}
-                >
-                  <ModuleCard module={module} />
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    key={module.id}
+                    className="module-anchor"
+                    style={{
+                      top: layout.top,
+                      left: layout.left,
+                      width: `${layout.width}px`,
+                      height: `${layout.height}px`
+                    }}
+                  >
+                    <ModuleCard module={module} />
+                  </div>
+                );
+              })}
+            </div>
           </div>
+        </div>
+
+        <div className="pcb-module-stack lg:hidden">
+          {modules.map((module) => (
+            <ModuleCard key={`stack-${module.id}`} module={module} />
+          ))}
         </div>
       </div>
 
       <MediaZone panels={PANELS_BOTTOM} subtitle="QUANTUM DOWNLINK" variant="bottom" />
-
-      <div className="pcb-module-stack md:hidden">
-        {modules.map((module) => (
-          <ModuleCard key={`stack-${module.id}`} module={module} />
-        ))}
-      </div>
     </div>
   );
 }

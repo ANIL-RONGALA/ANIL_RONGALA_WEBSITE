@@ -25,15 +25,15 @@ export default function AcademicsPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="neon-border rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur"
+              className="rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-8 shadow-lg transition-colors duration-500 backdrop-blur dark:shadow-[0_0_24px_rgba(34,211,238,0.2)]"
             >
               <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-                <h3 className="text-2xl font-semibold text-white">{entry.degree}</h3>
-                <p className="text-sm text-cyan-200">{entry.years}</p>
+                <h3 className="text-2xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">{entry.degree}</h3>
+                <p className="text-sm text-[var(--accent-cyan)]">{entry.years}</p>
               </div>
-              <p className="mt-3 text-sm text-slate-300">{entry.institution}</p>
-              <p className="mt-4 text-sm leading-relaxed text-slate-300">{entry.description}</p>
-              <ul className="mt-4 space-y-2 text-sm text-slate-300">
+              <p className="mt-3 text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">{entry.institution}</p>
+              <p className="mt-4 text-sm leading-relaxed text-slate-700 transition-colors duration-300 dark:text-slate-300">{entry.description}</p>
+              <ul className="mt-4 space-y-2 text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">
                 {entry.highlights.map((highlight) => (
                   <li key={highlight} className="flex items-start gap-2">
                     <span className="mt-1 h-1.5 w-1.5 rounded-full bg-cyan-400" />

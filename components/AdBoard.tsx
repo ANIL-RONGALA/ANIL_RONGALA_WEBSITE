@@ -57,9 +57,9 @@ export function AdBoard({ youtubeUrl, title, position, rotation = 0, isActive = 
         rotate: `${rotation}deg`
       }}
     >
-      <div className="relative overflow-hidden rounded-3xl border border-cyan-500/30 bg-white/5 p-2 shadow-[0_0_30px_rgba(34,211,238,0.35)] backdrop-blur">
-        <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-cyan-500/30 via-transparent to-fuchsia-500/30 opacity-70 blur-2xl" />
-        <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/70">
+      <div className="relative overflow-hidden rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-2 shadow-xl transition-colors duration-500 backdrop-blur dark:shadow-[0_0_30px_rgba(34,211,238,0.35)]">
+        <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-cyan-500/30 via-transparent to-fuchsia-500/30 opacity-60 blur-2xl" />
+        <div className="relative overflow-hidden rounded-2xl border border-[var(--surface-border)] bg-white/85 transition-colors duration-500 dark:bg-black/70">
           <div className="relative aspect-video">
             <iframe
               className="absolute inset-0 h-full w-full origin-center scale-105 opacity-90 transition duration-700 ease-out group-hover:opacity-100"
@@ -71,7 +71,7 @@ export function AdBoard({ youtubeUrl, title, position, rotation = 0, isActive = 
             />
           </div>
         </div>
-        <div className="mt-3 text-[11px] uppercase tracking-[0.25em] text-cyan-100/80">{title}</div>
+        <div className="mt-3 text-[11px] uppercase tracking-[0.25em] text-[var(--accent-cyan)]">{title}</div>
       </div>
     </motion.div>
   );
