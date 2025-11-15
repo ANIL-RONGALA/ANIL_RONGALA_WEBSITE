@@ -19,9 +19,9 @@ export default function MediaPage() {
           {mediaItems.map((item) => (
             <article
               key={item.title}
-              className="neon-border flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur"
+              className="flex flex-col gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 shadow-lg transition-colors duration-500 backdrop-blur dark:shadow-[0_0_24px_rgba(34,211,238,0.18)]"
             >
-              <div className="aspect-video overflow-hidden rounded-xl border border-white/10">
+              <div className="aspect-video overflow-hidden rounded-xl border border-[var(--surface-border)]">
                 <iframe
                   src={item.youtubeUrl.replace('watch?v=', 'embed/')}
                   title={item.title}
@@ -31,11 +31,14 @@ export default function MediaPage() {
                 />
               </div>
               <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-white">{item.title}</h3>
-                <p className="text-sm text-slate-300">{item.description}</p>
+                <h3 className="text-xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">{item.title}</h3>
+                <p className="text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">{item.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {item.tags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-cyan-500/20 px-3 py-1 text-xs text-cyan-100">
+                    <span
+                      key={tag}
+                      className="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800 transition-colors duration-300 dark:bg-cyan-500/20 dark:text-cyan-100"
+                    >
                       {tag}
                     </span>
                   ))}

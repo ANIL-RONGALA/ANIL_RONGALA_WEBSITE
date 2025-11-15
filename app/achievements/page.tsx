@@ -19,16 +19,16 @@ export default function AchievementsPage() {
           {achievements.map((item) => (
             <div
               key={item.title}
-              className="neon-border rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur"
+              className="rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-8 shadow-lg transition-colors duration-500 backdrop-blur dark:shadow-[0_0_24px_rgba(34,211,238,0.18)]"
             >
-              <h3 className="text-lg font-bold text-cyan-200">{item.title}</h3>
-              <p className="mt-2 text-sm text-gray-300">{item.description}</p>
+              <h3 className="text-lg font-bold text-[var(--accent-cyan)]">{item.title}</h3>
+              <p className="mt-2 text-sm text-slate-700 transition-colors duration-300 dark:text-gray-300">{item.description}</p>
               {item.link && (
                 <a
                   href={item.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xs font-semibold uppercase tracking-[0.25em] text-cyan-200 hover:text-cyan-100"
+                  className="text-xs font-semibold uppercase tracking-[0.25em] text-[var(--accent-cyan)] transition-colors duration-300 hover:text-[var(--accent-pink)]"
                 >
                   View
                 </a>

@@ -24,7 +24,7 @@ export default function ProfessionalPage() {
                 href={siteConfig.resumeAcademicUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-fuchsia-500/40 bg-fuchsia-500/10 px-4 py-2 text-xs font-semibold text-fuchsia-100 transition hover:bg-fuchsia-500/20"
+                className="rounded-full border border-pink-300 bg-pink-50 px-4 py-2 text-xs font-semibold text-pink-700 transition-colors duration-300 hover:bg-pink-100 dark:border-fuchsia-500/40 dark:bg-fuchsia-500/10 dark:text-fuchsia-100 dark:hover:bg-fuchsia-500/20"
               >
                 Academic Résumé (PDF)
               </Link>
@@ -32,7 +32,7 @@ export default function ProfessionalPage() {
                 href={siteConfig.resumeIndustryUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-100 transition hover:bg-emerald-500/20"
+                className="rounded-full border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-700 transition-colors duration-300 hover:bg-emerald-100 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-100 dark:hover:bg-emerald-500/20"
               >
                 Industry Résumé (PDF)
               </Link>
@@ -47,22 +47,25 @@ export default function ProfessionalPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, ease: 'easeOut' }}
-              className="neon-border rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur"
+              className="rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-8 shadow-lg transition-colors duration-500 backdrop-blur dark:shadow-[0_0_24px_rgba(34,211,238,0.2)]"
             >
               <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
                 <div>
-                  <h3 className="text-2xl font-semibold text-white">{role.role}</h3>
-                  <p className="text-sm text-slate-300">{role.organization}</p>
+                  <h3 className="text-2xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">{role.role}</h3>
+                  <p className="text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">{role.organization}</p>
                 </div>
-                <p className="text-sm text-cyan-200">
+                <p className="text-sm text-[var(--accent-cyan)]">
                   {role.start} – {role.end}
                 </p>
               </div>
-              <p className="mt-3 text-sm text-slate-300">{role.location}</p>
-              <p className="mt-4 text-sm leading-relaxed text-slate-300">{role.description}</p>
+              <p className="mt-3 text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">{role.location}</p>
+              <p className="mt-4 text-sm leading-relaxed text-slate-700 transition-colors duration-300 dark:text-slate-300">{role.description}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {role.techStack.map((tech) => (
-                  <span key={tech} className="rounded-full bg-cyan-500/20 px-3 py-1 text-xs text-cyan-100">
+                  <span
+                    key={tech}
+                    className="rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800 transition-colors duration-300 dark:bg-cyan-500/20 dark:text-cyan-100"
+                  >
                     {tech}
                   </span>
                 ))}

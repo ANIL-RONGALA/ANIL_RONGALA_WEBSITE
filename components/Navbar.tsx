@@ -3,10 +3,9 @@
 import { siteConfig } from '@/lib/siteConfig';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
-import { LuMoonStar, LuSunMedium } from 'react-icons/lu';
+import { useTheme } from '@/app/providers';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -20,31 +19,29 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const [isDark, setIsDark] = useState(true);
-
-  useEffect(() => {
-    const root = window.document.documentElement;
-    if (isDark) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [isDark]);
+  const { theme, toggleTheme, mounted } = useTheme();
+  const resolvedTheme = mounted ? theme : 'dark';
+  const isLight = resolvedTheme === 'light';
+  const toggleLabel = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+  const toggleIcon = isLight ? '🌙' : '☀️';
 
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="sticky top-0 z-50 border-b border-cyan-500/10 bg-slate-950/80 backdrop-blur"
+      className="navbar-shell sticky top-0 z-50"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
-        <Link href="/" className="font-semibold uppercase tracking-[0.2em] text-cyan-200">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-[color:var(--text-muted)] transition-colors duration-300 sm:px-6 lg:px-8">
+        <Link
+          href="/"
+          className="font-semibold uppercase tracking-[0.2em] text-[var(--accent-cyan)] transition-colors duration-300 hover:text-[var(--accent-pink)]"
+        >
           {siteConfig.siteName}
         </Link>
-        <nav className="hidden items-center gap-6 text-sm text-slate-300 lg:flex">
+        <nav className="hidden items-center gap-6 text-sm text-[color:var(--text-subtle)] transition-colors duration-300 lg:flex">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:text-white">
+            <Link key={link.href} href={link.href} className="hover:text-[var(--accent-cyan)] transition-colors">
               {link.label}
             </Link>
           ))}
@@ -54,7 +51,7 @@ export function Navbar() {
             href={siteConfig.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-slate-200 transition hover:border-cyan-400/60 hover:text-white"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-soft)] text-xl text-[color:var(--text-muted)] transition-colors duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
             aria-label="GitHub"
           >
             <FaGithub />
@@ -63,31 +60,35 @@ export function Navbar() {
             href={siteConfig.linkedinUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-slate-200 transition hover:border-cyan-400/60 hover:text-white"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-soft)] text-xl text-[color:var(--text-muted)] transition-colors duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
             aria-label="LinkedIn"
           >
             <FaLinkedin />
           </a>
           <a
             href={`mailto:${siteConfig.email}`}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-slate-200 transition hover:border-cyan-400/60 hover:text-white"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-soft)] text-xl text-[color:var(--text-muted)] transition-colors duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
             aria-label="Email"
           >
             <HiOutlineMail />
           </a>
           <button
-            onClick={() => setIsDark((prev) => !prev)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-xl text-slate-200 transition hover:border-cyan-400/60 hover:text-white"
-            aria-label="Toggle theme"
+            type="button"
+            onClick={toggleTheme}
+            disabled={!mounted}
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-soft)] text-xl text-[color:var(--text-muted)] transition-all duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)] disabled:cursor-not-allowed disabled:opacity-60"
+            aria-label={toggleLabel}
           >
-            {isDark ? <LuSunMedium /> : <LuMoonStar />}
+            <span aria-hidden className="text-lg">
+              {toggleIcon}
+            </span>
           </button>
         </div>
       </div>
-      <div className="border-t border-cyan-500/10 bg-slate-950/90 px-4 py-3 text-xs text-slate-400 lg:hidden">
+      <div className="navbar-shell--mobile px-4 py-3 text-xs transition-colors duration-300 lg:hidden">
         <div className="flex flex-wrap gap-4">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:text-white">
+            <Link key={link.href} href={link.href} className="hover:text-[var(--accent-cyan)] transition-colors">
               {link.label}
             </Link>
           ))}
