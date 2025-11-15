@@ -119,16 +119,16 @@ type MediaZoneProps = {
 
 function MediaZone({ panels, subtitle, variant }: MediaZoneProps) {
   return (
-    <section className={`media-zone media-zone--${variant}`}>
+    <section
+      className={`media-zone media-zone--${variant} w-full max-w-6xl mx-auto px-4 md:px-8 pb-12`}
+    >
       <div className="media-zone__header">
         <span className="media-zone__status">MEDIA FEED // ACTIVE</span>
         <span className="media-zone__subtitle">{subtitle}</span>
       </div>
-      <div className="media-zone__grid">
+      <div className="media-zone__grid flex flex-row justify-between gap-6 flex-wrap md:flex-nowrap">
         {panels.map((videos, index) => (
-          <div key={`${variant}-panel-${index}`} className="media-zone__panel">
-            <VideoPanel videos={videos} />
-          </div>
+          <VideoPanel key={`${variant}-panel-${index}`} videos={videos} />
         ))}
       </div>
     </section>
