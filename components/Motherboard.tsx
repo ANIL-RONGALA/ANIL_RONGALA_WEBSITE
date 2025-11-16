@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import Link from 'next/link';
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 import { BusNetwork, BOARD_DIMENSIONS, type ModuleId } from './BusNetwork';
+import { MediaZone } from './MediaZone';
 
 type ModuleDefinition = {
   id: ModuleId;
@@ -72,69 +73,6 @@ const PANELS_BOTTOM: [string, string, string][] = [
   ['dQw4w9WgXcQ', 'oHg5SJYRHA0', 'jNQXAC9IVRw']
 ];
 
-type VideoPanelProps = {
-  videos: string[];
-};
-
-function VideoPanel({ videos }: VideoPanelProps) {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % videos.length);
-    }, 15000);
-
-    return () => clearInterval(timer);
-  }, [videos.length]);
-
-  return (
-    <div className="video-panel relative">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={videos[index]}
-          initial={{ opacity: 0, rotateY: -92 }}
-          animate={{ opacity: 1, rotateY: 0 }}
-          exit={{ opacity: 0, rotateY: 92 }}
-          transition={{ duration: 1, ease: 'easeInOut' }}
-          className="video-panel__frame"
-        >
-          <iframe
-            src={`https://www.youtube.com/embed/${videos[index]}?autoplay=1&mute=1&loop=1&playlist=${videos[index]}&controls=0&modestbranding=1&rel=0&playsinline=1`}
-            title="autoplaying media panel"
-            allow="autoplay; encrypted-media; fullscreen"
-            allowFullScreen
-            className="w-full h-full rounded-2xl border-0"
-          />
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
-}
-
-type MediaZoneProps = {
-  panels: [string, string, string][];
-  subtitle: string;
-  variant: 'top' | 'bottom';
-};
-
-function MediaZone({ panels, subtitle, variant }: MediaZoneProps) {
-  return (
-    <section
-      className={`media-zone media-zone--${variant} w-full max-w-6xl mx-auto px-4 md:px-8 pb-12`}
-    >
-      <div className="media-zone__header">
-        <span className="media-zone__status">MEDIA FEED // ACTIVE</span>
-        <span className="media-zone__subtitle">{subtitle}</span>
-      </div>
-      <div className="media-zone__grid">
-        {panels.map((videos, index) => (
-          <VideoPanel key={`${variant}-panel-${index}`} videos={videos} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
 type ModuleCardProps = {
   module: ModuleDefinition;
 };
@@ -174,8 +112,8 @@ export function Motherboard() {
     <div className="motherboard-layout">
       <MediaZone panels={PANELS_TOP} subtitle="SATELLITE UPLINK" variant="top" />
 
-      <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="motherboard-stage hidden lg:flex">
+      <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-10">
+        <div className="motherboard-stage hidden xl:flex">
           <div
             className="pcb-layer"
             style={{ width: `${BOARD_DIMENSIONS.width}px`, height: `${BOARD_DIMENSIONS.height}px` }}
@@ -206,7 +144,7 @@ export function Motherboard() {
           </div>
         </div>
 
-        <div className="pcb-module-stack lg:hidden">
+        <div className="pcb-module-stack xl:hidden">
           {modules.map((module) => (
             <ModuleCard key={`stack-${module.id}`} module={module} />
           ))}
