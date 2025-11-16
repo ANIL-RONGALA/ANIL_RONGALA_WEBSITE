@@ -393,7 +393,7 @@ export function BusNetwork({ moduleAnchors }: BusNetworkProps) {
     <svg
       className="bus-network"
       viewBox={`0 0 ${BOARD_DIMENSIONS.width} ${BOARD_DIMENSIONS.height}`}
-      preserveAspectRatio="none"
+      preserveAspectRatio="xMidYMid meet"
       aria-hidden
     >
       {groups.map((group) => (
