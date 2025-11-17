@@ -144,6 +144,14 @@ html.light {
   --bus-label: rgba(30, 64, 175, 0.85);
 }
 
+.light {
+  --genz-blue: #7dd3fc;
+  --genz-purple: #c084fc;
+  --genz-pink: #f9a8d4;
+  --genz-green: #6ee7b7;
+  --genz-yellow: #fde68a;
+}
+
 html,
 body {
   min-height: 100%;
@@ -253,6 +261,18 @@ a:hover {
   color: var(--media-subtitle);
 }
 
+.media-zone__header-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid color-mix(in srgb, var(--media-border) 80%, transparent);
+  font-size: 0.65rem;
+  letter-spacing: 0.28em;
+  color: var(--media-status);
+  text-transform: uppercase;
+}
+
 /* PCB motherboard */
 .motherboard-layout {
   display: flex;
@@ -272,6 +292,38 @@ a:hover {
   }
 }
 
+.pcb-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-inline: clamp(0.75rem, 3vw, 1.75rem);
+}
+
+.pcb-scaler {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  transform-origin: top center;
+}
+
+@media (max-width: 1500px) {
+  .pcb-scaler {
+    transform: scale(0.96);
+  }
+}
+
+@media (max-width: 1340px) {
+  .pcb-scaler {
+    transform: scale(0.9);
+  }
+}
+
+@media (max-width: 1200px) {
+  .pcb-scaler {
+    transform: scale(0.84);
+  }
+}
+
 
 .pcb-layer {
   position: relative;
@@ -284,6 +336,7 @@ a:hover {
   box-shadow: var(--pcb-shadow);
   overflow: hidden;
   transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.6s ease;
+  margin: 0 auto;
 }
 
 .pcb-layer::before {
@@ -367,10 +420,32 @@ a:hover {
   filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
 }
 
+.light .bus-axi {
+  stroke: var(--genz-blue);
+  stroke-width: 3px;
+  filter: drop-shadow(0 0 6px rgba(125, 211, 252, 0.55));
+}
+
+.light .bus-ahb {
+  stroke: var(--genz-purple);
+  stroke-width: 2.7px;
+  filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.55));
+}
+
+.light .bus-apb {
+  stroke: var(--genz-pink);
+  stroke-width: 2.4px;
+  filter: drop-shadow(0 0 6px rgba(249, 168, 212, 0.55));
+}
+
+.light .bus-electron {
+  fill: var(--genz-blue);
+  filter: drop-shadow(0 0 6px rgba(125, 211, 252, 0.45));
+}
+
 .light .bus-line {
-  stroke: #60a5fa;
-  stroke-opacity: 0.6;
-  filter: drop-shadow(0 0 5px rgba(59, 130, 246, 0.3));
+  stroke-opacity: 0.72;
+  filter: drop-shadow(0 0 6px rgba(125, 211, 252, 0.28));
 }
 
 .circuit-electron {
@@ -383,7 +458,8 @@ a:hover {
 }
 
 .light .circuit-electron {
-  fill: #3b82f6;
+  fill: var(--genz-blue);
+  filter: drop-shadow(0 0 6px rgba(125, 211, 252, 0.45));
 }
 
 .bus-label {
@@ -397,9 +473,11 @@ a:hover {
 
 .light .pcb-layer {
   background:
-    linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px),
-    linear-gradient(0deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
+    linear-gradient(90deg, rgba(125, 211, 252, 0.15) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(192, 132, 252, 0.1) 1px, transparent 1px);
   background-size: 38px 38px;
+  border: 2px solid rgba(125, 211, 252, 0.3);
+  box-shadow: 0 0 60px rgba(125, 211, 252, 0.25);
 }
 
 .dark .pcb-layer {
@@ -432,7 +510,7 @@ a:hover {
 /* Module layout */
 .pcb-module-stack {
   display: grid;
-  gap: clamp(1rem, 4vw, 1.5rem);
+  gap: clamp(0.85rem, 3vw, 1.4rem);
   padding: clamp(1.25rem, 4vw, 2rem) clamp(1rem, 4vw, 2.5rem) clamp(2rem, 5vw, 3.5rem);
   grid-template-columns: repeat(1, minmax(0, 1fr));
   justify-items: center;
@@ -481,7 +559,7 @@ a:hover {
 .video-panel {
   position: relative;
   width: 100%;
-  min-height: 280px;
+  min-height: clamp(210px, 24vw, 320px);
   border-radius: 20px;
   overflow: hidden;
   transition: all 0.5s ease;
@@ -493,8 +571,11 @@ a:hover {
 }
 
 .light .video-panel {
-  background: rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 50px rgba(59, 130, 246, 0.2);
+  background: rgba(255, 255, 255, 0.74);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.06),
+    0 0 36px rgba(125, 211, 252, 0.3),
+    0 0 42px rgba(192, 132, 252, 0.28);
 }
 
 .video-panel::after {
@@ -512,7 +593,7 @@ a:hover {
   padding-top: clamp(1rem, 3vw, 1.5rem);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .media-zone__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -520,7 +601,7 @@ a:hover {
 
 @media (max-width: 768px) {
   .video-panel {
-    min-height: 220px;
+    min-height: 190px;
     box-shadow: var(--media-panel-shadow-mobile);
   }
 
@@ -591,15 +672,28 @@ a:hover {
 }
 
 .light .module-card {
-  background: linear-gradient(165deg, #ffffff 0%, #e5e7eb 100%);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.07);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(240, 240, 255, 0.8)
+  );
+  border: 1px solid rgba(170, 170, 255, 0.38);
+  backdrop-filter: blur(20px);
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.05),
+    0 0 20px rgba(125, 211, 252, 0.25),
+    0 0 40px rgba(192, 132, 252, 0.25);
+  transition: all 0.35s ease;
 }
 
 .light .module-card:hover,
 .light .module-link:hover .module-card {
-  transform: translateY(-5px) scale(1.03);
-  box-shadow: 0 16px 45px rgba(59, 130, 246, 0.2);
+  transform: translateY(-6px) scale(1.04);
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.08),
+    0 0 35px rgba(125, 211, 252, 0.45),
+    0 0 55px rgba(192, 132, 252, 0.45);
+  filter: brightness(1.1);
 }
 
 .module-card__title,
