@@ -63,16 +63,14 @@ const MODULE_PLACEMENT: Record<ModuleId, Placement> = Object.entries(MODULE_LAYO
   {} as Record<ModuleId, Placement>
 );
 
-const FALLBACK_VIDEOS = ['hHW1oY26kxQ', '2LhoCfjm8R4'] as const;
-
-const PANELS_TOP: [string, string, string][] = [
-  ['dQw4w9WgXcQ', ...FALLBACK_VIDEOS] as [string, string, string],
-  ['jfKfPfyJRdk', ...FALLBACK_VIDEOS] as [string, string, string]
+const PANELS_TOP = [
+  { videoId: 'dQw4w9WgXcQ', title: 'Media 1' },
+  { videoId: 'jfKfPfyJRdk', title: 'Media 2' }
 ];
 
-const PANELS_BOTTOM: [string, string, string][] = [
-  ['5qap5aO4i9A', ...FALLBACK_VIDEOS] as [string, string, string],
-  ['DWcJFNfaw9c', ...FALLBACK_VIDEOS] as [string, string, string]
+const PANELS_BOTTOM = [
+  { videoId: '5qap5aO4i9A', title: 'Data Stream 1' },
+  { videoId: 'DWcJFNfaw9c', title: 'Data Stream 2' }
 ];
 
 type ModuleCardProps = {
@@ -84,8 +82,13 @@ function ModuleCard({ module }: ModuleCardProps) {
     <Link href={module.href} className="module-link group">
       <div className="module-shadow" />
       <motion.div
-        whileHover={{ y: -6, scale: 1.03 }}
-        transition={{ type: 'spring', stiffness: 260, damping: 24 }}
+        initial={{ y: 0, scale: 1 }}
+        whileHover={{
+          y: -10,
+          scale: 1.05,
+          boxShadow: '0 0 40px rgba(0,255,255,0.45), 0 0 80px rgba(0,150,255,0.35)'
+        }}
+        transition={{ type: 'spring', stiffness: 220, damping: 20 }}
         className="module-card w-full max-w-[360px] aspect-square md:h-[200px] md:w-[220px] md:max-w-none lg:h-full lg:w-full lg:aspect-auto"
       >
         <span className="module-card__subtitle">{module.section}</span>
@@ -112,7 +115,7 @@ export function Motherboard() {
 
   return (
     <div className="motherboard-layout">
-      <MediaZone panels={PANELS_TOP} subtitle="SATELLITE UPLINK" variant="top" />
+      <MediaZone videos={PANELS_TOP} subtitle="SATELLITE UPLINK" variant="top" />
 
       <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-10">
         <motion.div
@@ -163,7 +166,7 @@ export function Motherboard() {
         </div>
       </div>
 
-      <MediaZone panels={PANELS_BOTTOM} subtitle="QUANTUM DOWNLINK" variant="bottom" />
+      <MediaZone videos={PANELS_BOTTOM} subtitle="QUANTUM DOWNLINK" variant="bottom" />
     </div>
   );
 }
