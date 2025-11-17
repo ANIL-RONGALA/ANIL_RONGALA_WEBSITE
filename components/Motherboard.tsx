@@ -113,7 +113,13 @@ export function Motherboard() {
       <MediaZone panels={PANELS_TOP} subtitle="SATELLITE UPLINK" variant="top" />
 
       <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-10">
-        <div className="motherboard-stage hidden xl:flex">
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          animate={{ opacity: [0.05, 0.12, 0.05], filter: ['blur(1px)', 'blur(3px)', 'blur(1px)'] }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          style={{ background: 'radial-gradient(circle at center, rgba(59,130,246,0.15), transparent 70%)' }}
+        />
+        <div className="motherboard-stage hidden xl:flex xl:origin-center xl:scale-[0.94] 2xl:scale-100">
           <div
             className="pcb-layer"
             style={{ width: `${BOARD_DIMENSIONS.width}px`, height: `${BOARD_DIMENSIONS.height}px` }}
