@@ -26,7 +26,7 @@ function VideoPanel({ videos }: VideoPanelProps) {
     return () => window.clearInterval(timer);
   }, [videos.length]);
 
-  const currentVideo = videos[index];
+  const currentVideo = videos[index] ?? videos[0];
 
   return (
     <div className="video-panel">
@@ -40,8 +40,9 @@ function VideoPanel({ videos }: VideoPanelProps) {
           className="video-panel__frame"
         >
           <iframe
-            src={`https://www.youtube.com/embed/${currentVideo}?autoplay=1&mute=1&loop=1&playlist=${currentVideo}&controls=0&modestbranding=1&rel=0`}
-            allow="autoplay; fullscreen"
+            src={`https://www.youtube.com/embed/${currentVideo}?autoplay=1&mute=1&loop=1&playlist=${currentVideo}&playsinline=1&controls=0&modestbranding=1&rel=0&enablejsapi=1`}
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
             className="w-full h-full rounded-xl"
           />
         </motion.div>
@@ -53,10 +54,16 @@ function VideoPanel({ videos }: VideoPanelProps) {
 export function MediaZone({ panels, subtitle, variant }: MediaZoneProps) {
   return (
     <section className={`media-zone media-zone--${variant} max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8`} aria-label={subtitle}>
-      <div className="flex flex-col sm:flex-row gap-6 sm:gap-10 justify-between">
-        {panels.map((videos, index) => (
-          <VideoPanel key={index} videos={videos} />
-        ))}
+      <div className="media-zone__inner">
+        <div className="media-zone__header-line">
+          <span>MEDIA FEED // ACTIVE</span>
+        </div>
+
+        <div className="media-zone__grid">
+          {panels.map((videos, index) => (
+            <VideoPanel key={index} videos={videos} />
+          ))}
+        </div>
       </div>
     </section>
   );

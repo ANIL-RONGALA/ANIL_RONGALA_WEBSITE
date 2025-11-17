@@ -63,14 +63,16 @@ const MODULE_PLACEMENT: Record<ModuleId, Placement> = Object.entries(MODULE_LAYO
   {} as Record<ModuleId, Placement>
 );
 
+const FALLBACK_VIDEOS = ['hHW1oY26kxQ', '2LhoCfjm8R4'] as const;
+
 const PANELS_TOP: [string, string, string][] = [
-  ['ysz5S6PUM-U', 'aqz-KE-bpKQ', 'oHg5SJYRHA0'],
-  ['jNQXAC9IVRw', 'M7lc1UVf-VE', 'dQw4w9WgXcQ']
+  ['dQw4w9WgXcQ', ...FALLBACK_VIDEOS] as [string, string, string],
+  ['jfKfPfyJRdk', ...FALLBACK_VIDEOS] as [string, string, string]
 ];
 
 const PANELS_BOTTOM: [string, string, string][] = [
-  ['aqz-KE-bpKQ', 'ysz5S6PUM-U', 'M7lc1UVf-VE'],
-  ['dQw4w9WgXcQ', 'oHg5SJYRHA0', 'jNQXAC9IVRw']
+  ['5qap5aO4i9A', ...FALLBACK_VIDEOS] as [string, string, string],
+  ['DWcJFNfaw9c', ...FALLBACK_VIDEOS] as [string, string, string]
 ];
 
 type ModuleCardProps = {
@@ -119,33 +121,37 @@ export function Motherboard() {
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           style={{ background: 'radial-gradient(circle at center, rgba(59,130,246,0.15), transparent 70%)' }}
         />
-        <div className="motherboard-stage hidden xl:flex xl:origin-center xl:scale-[0.94] 2xl:scale-100">
-          <div
-            className="pcb-layer"
-            style={{ width: `${BOARD_DIMENSIONS.width}px`, height: `${BOARD_DIMENSIONS.height}px` }}
-          >
-            <div className="pcb-grid" />
-            <BusNetwork moduleAnchors={moduleAnchors} />
+        <div className="motherboard-stage hidden lg:flex">
+          <div className="pcb-wrapper">
+            <div className="pcb-scaler">
+              <div
+                className="pcb-layer"
+                style={{ width: `${BOARD_DIMENSIONS.width}px`, height: `${BOARD_DIMENSIONS.height}px` }}
+              >
+                <div className="pcb-grid" />
+                <BusNetwork moduleAnchors={moduleAnchors} />
 
-            <div className="pcb-modules">
-              {modules.map((module) => {
-                const layout = MODULE_LAYOUT[module.id];
+                <div className="pcb-modules">
+                  {modules.map((module) => {
+                    const layout = MODULE_LAYOUT[module.id];
 
-                return (
-                  <div
-                    key={module.id}
-                    className="module-anchor"
-                    style={{
-                      top: layout.top,
-                      left: layout.left,
-                      width: `${layout.width}px`,
-                      height: `${layout.height}px`
-                    }}
-                  >
-                    <ModuleCard module={module} />
-                  </div>
-                );
-              })}
+                    return (
+                      <div
+                        key={module.id}
+                        className="module-anchor"
+                        style={{
+                          top: layout.top,
+                          left: layout.left,
+                          width: `${layout.width}px`,
+                          height: `${layout.height}px`
+                        }}
+                      >
+                        <ModuleCard module={module} />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </div>
         </div>
