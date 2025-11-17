@@ -34,7 +34,7 @@ export function Navbar() {
 
   const handleToggle = () => {
     document.body.classList.add('theme-transition');
-    setTheme(activeTheme === 'light' ? 'dark' : 'light');
+    setTheme(theme === 'light' ? 'dark' : 'light');
     setTimeout(() => document.body.classList.remove('theme-transition'), 600);
   };
 

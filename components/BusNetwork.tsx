@@ -7,8 +7,8 @@ export type BusId = 'axi' | 'ahb' | 'apb';
 export type ModuleId = 'core' | 'cpu' | 'gpu' | 'ram' | 'ssd' | 'io' | 'sensor' | 'media';
 
 export const BOARD_DIMENSIONS = {
-  width: 1120,
-  height: 640
+  width: 1080,
+  height: 620
 } as const;
 
 type ModuleAnchors = Record<ModuleId, { x: number; y: number }>;
