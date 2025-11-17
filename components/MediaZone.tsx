@@ -40,11 +40,9 @@ function VideoPanel({ videos }: VideoPanelProps) {
           className="video-panel__frame"
         >
           <iframe
-            src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1&mute=1&loop=1&playlist=${activeVideo}&controls=0&modestbranding=1&rel=0&playsinline=1`}
-            title="autoplaying media panel"
-            allow="autoplay; encrypted-media; fullscreen"
-            allowFullScreen
-            className="h-full w-full rounded-2xl border-0"
+            src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1&mute=1&loop=1&playlist=${activeVideo}&controls=0&modestbranding=1&rel=0`}
+            allow="autoplay; fullscreen"
+            className="w-full h-full rounded-xl"
           />
         </motion.div>
       </AnimatePresence>
@@ -54,17 +52,14 @@ function VideoPanel({ videos }: VideoPanelProps) {
 
 export function MediaZone({ panels, subtitle, variant }: MediaZoneProps) {
   return (
-    <section className={`media-zone media-zone--${variant} w-full pb-12`}>
-      <div className="media-zone__inner">
-        <div className="media-zone__header">
-          <span className="media-zone__status">MEDIA FEED // ACTIVE</span>
-          <span className="media-zone__subtitle">{subtitle}</span>
-        </div>
-        <div className="media-zone__grid">
-          {panels.map((videos, index) => (
-            <VideoPanel key={`${variant}-panel-${index}`} videos={videos} />
-          ))}
-        </div>
+    <section
+      className={`media-zone media-zone--${variant} max-w-6xl mx-auto w-full px-4 sm:px-6 lg:px-8`}
+      aria-label={subtitle}
+    >
+      <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-between">
+        {panels.map((videos, index) => (
+          <VideoPanel key={index} videos={videos} />
+        ))}
       </div>
     </section>
   );

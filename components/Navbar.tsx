@@ -3,9 +3,10 @@
 import { siteConfig } from '@/lib/siteConfig';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useEffect, useMemo, useState } from 'react';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
-import { useTheme } from '@/app/providers';
+import { useTheme } from 'next-themes';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -19,21 +20,22 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const { theme, toggleTheme, mounted } = useTheme();
-  const resolvedTheme = mounted ? theme : 'dark';
-  const isLight = resolvedTheme === 'light';
+  const { theme, setTheme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const activeTheme = useMemo(() => resolvedTheme ?? theme ?? 'dark', [resolvedTheme, theme]);
+  const isLight = activeTheme === 'light';
   const toggleLabel = isLight ? 'Switch to dark mode' : 'Switch to light mode';
   const toggleIcon = isLight ? '🌙' : '☀️';
 
   const handleToggle = () => {
-    if (!mounted) return;
-    if (typeof document !== 'undefined') {
-      document.body.classList.add('theme-transition');
-      window.setTimeout(() => {
-        document.body.classList.remove('theme-transition');
-      }, 600);
-    }
-    toggleTheme();
+    document.body.classList.add('theme-transition');
+    setTheme(activeTheme === 'light' ? 'dark' : 'light');
+    setTimeout(() => document.body.classList.remove('theme-transition'), 600);
   };
 
   return (

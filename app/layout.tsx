@@ -6,7 +6,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { siteConfig } from '@/lib/siteConfig';
 import { ReactNode } from 'react';
-import { ThemeProvider } from './providers';
+import { Providers } from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -39,7 +39,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className={`${inter.className} min-h-screen bg-transparent text-[color:var(--text-primary)] transition-colors duration-500`}>
-        <ThemeProvider>
+        <Providers>
           <div className="flex min-h-screen flex-col bg-[var(--surface-canvas)] transition-colors duration-500">
             <Navbar />
             <main className="relative flex-1">
@@ -50,7 +50,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             </main>
             <Footer />
           </div>
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
