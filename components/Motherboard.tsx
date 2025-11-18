@@ -81,15 +81,25 @@ type ModuleCardProps = {
 
 function ModuleCard({ module }: ModuleCardProps) {
   const isGpu = module.id === 'gpu';
+  const ICON_COLORS: Record<ModuleId, string> = {
+    core: '#728aff',
+    cpu: '#8f7bff',
+    gpu: '#ff9ae0',
+    ram: '#728aff',
+    ssd: '#8f7bff',
+    io: '#ff9ae0',
+    sensor: '#728aff',
+    media: '#8f7bff'
+  };
   const ICONS: Record<ModuleId, JSX.Element> = {
-    core: <FaCube className="h-6 w-6" />,
-    cpu: <FaMicrochip className="h-6 w-6" />,
-    gpu: <FaBroadcastTower className="h-6 w-6" />,
-    ram: <FaMemory className="h-6 w-6" />,
-    ssd: <FaSdCard className="h-6 w-6" />,
-    io: <FaNetworkWired className="h-6 w-6" />,
-    sensor: <FaSatelliteDish className="h-6 w-6" />,
-    media: <FaPlayCircle className="h-6 w-6" />
+    core: <FaCube className="h-6 w-6" style={{ color: ICON_COLORS.core }} />,
+    cpu: <FaMicrochip className="h-6 w-6" style={{ color: ICON_COLORS.cpu }} />,
+    gpu: <FaBroadcastTower className="h-6 w-6" style={{ color: ICON_COLORS.gpu }} />,
+    ram: <FaMemory className="h-6 w-6" style={{ color: ICON_COLORS.ram }} />,
+    ssd: <FaSdCard className="h-6 w-6" style={{ color: ICON_COLORS.ssd }} />,
+    io: <FaNetworkWired className="h-6 w-6" style={{ color: ICON_COLORS.io }} />,
+    sensor: <FaSatelliteDish className="h-6 w-6" style={{ color: ICON_COLORS.sensor }} />,
+    media: <FaPlayCircle className="h-6 w-6" style={{ color: ICON_COLORS.media }} />
   };
   const cardClassName = [
     'module-card floating-module w-full max-w-[360px] aspect-square md:h-[200px] md:w-[220px] md:max-w-none lg:h-full lg:w-full lg:aspect-auto'
