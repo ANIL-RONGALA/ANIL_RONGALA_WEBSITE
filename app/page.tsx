@@ -9,11 +9,12 @@ import { VideoSectionTwo } from '@/sections/VideoSectionTwo';
 
 export default function HomePage() {
   return (
-    <div className="flex flex-col gap-16">
+    <div className="relative flex flex-col gap-16">
+      <div className="hero-particles" aria-hidden />
       <section className="flex flex-col items-center gap-12 text-center">
         <div className="max-w-4xl space-y-6">
           <p className="text-sm uppercase tracking-[0.3em] text-[var(--accent-cyan)]">Digital Neural Board</p>
-          <h1 className="text-4xl font-bold leading-tight text-slate-900 transition-colors duration-300 dark:text-white md:text-5xl">
+          <h1 className="hero-title-gradient text-4xl font-bold leading-tight text-slate-900 transition-colors duration-300 dark:text-white md:text-5xl">
             Welcome to the futuristic interface of {siteConfig.ownerName}
           </h1>
           <p className="text-base text-slate-700 transition-colors duration-300 dark:text-slate-300 md:text-lg">
