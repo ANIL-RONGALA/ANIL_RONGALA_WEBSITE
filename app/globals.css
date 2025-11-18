@@ -77,15 +77,86 @@ body.theme-transition {
 }
 
 body::before {
-  content: '';
+  content: "";
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.06) 0%, transparent 60%);
-  pointer-events: none;
-  animation: floatGlow 12s infinite alternate ease-in-out;
-  z-index: 0;
+    radial-gradient(circle at 20% 80%, rgba(255, 0, 255, 0.15), transparent 60%),
+    radial-gradient(circle at 80% 20%, rgba(0, 150, 255, 0.18), transparent 60%);
+  filter: blur(60px);
+  z-index: -2;
+}
+
+.genz-panel {
+  min-height: 350px;
+  box-shadow:
+    0 0 70px rgba(255, 0, 255, 0.35),
+    0 0 120px rgba(0, 150, 255, 0.3),
+    inset 0 0 50px rgba(255, 255, 255, 0.05);
+  animation: panelFloat 6s ease-in-out infinite alternate;
+}
+
+.genz-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.05) 0px,
+    rgba(255, 255, 255, 0.02) 2px,
+    transparent 4px
+  );
+  mix-blend-mode: overlay;
+  animation: scan 10s linear infinite;
+}
+
+.genz-panel::before {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: cyan;
+  box-shadow: 0 0 20px cyan, 0 0 40px cyan;
+  animation: spark 4s infinite ease-in-out alternate;
+  top: 10%;
+  left: 10%;
+}
+
+@keyframes panelFloat {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  100% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+@keyframes spark {
+  0% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.genz-play {
+  text-shadow:
+    0 0 25px rgba(255, 255, 255, 1),
+    0 0 45px cyan,
+    0 0 65px magenta;
 }
 
 @keyframes pulse-glow {
