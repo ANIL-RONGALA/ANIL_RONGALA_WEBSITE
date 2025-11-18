@@ -1,4 +1,4 @@
-import { VideoSection } from "@/components/videos/VideoSection";
+import { VideoBlock } from "@/components/videos/VideoBlock";
 import type { VideoItem } from "@/components/videos/VideoDisplay";
 
 const displayAVideos: VideoItem[] = [
@@ -39,14 +39,15 @@ const displayBVideos: VideoItem[] = [
 
 export function VideoSectionTwo() {
   return (
-    <VideoSection
-      kicker="Section 02"
-      title="Pulse Field Archives"
-      subtitle="Dual displays channeling kinetic remixes, live synth labs, and archival transmissions."
-      displays={[
-        { label: "Display A", videos: displayAVideos },
-        { label: "Display B", videos: displayBVideos }
-      ]}
-    />
+    <section className="video-section">
+      <div className="text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.35em] text-[#728aff]">Section 02</p>
+        <h2 className="text-3xl font-bold text-slate-900 dark:text-white md:text-4xl">Pulse Field Archives</h2>
+        <p className="mt-3 text-sm text-slate-700 dark:text-slate-300 md:text-base">
+          Dual displays channeling kinetic remixes, live synth labs, and archival transmissions.
+        </p>
+      </div>
+      <VideoBlock videosA={displayAVideos} videosB={displayBVideos} />
+    </section>
   );
 }
