@@ -397,25 +397,50 @@ export function BusNetwork({ moduleAnchors }: BusNetworkProps) {
       aria-hidden
     >
       {groups.map((group) => (
-        <g key={group.id} className={`bus-group bus-group--${group.id}`}>
-          {group.paths.map((path, index) => (
-            <motion.path
-              key={`${group.id}-path-${index}`}
-              d={toPath(path.points)}
-              className={`bus-line bus-${group.id}`}
-              strokeWidth={STROKE_WIDTH[group.id]}
-              strokeOpacity={STROKE_OPACITY[group.id]}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              initial={{ strokeDashoffset: 1200, opacity: 0 }}
-              animate={{ strokeDashoffset: 0, opacity: 1 }}
-              transition={{ duration: 1.6, delay: 0.4, ease: 'easeInOut' }}
-              style={{
-                animationDelay: `${path.delay ?? 0}s`,
-                animationDuration: `${path.duration ?? 6}s`
-              }}
-            />
-          ))}
+        <g key={group.id} className={`bus-group bus-group--${group.id}`} pointerEvents="none">
+          {group.paths.map((path, index) => {
+            const d = toPath(path.points);
+            const duration = path.duration ?? 6;
+            const electronCount = group.electrons.length;
+            const sparkCount = Math.min(4, electronCount + 1);
+
+            return (
+              <g key={`${group.id}-path-${index}`}>
+                <motion.path
+                  d={d}
+                  className={`bus-line bus-${group.id}`}
+                  strokeWidth={STROKE_WIDTH[group.id]}
+                  strokeOpacity={STROKE_OPACITY[group.id]}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  initial={{ strokeDashoffset: 1200, opacity: 0 }}
+                  animate={{ strokeDashoffset: 0, opacity: 1 }}
+                  transition={{ duration: 1.6, delay: 0.4, ease: 'easeInOut' }}
+                  style={{
+                    animationDelay: `${path.delay ?? 0}s`,
+                    animationDuration: `${duration}s`
+                  }}
+                />
+
+                {Array.from({ length: sparkCount }).map((_, sparkIndex) => (
+                  <motion.circle
+                    key={`${group.id}-spark-${index}-${sparkIndex}`}
+                    r={sparkIndex === 0 ? 3.2 : 2.4}
+                    className={`bus-spark ${sparkIndex > 0 ? 'bus-spark--trail' : ''}`}
+                    style={{ offsetPath: `path('${d}')`, offsetRotate: 'auto' }}
+                    initial={{ offsetDistance: '0%' }}
+                    animate={{ offsetDistance: '100%' }}
+                    transition={{
+                      duration,
+                      repeat: Infinity,
+                      ease: 'linear',
+                      delay: (duration / sparkCount) * sparkIndex
+                    }}
+                  />
+                ))}
+              </g>
+            );
+          })}
 
           <text x={group.label.x} y={group.label.y} className="bus-label">
             {group.label.text}
