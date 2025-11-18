@@ -589,6 +589,20 @@ html.light .pcb-container {
   animation: flow 6s linear infinite;
 }
 
+/* GEN-Z electric sparks along buses */
+.bus-spark {
+  fill: #ffffff;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+  mix-blend-mode: screen;
+  opacity: 0.9;
+}
+
+.bus-spark--trail {
+  fill: rgba(255, 255, 255, 0.6);
+  filter: blur(1px);
+  opacity: 0.5;
+}
+
 .dark .bus-line {
   stroke: #06b6d4;
   filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
@@ -802,6 +816,7 @@ html.light .pcb-container {
 
   .module-card {
     margin-bottom: 12px;
+    transform-style: flat;
   }
 }
 
@@ -910,6 +925,42 @@ html.light .pcb-container {
   overflow: visible;
   text-align: center;
   line-height: 1.2;
+}
+
+@keyframes gpuFanSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.gpu-fan {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  border: 2px solid rgba(56, 189, 248, 0.6);
+  box-shadow: 0 0 18px rgba(56, 189, 248, 0.6);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  opacity: 0.9;
+}
+
+.gpu-fan-blades {
+  width: 70%;
+  height: 70%;
+  border-radius: 9999px;
+  background: conic-gradient(
+    rgba(56, 189, 248, 0.9),
+    rgba(14, 165, 233, 0.2),
+    rgba(56, 189, 248, 0.9)
+  );
+  animation: gpuFanSpin 1.6s linear infinite;
 }
 
 @media (max-width: 768px) {
