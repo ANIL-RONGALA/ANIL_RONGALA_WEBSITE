@@ -14,40 +14,72 @@ type VideoPlaylistProps = {
 
 export default function VideoPlaylist({ videos }: VideoPlaylistProps) {
   const [index, setIndex] = useState(0);
+  const [previousIndex, setPreviousIndex] = useState(0);
+  const [showFront, setShowFront] = useState(true);
+  const [autoRotate, setAutoRotate] = useState(true);
 
   useEffect(() => {
-    if (!videos.length) return undefined;
+    if (!videos.length || !autoRotate) return undefined;
 
     const t = setInterval(() => {
+      setPreviousIndex((prev) => index);
       setIndex((prev) => (prev + 1) % videos.length);
+      setShowFront((prev) => !prev);
     }, 15000);
 
     return () => clearInterval(t);
-  }, [videos.length]);
+  }, [videos.length, autoRotate, index]);
 
   if (!videos.length) return null;
 
+  const activeVideo = videos[index];
+  const lastVideo = videos[previousIndex] ?? activeVideo;
+
   return (
-    <div
-      className="genz-panel relative overflow-hidden cursor-pointer rounded-3xl"
-      onClick={() =>
-        window.open(`https://www.youtube.com/watch?v=${videos[index].id}`, "_blank")
-      }
+    <motion.div
+      className="video-panel-shell genz-panel relative cursor-pointer"
+      whileHover={{ rotateX: 4, rotateY: -4, scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 180, damping: 14 }}
+      onClick={() => window.open(`https://www.youtube.com/watch?v=${activeVideo.id}`, "_blank")}
     >
-      <AnimatePresence>
+      <button
+        className="autoplay-toggle"
+        onClick={(event) => {
+          event.stopPropagation();
+          setAutoRotate((prev) => !prev);
+        }}
+        type="button"
+      >
+        {autoRotate ? "AUTO ON" : "AUTO OFF"}
+      </button>
+
+      <div className="neon-border" aria-hidden />
+      <div className="frame-overlay" aria-hidden />
+
+      <AnimatePresence mode="wait" initial={false}>
         <motion.img
-          key={videos[index].id}
-          src={`https://img.youtube.com/vi/${videos[index].id}/hqdefault.jpg`}
-          alt={videos[index].title}
+          key={activeVideo.id + String(showFront)}
+          src={`https://img.youtube.com/vi/${activeVideo.id}/hqdefault.jpg`}
+          alt={activeVideo.title}
           className="h-full w-full object-cover"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: showFront ? 1 : 0 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 1.2 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+        />
+        <motion.img
+          key={lastVideo.id + String(!showFront)}
+          src={`https://img.youtube.com/vi/${lastVideo.id}/hqdefault.jpg`}
+          alt={lastVideo.title}
+          className="absolute inset-0 h-full w-full object-cover"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: showFront ? 0 : 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
         />
       </AnimatePresence>
 
-      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-all duration-300"></div>
+      <div className="absolute inset-0 bg-black/35 backdrop-blur-sm transition-all duration-300" />
 
       <div className="absolute inset-0 flex items-center justify-center">
         <motion.div
@@ -58,6 +90,6 @@ export default function VideoPlaylist({ videos }: VideoPlaylistProps) {
           ▶
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

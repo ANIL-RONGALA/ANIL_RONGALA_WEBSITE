@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useMemo } from 'react';
 
 const circuitPaths = [
   'M60 40 H540',
@@ -9,7 +10,18 @@ const circuitPaths = [
   'M60 280 Q220 320 300 280 T540 280',
   'M180 40 V320',
   'M300 0 V360',
-  'M420 40 V320'
+  'M420 40 V320',
+  'M60 160 Q180 100 300 160 T540 160',
+  'M60 240 Q220 200 300 240 T540 240'
+];
+
+const sparkNodes = [
+  { cx: 120, cy: 90 },
+  { cx: 240, cy: 60 },
+  { cx: 360, cy: 310 },
+  { cx: 480, cy: 210 },
+  { cx: 300, cy: 150 },
+  { cx: 420, cy: 120 }
 ];
 
 const pulseKeyframes = [
@@ -36,12 +48,17 @@ const pulseKeyframes = [
 ];
 
 export function CircuitPaths() {
+  const { scrollYProgress } = useScroll();
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, -40]);
+  const sparks = useMemo(() => sparkNodes, []);
+
   return (
-    <svg
+    <motion.svg
       className="pointer-events-none absolute inset-0 h-full w-full"
       viewBox="0 0 600 360"
       fill="none"
       preserveAspectRatio="xMidYMid meet"
+      style={{ y: parallaxY }}
     >
       <defs>
         <filter id="circuit-glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -63,7 +80,7 @@ export function CircuitPaths() {
           key={index}
           d={d}
           stroke="url(#pulseGradient)"
-          strokeWidth={1.5}
+          strokeWidth={index > 5 ? 1 : 1.5}
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeDasharray="6 18"
@@ -88,6 +105,19 @@ export function CircuitPaths() {
           transition={{ duration: 6.5, repeat: Infinity, delay: pulse.delay, ease: 'easeInOut' }}
         />
       ))}
-    </svg>
+      {sparks.map((spark, idx) => (
+        <motion.circle
+          key={`spark-${idx}`}
+          r={3.5}
+          cx={spark.cx}
+          cy={spark.cy}
+          className="spark"
+          stroke="none"
+          fill="url(#pulseGradient)"
+          animate={{ opacity: [0.2, 1, 0.2], scale: [0.8, 1.3, 0.9] }}
+          transition={{ duration: 3.2, repeat: Infinity, delay: idx * 0.4, ease: 'easeInOut' }}
+        />
+      ))}
+    </motion.svg>
   );
 }

@@ -56,6 +56,91 @@
   --bus-apb: #e879f9;
   --bus-electron: #ffffff;
   --bus-label: rgba(165, 243, 252, 0.82);
+
+  --bright-gradient: linear-gradient(135deg, #a5b4ff, #fbcfe8, #f0abfc);
+  --bright-glass: rgba(255, 255, 255, 0.2);
+  --bright-outline: rgba(164, 86, 255, 0.5);
+  --bright-shadow: 0 20px 55px rgba(164, 86, 255, 0.26), 0 0 40px rgba(94, 234, 212, 0.2);
+}
+
+/* Bright mode namespace */
+html.light .theme-light {
+  color-scheme: light;
+}
+
+.theme-light .genz-gradient {
+  background-image: var(--bright-gradient);
+}
+
+html.light .theme-light .module-card {
+  background: color-mix(in srgb, #ffffff 82%, transparent);
+  backdrop-filter: blur(22px) saturate(1.25);
+  border: 1px solid var(--bright-outline);
+  box-shadow: var(--bright-shadow);
+}
+
+html.light .theme-light .module-card::before {
+  background: linear-gradient(135deg, rgba(164, 86, 255, 0.16), rgba(94, 234, 212, 0.14));
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+html.light .theme-light .module-card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, rgba(94, 234, 212, 0.2), rgba(244, 114, 182, 0.16));
+  opacity: 0.6;
+  filter: drop-shadow(0 0 28px rgba(164, 86, 255, 0.35));
+  pointer-events: none;
+}
+
+html.light .theme-light .pcb-layer,
+html.light .theme-light .pcb-container {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.95), rgba(240, 245, 255, 0.9));
+  border-color: rgba(164, 86, 255, 0.35);
+  box-shadow: 0 18px 48px rgba(164, 86, 255, 0.22), inset 0 0 40px rgba(94, 234, 212, 0.18);
+}
+
+html.light .theme-light .pcb-grid {
+  background-image: linear-gradient(to right, rgba(94, 234, 212, 0.25) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(244, 114, 182, 0.25) 1px, transparent 1px);
+  opacity: 0.55;
+}
+
+html.light .theme-light .bus-line {
+  stroke-opacity: 0.82;
+  filter: drop-shadow(0 0 10px rgba(94, 234, 212, 0.32));
+}
+
+html.light .theme-light .bus-axi {
+  stroke: #22d3ee;
+}
+
+html.light .theme-light .bus-ahb {
+  stroke: #a855f7;
+}
+
+html.light .theme-light .bus-apb {
+  stroke: #ec4899;
+}
+
+html.light .theme-light .video-card,
+html.light .theme-light .genz-panel,
+html.light .theme-light .video-panel-shell {
+  background: color-mix(in srgb, #ffffff 78%, transparent);
+  border: 1px solid rgba(164, 86, 255, 0.35);
+  box-shadow: 0 20px 55px rgba(164, 86, 255, 0.16), inset 0 0 40px rgba(255, 255, 255, 0.28);
+}
+
+html.light .theme-light .video-panel-shell::before {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(236, 72, 153, 0.12));
+}
+
+html.light .theme-light .hero-highlight {
+  background-image: var(--bright-gradient);
+  box-shadow: 0 12px 36px rgba(164, 86, 255, 0.25);
 }
 
 html {
@@ -201,6 +286,60 @@ body::before {
   100% {
     opacity: 1;
     transform: scale(1.5);
+  }
+}
+
+@keyframes pulseBorder {
+  0% {
+    box-shadow: 0 0 10px #f0abfc;
+  }
+  50% {
+    box-shadow: 0 0 24px #f0abfc;
+  }
+  100% {
+    box-shadow: 0 0 10px #f0abfc;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes particleDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6px, -10px, 0) scale(1.05);
+  }
+  100% {
+    transform: translate3d(-4px, 6px, 0) scale(1);
+  }
+}
+
+@keyframes aiWave {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 200% 200%;
   }
 }
 
@@ -603,6 +742,11 @@ html.light .pcb-container {
   opacity: 0.5;
 }
 
+.spark {
+  fill: rgba(94, 234, 212, 0.8);
+  filter: drop-shadow(0 0 10px rgba(164, 86, 255, 0.35));
+}
+
 .dark .bus-line {
   stroke: #06b6d4;
   filter: drop-shadow(0 0 8px rgba(34, 211, 238, 0.4));
@@ -766,6 +910,113 @@ html.light .pcb-container {
   min-height: 240px;
 }
 
+.video-panel-shell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid rgba(240, 171, 252, 0.4);
+  background: linear-gradient(160deg, rgba(15, 23, 42, 0.8), rgba(34, 211, 238, 0.08));
+  animation: pulseBorder 4s ease-in-out infinite;
+}
+
+.video-panel-shell::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 20%, rgba(240, 171, 252, 0.15), transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(14, 165, 233, 0.12), transparent 55%);
+  filter: blur(16px);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.video-panel-shell .neon-border {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(240, 171, 252, 0.4);
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(240, 171, 252, 0.5);
+  animation: pulseBorder 2.8s ease-in-out infinite;
+}
+
+.video-panel-shell .frame-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55));
+  mix-blend-mode: soft-light;
+}
+
+.autoplay-toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  border-radius: 9999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 171, 252, 0.45);
+  background: rgba(15, 23, 42, 0.65);
+  color: #f8fafc;
+  box-shadow: 0 0 12px rgba(240, 171, 252, 0.35);
+}
+
+.floating-module {
+  animation: float 5s ease-in-out infinite;
+}
+
+.bright-underline {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.bright-underline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 100%;
+  height: 3px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, #60a5fa, #a78bfa, #f472b6);
+  background-size: 200% 100%;
+  animation: shine 4s linear infinite;
+  box-shadow: 0 0 12px rgba(164, 86, 255, 0.35);
+}
+
+.hero-wave-grid {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 40%),
+    linear-gradient(135deg, rgba(96, 165, 250, 0.08) 1px, transparent 1px),
+    linear-gradient(45deg, rgba(236, 72, 153, 0.08) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+  opacity: 0.55;
+  mask-image: radial-gradient(circle, #fff, transparent 75%);
+  animation: aiWave 14s linear infinite;
+  pointer-events: none;
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-particles .particle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgba(94, 234, 212, 0.9), rgba(240, 171, 252, 0.7));
+  filter: drop-shadow(0 0 10px rgba(164, 86, 255, 0.4));
+  animation: particleDrift 6s ease-in-out infinite;
+}
+
 .video-card:hover {
   transform: translateY(-8px) scale(1.03);
   box-shadow:
@@ -782,6 +1033,31 @@ html.light .pcb-container {
 @media (min-width: 768px) {
   .video-card {
     min-height: 320px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .video-card,
+  .genz-panel {
+    min-height: 260px;
+  }
+
+  .video-zone::before {
+    inset: -30px;
+    filter: blur(40px);
+  }
+
+  .motherboard-layout .pcb-wrapper {
+    max-width: 90%;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 640px) {
+  .video-card,
+  .genz-panel,
+  .video-panel-shell {
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.32);
   }
 }
 
