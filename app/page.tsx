@@ -4,6 +4,7 @@ import { SectionHeader } from '@/components/SectionHeader';
 import VideoPlaylist from '@/components/VideoPlaylist';
 import { siteConfig } from '@/lib/siteConfig';
 import Link from 'next/link';
+import { HeroIntro } from '@/components/HeroIntro';
 
 export default function HomePage() {
   return (
@@ -18,6 +19,8 @@ export default function HomePage() {
             {siteConfig.tagline} Navigate through the chips to explore projects, research, achievements, and more.
           </p>
         </div>
+
+        <HeroIntro />
         <Motherboard />
         <div className="flex flex-wrap items-center justify-center gap-4">
           <Link

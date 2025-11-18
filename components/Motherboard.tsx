@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 import { BusNetwork, BOARD_DIMENSIONS, type ModuleId } from './BusNetwork';
 import { MediaZone } from './MediaZone';
@@ -81,23 +81,37 @@ type ModuleCardProps = {
 };
 
 function ModuleCard({ module }: ModuleCardProps) {
+  const isGpu = module.id === 'gpu';
+  const cardClassName = [
+    'module-card w-full max-w-[360px] aspect-square md:h-[200px] md:w-[220px] md:max-w-none lg:h-full lg:w-full lg:aspect-auto'
+  ];
+
   return (
-    <Link href={module.href} className="module-link group">
+    <Link href={module.href} className="module-link group block">
       <div className="module-shadow" />
       <motion.div
         initial={{ y: 0, scale: 1 }}
         whileHover={{
           y: -10,
-          scale: 1.05,
-          boxShadow: '0 0 40px rgba(0,255,255,0.45), 0 0 80px rgba(0,150,255,0.35)'
+          scale: 1.03,
+          rotateX: 6,
+          rotateY: -6,
+          boxShadow: '0 32px 80px rgba(15,23,42,0.55)'
         }}
-        transition={{ type: 'spring', stiffness: 220, damping: 20 }}
-        className="module-card w-full max-w-[360px] aspect-square md:h-[200px] md:w-[220px] md:max-w-none lg:h-full lg:w-full lg:aspect-auto"
+        whileTap={{ scale: 0.99, rotateX: 0, rotateY: 0 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 22 }}
+        className={cardClassName.join(' ')}
       >
         <span className="module-card__subtitle">{module.section}</span>
         <span className="module-card__title">{module.title}</span>
         <div className="module-card__divider" />
         <span className="module-card__port">ROUTE {module.href === '/' ? 'ROOT' : module.href}</span>
+
+        {isGpu && (
+          <div className="gpu-fan">
+            <div className="gpu-fan-blades" />
+          </div>
+        )}
       </motion.div>
     </Link>
   );
@@ -105,6 +119,9 @@ function ModuleCard({ module }: ModuleCardProps) {
 
 export function Motherboard() {
   const modules = useMemo(() => MODULES, []);
+  const { scrollYProgress } = useScroll();
+  const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  const parallaxGlow = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
 
   const pulseStates = useMemo(
     () =>
@@ -132,7 +149,10 @@ export function Motherboard() {
     <div className="motherboard-layout">
       <MediaZone videos={PANELS_TOP} subtitle="SATELLITE UPLINK" variant="top" />
 
-      <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-10">
+      <motion.div
+        className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-10"
+        style={{ y: parallaxY, scale: parallaxGlow }}
+      >
         <motion.div
           className="absolute inset-0 pointer-events-none"
           animate={{ opacity: [0.05, 0.12, 0.05], filter: ['blur(1px)', 'blur(3px)', 'blur(1px)'] }}
@@ -206,7 +226,7 @@ export function Motherboard() {
             );
           })}
         </div>
-      </div>
+      </motion.div>
 
       <MediaZone videos={PANELS_BOTTOM} subtitle="QUANTUM DOWNLINK" variant="bottom" />
     </div>
