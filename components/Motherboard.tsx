@@ -3,6 +3,16 @@
 import { useMemo } from 'react';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import {
+  FaBroadcastTower,
+  FaCube,
+  FaMemory,
+  FaMicrochip,
+  FaNetworkWired,
+  FaPlayCircle,
+  FaSatelliteDish,
+  FaSdCard
+} from 'react-icons/fa';
 
 import { BusNetwork, BOARD_DIMENSIONS, type ModuleId } from './BusNetwork';
 import { MediaZone } from './MediaZone';
@@ -82,8 +92,18 @@ type ModuleCardProps = {
 
 function ModuleCard({ module }: ModuleCardProps) {
   const isGpu = module.id === 'gpu';
+  const ICONS: Record<ModuleId, JSX.Element> = {
+    core: <FaCube className="h-6 w-6" />,
+    cpu: <FaMicrochip className="h-6 w-6" />,
+    gpu: <FaBroadcastTower className="h-6 w-6" />,
+    ram: <FaMemory className="h-6 w-6" />,
+    ssd: <FaSdCard className="h-6 w-6" />,
+    io: <FaNetworkWired className="h-6 w-6" />,
+    sensor: <FaSatelliteDish className="h-6 w-6" />,
+    media: <FaPlayCircle className="h-6 w-6" />
+  };
   const cardClassName = [
-    'module-card w-full max-w-[360px] aspect-square md:h-[200px] md:w-[220px] md:max-w-none lg:h-full lg:w-full lg:aspect-auto'
+    'module-card floating-module w-full max-w-[360px] aspect-square md:h-[200px] md:w-[220px] md:max-w-none lg:h-full lg:w-full lg:aspect-auto'
   ];
 
   return (
@@ -93,7 +113,7 @@ function ModuleCard({ module }: ModuleCardProps) {
         initial={{ y: 0, scale: 1 }}
         whileHover={{
           y: -10,
-          scale: 1.03,
+          scale: 1.05,
           rotateX: 6,
           rotateY: -6,
           boxShadow: '0 32px 80px rgba(15,23,42,0.55)'
@@ -101,9 +121,13 @@ function ModuleCard({ module }: ModuleCardProps) {
         whileTap={{ scale: 0.99, rotateX: 0, rotateY: 0 }}
         transition={{ type: 'spring', stiffness: 260, damping: 22 }}
         className={cardClassName.join(' ')}
+        style={{ perspective: 1200 }}
       >
         <span className="module-card__subtitle">{module.section}</span>
-        <span className="module-card__title">{module.title}</span>
+        <div className="flex items-center justify-center gap-2 text-[color:var(--module-title)]">
+          <span className="text-cyan-300 drop-shadow">{ICONS[module.id]}</span>
+          <span className="module-card__title text-[0.7rem] tracking-[0.34em]">{module.title}</span>
+        </div>
         <div className="module-card__divider" />
         <span className="module-card__port">ROUTE {module.href === '/' ? 'ROOT' : module.href}</span>
 

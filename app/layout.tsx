@@ -39,7 +39,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen bg-transparent text-[color:var(--text-primary)] transition-colors duration-500`}>
+      <body
+        className={`${inter.className} theme-light min-h-screen bg-transparent text-[color:var(--text-primary)] transition-colors duration-500`}
+      >
         <Providers>
           <div className="flex min-h-screen flex-col bg-[var(--surface-canvas)] transition-colors duration-500">
             <Navbar />

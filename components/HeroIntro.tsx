@@ -1,11 +1,43 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 import { siteConfig } from '@/lib/siteConfig';
+
+function ParticleField({ count, speed }: { count: number; speed: number }) {
+  const particles = useMemo(
+    () =>
+      Array.from({ length: count }).map((_, index) => ({
+        id: index,
+        left: Math.random() * 100,
+        top: Math.random() * 100,
+        delay: Math.random() * 4,
+        duration: speed + Math.random() * 1.2
+      })),
+    [count, speed]
+  );
+
+  return (
+    <div className="hero-particles" aria-hidden>
+      {particles.map((particle) => (
+        <motion.span
+          key={particle.id}
+          className="particle"
+          style={{ left: `${particle.left}%`, top: `${particle.top}%` }}
+          animate={{ y: [0, -8, 6], opacity: [0.4, 1, 0.4] }}
+          transition={{ repeat: Infinity, duration: particle.duration, delay: particle.delay, ease: 'easeInOut' }}
+        />
+      ))}
+    </div>
+  );
+}
 
 export function HeroIntro() {
   return (
-    <section className="relative mx-auto flex max-w-5xl flex-col gap-3 px-4 pt-10 text-center md:pt-14">
+    <section className="relative mx-auto flex max-w-5xl flex-col gap-3 px-4 pt-12 text-center md:pt-14">
+      <div className="hero-wave-grid" aria-hidden />
+      <ParticleField count={40} speed={0.4} />
+
       <motion.span
         className="text-[11px] uppercase tracking-[0.4em] text-sky-400/70 dark:text-cyan-300/80"
         initial={{ opacity: 0, y: -8 }}
@@ -22,7 +54,7 @@ export function HeroIntro() {
         transition={{ duration: 0.7, delay: 0.1 }}
       >
         Neural Motherboard of{' '}
-        <span className="bg-gradient-to-r from-sky-500 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
+        <span className="bright-underline bg-gradient-to-r from-sky-500 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
           {siteConfig.ownerName}
         </span>
       </motion.h1>
