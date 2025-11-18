@@ -407,6 +407,9 @@ export function BusNetwork({ moduleAnchors }: BusNetworkProps) {
               strokeOpacity={STROKE_OPACITY[group.id]}
               strokeLinecap="round"
               strokeLinejoin="round"
+              initial={{ strokeDashoffset: 1200, opacity: 0 }}
+              animate={{ strokeDashoffset: 0, opacity: 1 }}
+              transition={{ duration: 1.6, delay: 0.4, ease: 'easeInOut' }}
               style={{
                 animationDelay: `${path.delay ?? 0}s`,
                 animationDuration: `${path.duration ?? 6}s`
