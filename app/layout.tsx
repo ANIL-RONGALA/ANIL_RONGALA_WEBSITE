@@ -1,6 +1,5 @@
 type RootLayoutProps = { children: React.ReactNode };
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
@@ -8,8 +7,6 @@ import { siteConfig } from '@/lib/siteConfig';
 import { ReactNode } from 'react';
 import { Providers } from './providers';
 import BootScreen from '@/components/BootScreen';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: `${siteConfig.ownerName} | ${siteConfig.siteName}`,
@@ -39,9 +36,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body
-        className={`${inter.className} theme-light min-h-screen bg-transparent text-[color:var(--text-primary)] transition-colors duration-500`}
-      >
+      <body className="theme-light min-h-screen bg-transparent text-[color:var(--text-primary)] transition-colors duration-500 font-sans">
         <Providers>
           <div className="flex min-h-screen flex-col bg-[var(--surface-canvas)] transition-colors duration-500">
             <Navbar />

@@ -1,10 +1,11 @@
 import { Motherboard } from '@/components/Motherboard';
 import { AdCarousel } from '@/components/AdCarousel';
 import { SectionHeader } from '@/components/SectionHeader';
-import VideoPlaylist from '@/components/VideoPlaylist';
 import { siteConfig } from '@/lib/siteConfig';
 import Link from 'next/link';
 import { HeroIntro } from '@/components/HeroIntro';
+import { VideoSectionOne } from '@/sections/VideoSectionOne';
+import { VideoSectionTwo } from '@/sections/VideoSectionTwo';
 
 export default function HomePage() {
   return (
@@ -58,23 +59,8 @@ export default function HomePage() {
         <AdCarousel />
       </section>
 
-      <section className="video-zone w-full max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 gap-10 md:grid-cols-2">
-        <VideoPlaylist
-          videos={[
-            { id: 'dQw4w9WgXcQ', title: 'Media 1' },
-            { id: 'jfKfPfyJRdk', title: 'Media 1 Alt' },
-            { id: '5qap5aO4i9A', title: 'Media 1 Chill' },
-          ]}
-        />
-
-        <VideoPlaylist
-          videos={[
-            { id: 'DWcJFNfaw9c', title: 'Media 2' },
-            { id: 'lTRiuFIWV54', title: 'Media 2 Alt' },
-            { id: 'hHW1oY26kxQ', title: 'Media 2 Chill' },
-          ]}
-        />
-      </section>
+      <VideoSectionOne />
+      <VideoSectionTwo />
 
       <section className="grid gap-8 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-soft)] p-10 text-left transition-colors duration-500 backdrop-blur md:grid-cols-2">
         <div className="space-y-4">

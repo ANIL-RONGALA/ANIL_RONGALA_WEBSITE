@@ -15,7 +15,6 @@ import {
 } from 'react-icons/fa';
 
 import { BusNetwork, BOARD_DIMENSIONS, type ModuleId } from './BusNetwork';
-import { MediaZone } from './MediaZone';
 
 type ModuleDefinition = {
   id: ModuleId;
@@ -73,16 +72,6 @@ const MODULE_PLACEMENT: Record<ModuleId, Placement> = Object.entries(MODULE_LAYO
   },
   {} as Record<ModuleId, Placement>
 );
-
-const PANELS_TOP = [
-  { videoId: 'dQw4w9WgXcQ', title: 'Media 1' },
-  { videoId: 'jfKfPfyJRdk', title: 'Media 2' }
-];
-
-const PANELS_BOTTOM = [
-  { videoId: '5qap5aO4i9A', title: 'Data Stream 1' },
-  { videoId: 'DWcJFNfaw9c', title: 'Data Stream 2' }
-];
 
 type ModuleCardProps = {
   module: ModuleDefinition;
@@ -171,8 +160,6 @@ export function Motherboard() {
 
   return (
     <div className="motherboard-layout">
-      <MediaZone videos={PANELS_TOP} subtitle="SATELLITE UPLINK" variant="top" />
-
       <motion.div
         className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-10"
         style={{ y: parallaxY, scale: parallaxGlow }}
@@ -251,8 +238,6 @@ export function Motherboard() {
           })}
         </div>
       </motion.div>
-
-      <MediaZone videos={PANELS_BOTTOM} subtitle="QUANTUM DOWNLINK" variant="bottom" />
     </div>
   );
 }
