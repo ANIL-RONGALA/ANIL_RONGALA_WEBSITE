@@ -24,17 +24,18 @@ type ModuleLayout = {
   left: string;
   width: number;
   height: number;
+  bootDelay: number;
 };
 
 const MODULE_LAYOUT: Record<ModuleId, ModuleLayout> = {
-  core: { top: '50%', left: '50%', width: 240, height: 220 },
-  cpu: { top: '20%', left: '77%', width: 220, height: 180 },
-  gpu: { top: '50%', left: '77%', width: 220, height: 180 },
-  ssd: { top: '80%', left: '77%', width: 220, height: 180 },
-  ram: { top: '20%', left: '23%', width: 220, height: 180 },
-  io: { top: '50%', left: '23%', width: 220, height: 180 },
-  sensor: { top: '80%', left: '23%', width: 220, height: 180 },
-  media: { top: '84%', left: '50%', width: 320, height: 190 }
+  core: { top: '50%', left: '50%', width: 240, height: 220, bootDelay: 0.05 },
+  cpu: { top: '20%', left: '77%', width: 220, height: 180, bootDelay: 0.12 },
+  gpu: { top: '50%', left: '77%', width: 220, height: 180, bootDelay: 0.18 },
+  ssd: { top: '80%', left: '77%', width: 220, height: 180, bootDelay: 0.28 },
+  ram: { top: '20%', left: '23%', width: 220, height: 180, bootDelay: 0.24 },
+  io: { top: '50%', left: '23%', width: 220, height: 180, bootDelay: 0.32 },
+  sensor: { top: '80%', left: '23%', width: 220, height: 180, bootDelay: 0.36 },
+  media: { top: '84%', left: '50%', width: 320, height: 190, bootDelay: 0.4 }
 };
 
 const MODULES: ModuleDefinition[] = [
@@ -75,6 +76,8 @@ const PANELS_BOTTOM = [
 
 type ModuleCardProps = {
   module: ModuleDefinition;
+  isActive?: boolean;
+  isStrong?: boolean;
 };
 
 function ModuleCard({ module }: ModuleCardProps) {
@@ -102,6 +105,18 @@ function ModuleCard({ module }: ModuleCardProps) {
 
 export function Motherboard() {
   const modules = useMemo(() => MODULES, []);
+
+  const pulseStates = useMemo(
+    () =>
+      modules.reduce(
+        (acc, module) => {
+          acc[module.id] = { active: true, strong: false };
+          return acc;
+        },
+        {} as Record<ModuleId, { active: boolean; strong: boolean }>
+      ),
+    [modules]
+  );
 
   const moduleAnchors = useMemo(
     () =>
@@ -149,7 +164,18 @@ export function Motherboard() {
                           height: `${layout.height}px`
                         }}
                       >
-                        <ModuleCard module={module} />
+                        <motion.div
+                          initial={{ opacity: 0, y: 20, scale: 0.96, filter: 'blur(6px)' }}
+                          animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0)' }}
+                          transition={{ duration: 0.8, delay: layout.bootDelay }}
+                          className="genz-holo genz-glitch-on-hover"
+                        >
+                          <ModuleCard
+                            module={module}
+                            isActive={pulseStates[module.id].active}
+                            isStrong={pulseStates[module.id].strong}
+                          />
+                        </motion.div>
                       </div>
                     );
                   })}
@@ -160,9 +186,25 @@ export function Motherboard() {
         </div>
 
         <div className="pcb-module-stack xl:hidden">
-          {modules.map((module) => (
-            <ModuleCard key={`stack-${module.id}`} module={module} />
-          ))}
+          {modules.map((module) => {
+            const layout = MODULE_LAYOUT[module.id];
+
+            return (
+              <motion.div
+                key={`stack-${module.id}`}
+                initial={{ opacity: 0, y: 20, scale: 0.96, filter: 'blur(6px)' }}
+                animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0)' }}
+                transition={{ duration: 0.8, delay: layout.bootDelay }}
+                className="genz-holo genz-glitch-on-hover"
+              >
+                <ModuleCard
+                  module={module}
+                  isActive={pulseStates[module.id].active}
+                  isStrong={pulseStates[module.id].strong}
+                />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 
