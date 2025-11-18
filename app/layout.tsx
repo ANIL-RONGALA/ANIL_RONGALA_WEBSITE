@@ -7,6 +7,7 @@ import { Footer } from '@/components/Footer';
 import { siteConfig } from '@/lib/siteConfig';
 import { ReactNode } from 'react';
 import { Providers } from './providers';
+import BootScreen from '@/components/BootScreen';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <div className="flex min-h-screen flex-col bg-[var(--surface-canvas)] transition-colors duration-500">
             <Navbar />
             <main className="relative flex-1">
+              <BootScreen />
               <div className="pointer-events-none absolute inset-0 opacity-40" aria-hidden>
                 <div className="h-full w-full bg-[var(--circuit-overlay)]" />
               </div>

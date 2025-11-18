@@ -87,6 +87,58 @@ body::before {
   z-index: -2;
 }
 
+/* GEN-Z PAGE BOOT SEQUENCE */
+@keyframes genz-boot-fade {
+  0% { opacity: 0; transform: translateY(12px) scale(0.96); filter: blur(8px); }
+  100% { opacity: 1; transform: translateY(0px) scale(1); filter: blur(0); }
+}
+
+@keyframes genz-boot-glow {
+  0% { opacity: 0.2; box-shadow: 0 0 10px rgba(0,255,255,0.1); }
+  100% { opacity: 1; box-shadow:
+        0 0 35px rgba(0,255,255,0.35),
+        0 0 70px rgba(255,0,255,0.25); }
+}
+
+@keyframes genz-holo-scan {
+  0% { opacity: 0; transform: translateY(-100%); }
+  100% { opacity: 0.25; transform: translateY(100%); }
+}
+
+@keyframes genz-glitch {
+  0% { transform: translateX(0); filter: hue-rotate(0deg); }
+  30% { transform: translateX(-2px); filter: hue-rotate(-20deg); }
+  60% { transform: translateX(2px); filter: hue-rotate(20deg); }
+  100% { transform: translateX(0); filter: hue-rotate(0deg); }
+}
+
+.genz-boot {
+  animation: genz-boot-fade 1.1s ease-out forwards,
+             genz-boot-glow 1.6s ease-out forwards;
+}
+
+.genz-holo {
+  position: relative;
+}
+
+.genz-holo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.07) 0px,
+    rgba(255,255,255,0.02) 2px,
+    transparent 4px
+  );
+  animation: genz-holo-scan 8s linear infinite;
+  pointer-events: none;
+}
+
+.genz-glitch-on-hover:hover {
+  animation: genz-glitch 0.4s steps(2, end) 1;
+}
+
 .genz-panel {
   min-height: 350px;
   box-shadow:
@@ -381,6 +433,21 @@ a:hover {
 }
 
 /* PCB motherboard */
+.pcb-container {
+  background: var(--pcb-background);
+}
+
+html.light .pcb-container {
+  background: linear-gradient(
+    180deg,
+    rgba(255,255,255,0.8),
+    rgba(240,245,255,0.8)
+  );
+  box-shadow:
+    0 0 80px rgba(0,150,255,0.15),
+    inset 0 0 100px rgba(255,0,255,0.12);
+}
+
 .motherboard-layout {
   display: flex;
   flex-direction: column;
@@ -780,11 +847,11 @@ a:hover {
 
 .light .module-card {
   background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.9),
-    rgba(240, 240, 255, 0.8)
+    145deg,
+    rgba(255,255,255,0.9),
+    rgba(230,240,255,0.7)
   );
-  border: 1px solid rgba(170, 170, 255, 0.38);
+  border: 1px solid rgba(0,150,255,0.2);
   backdrop-filter: blur(20px);
   box-shadow:
     0 12px 28px rgba(0, 0, 0, 0.05),
