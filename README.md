@@ -16,7 +16,7 @@ A futuristic, motherboard-inspired personal website for **Anil Rongala**. Built 
 npm install
 npm run dev
 ```
-Then open [http://localhost:3000](http://Under_Development) to view the site.
+Then open [Not Available Yet]([localhost:3000](http://localhost:3000)) to view the site.
 
 ## 🧭 Project Structure
 - `app/` – App Router pages with shared layout, motherboard home, and internal sections.
