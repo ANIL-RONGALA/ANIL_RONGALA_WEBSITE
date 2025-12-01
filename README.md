@@ -17,6 +17,7 @@ npm install
 npm run dev
 ```
 Then open [localhost:3000](http://localhost:3000) to view the site.
+# Stilll Under Development
 
 ## 🧭 Project Structure
 - `app/` – App Router pages with shared layout, motherboard home, and internal sections.
