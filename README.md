@@ -1,4 +1,4 @@
-# NOTE : Still Under Development
+# NOTE : Still Under Development.
 
 # ANIL RONGALA WEBSITE
 
@@ -17,7 +17,7 @@ npm install
 npm run dev
 ```
 Then open [localhost:3000](http://localhost:3000) to view the site.
-# Stilll Under Development
+#Note: Stilll Under Process.
 
 ## 🧭 Project Structure
 - `app/` – App Router pages with shared layout, motherboard home, and internal sections.
