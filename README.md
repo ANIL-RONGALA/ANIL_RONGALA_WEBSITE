@@ -37,6 +37,9 @@ Then open [localhost:3000](http://localhost:3000) to view the site.
 - Media carousel and grid of embedded YouTube content.
 - Responsive, dark neon theme with glassmorphism panels.
 
+## Author
+ANIL RONGALA
+
 ## 📄 License
 This project is tailored as the main personal website and portfolio hub for **Anil Rongala**. Feel free to adapt it for personal use.
 
