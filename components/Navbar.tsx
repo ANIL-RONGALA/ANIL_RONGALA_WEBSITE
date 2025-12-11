@@ -3,7 +3,7 @@
 import { siteConfig } from '@/lib/siteConfig';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
 import { useTheme } from 'next-themes';
@@ -20,21 +20,21 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  const activeTheme = useMemo(() => resolvedTheme ?? theme ?? 'dark', [resolvedTheme, theme]);
-  const isLight = activeTheme === 'light';
+  const currentTheme = theme === 'light' || theme === 'dark' ? theme : 'dark';
+  const isLight = currentTheme === 'light';
   const toggleLabel = isLight ? 'Switch to dark mode' : 'Switch to light mode';
   const toggleIcon = isLight ? '🌙' : '☀️';
 
   const handleToggle = () => {
     document.body.classList.add('theme-transition');
-    setTheme(theme === 'light' ? 'dark' : 'light');
+    setTheme(currentTheme === 'dark' ? 'light' : 'dark');
     setTimeout(() => document.body.classList.remove('theme-transition'), 600);
   };
 
