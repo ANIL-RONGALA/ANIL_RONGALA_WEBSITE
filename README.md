@@ -1,3 +1,5 @@
+# NOTE : Still Under Development.
+
 # ANIL RONGALA WEBSITE
 
 A futuristic, motherboard-inspired personal website for **Anil Rongala**. Built with Next.js (App Router), TypeScript, Tailwind CSS, and Framer Motion for rich circuit-inspired interactions.
@@ -14,7 +16,8 @@ A futuristic, motherboard-inspired personal website for **Anil Rongala**. Built 
 npm install
 npm run dev
 ```
-Then open [http://localhost:3000](http://localhost:3000) to view the site.
+Then open [localhost:3000](http://localhost:3000) to view the site.
+#Note: Stilll Under Process.
 
 ## 🧭 Project Structure
 - `app/` – App Router pages with shared layout, motherboard home, and internal sections.
@@ -34,5 +37,11 @@ Then open [http://localhost:3000](http://localhost:3000) to view the site.
 - Media carousel and grid of embedded YouTube content.
 - Responsive, dark neon theme with glassmorphism panels.
 
+## Author
+ANIL RONGALA
+AI for Hardware domain
+
 ## 📄 License
 This project is tailored as the main personal website and portfolio hub for **Anil Rongala**. Feel free to adapt it for personal use.
+
+# Stilll Under Development.
