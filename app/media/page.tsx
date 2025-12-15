@@ -22,7 +22,7 @@ export default function MediaPage() {
               key={item.title}
               className="flex flex-col gap-4 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 shadow-lg transition-colors duration-500 backdrop-blur dark:shadow-[0_0_24px_rgba(34,211,238,0.18)]"
             >
-              <VideoCard videoId={item.youtubeId} title={item.title} />
+              <VideoCard video={{ title: item.title, youtubeId: item.youtubeId }} />
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">{item.title}</h3>
                 <p className="text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">{item.description}</p>
