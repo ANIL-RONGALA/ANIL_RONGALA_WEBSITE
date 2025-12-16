@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageShell } from "@/components/PageShell";
 import ClientAcademics from "./_client";
 
 export const metadata: Metadata = {
@@ -6,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function AcademicsPage() {
-  return <ClientAcademics />;
+  return (
+    <PageShell>
+      <ClientAcademics />
+    </PageShell>
+  );
 }
