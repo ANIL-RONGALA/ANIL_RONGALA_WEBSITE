@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageShell } from "@/components/PageShell";
 import ClientProfessional from "./_client";
 
 export const metadata: Metadata = {
@@ -6,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function ProfessionalPage() {
-  return <ClientProfessional />;
+  return (
+    <PageShell>
+      <ClientProfessional />
+    </PageShell>
+  );
 }
