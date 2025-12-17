@@ -31,23 +31,27 @@ export default function HomePage() {
       <div className="grid gap-10 lg:grid-cols-[3fr,2fr] lg:items-start">
         <div className="space-y-8">
           <PageHeader
-            eyebrow="DIGITAL NEURAL BOARD"
-            title={`Welcome to the futuristic interface of ${siteConfig.ownerName}`}
+            eyebrow="RESEARCH • ENGINEERING • SYSTEMS"
+            title="Engineering intelligent systems — from silicon to algorithms"
             subtitle={siteConfig.tagline}
           />
+
+          <p className="max-w-2xl text-sm text-muted-foreground">
+            This site documents projects, research experiments, and engineering decisions — not marketing demos.
+          </p>
 
           <div className="flex flex-wrap gap-3">
             <Link
               href="/projects"
               className="rounded-full bg-foreground px-5 py-2 text-sm text-background transition hover:opacity-90"
             >
-              View Projects
+              Engineering Projects
             </Link>
             <Link
               href="/academics"
               className="rounded-full border px-5 py-2 text-sm transition hover:bg-muted"
             >
-              See Academics
+              Research & Academics
             </Link>
           </div>
 

@@ -1,7 +1,7 @@
 export const siteConfig = {
   siteName: "ANIL RONGALA WEBSITE",
   ownerName: "Anil Rongala",
-  tagline: "A futuristic digital motherboard of my work and research.",
+  tagline: "A curated interface of my work in VLSI, AI-driven EDA, verification, and applied machine learning.",
   githubUrl: "https://github.com/ANIL-RONGALA",
   resumeAcademicUrl: "https://example.com/academic-resume.pdf",
   resumeIndustryUrl: "https://example.com/industry-resume.pdf",
