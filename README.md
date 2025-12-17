@@ -2,7 +2,7 @@
 
 # ANIL RONGALA WEBSITE
 
-A futuristic, motherboard-inspired personal website for **Anil Rongala**. Built with Next.js (App Router), TypeScript, Tailwind CSS, and Framer Motion for rich circuit-inspired interactions.
+A research-focused engineering portfolio for **Anil Rongala**. Built with Next.js (App Router), TypeScript, Tailwind CSS, and Framer Motion for a clean, structured interface.
 
 ## 🚀 Tech Stack
 - Next.js 14 (App Router)
@@ -20,18 +20,18 @@ Then open [localhost:3000](http://localhost:3000) to view the site.
 #Note: Stilll Under Process.
 
 ## 🧭 Project Structure
-- `app/` – App Router pages with shared layout, motherboard home, and internal sections.
+- `app/` – App Router pages with shared layout, a structured home, and internal sections.
 - `components/` – Reusable UI pieces (navbar, animated chips, project cards, carousel, etc.).
 - `lib/` – Structured data for projects, academics, professional history, achievements, media, and personal profile.
 
 ## 🔧 Customisation Checklist
 - **Update links** in [`lib/siteConfig.ts`](lib/siteConfig.ts): GitHub, résumés, email, LinkedIn.
-- **Add or edit motherboard chips** in [`lib/boardSections.ts`](lib/boardSections.ts).
+- **Adjust highlighted interface sections** in [`lib/boardSections.ts`](lib/boardSections.ts).
 - **Update projects** (with required `externalUrl`) in [`lib/projects.ts`](lib/projects.ts).
 - **Adjust academic, professional, achievements, media, or personal content** in the corresponding files under `lib/`.
 
 ## 🧬 Features
-- Animated motherboard hero with neon chip interactions.
+- Hero layout with system highlights and status panels.
 - Internal sections for Projects, Academics, Professional, Achievements, Media, Personal, and Contact.
 - Project cards linking out to external GitHub repos or hosted demos.
 - Media carousel and grid of embedded YouTube content.
