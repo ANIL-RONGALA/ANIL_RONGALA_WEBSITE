@@ -17,6 +17,9 @@ export default function AcademicsPage() {
           title="Academic Journey"
           subtitle="Formal education and research tracks building the foundation for silicon innovation."
         />
+        <p className="max-w-2xl text-sm text-muted-foreground">
+          This page documents coursework, research foundations, and academic milestones that shaped my technical focus.
+        </p>
         <div className="space-y-8">
           {academics.map((entry) => (
             <motion.article

@@ -39,6 +39,9 @@ export default function ProfessionalPage() {
             </div>
           }
         />
+        <p className="max-w-2xl text-sm text-muted-foreground">
+          This page highlights roles, responsibilities, and shipped outcomes from industry and lab experience.
+        </p>
         <div className="space-y-8">
           {professionalHistory.map((role) => (
             <motion.article
