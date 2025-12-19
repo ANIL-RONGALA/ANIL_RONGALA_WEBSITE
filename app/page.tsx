@@ -1,100 +1,47 @@
 import Link from "next/link";
+import { FocusAreas } from "@/components/FocusAreas";
 import { PageHeader } from "@/components/PageHeader";
 import { PageShell } from "@/components/PageShell";
+import { RecentWork } from "@/components/RecentWork";
+import { SystemStatus } from "@/components/SystemStatus";
 import { siteConfig } from "@/lib/siteConfig";
-
-const highlights = [
-  {
-    title: "AI + EDA",
-    description: "Verification automation, RTL analysis"
-  },
-  {
-    title: "Hardware Security",
-    description: "Trustworthy design flows"
-  },
-  {
-    title: "Systems + ML",
-    description: "Models that ship, not papers only"
-  }
-];
-
-const systemStatuses = [
-  { label: "Build", value: "Stable" },
-  { label: "Focus", value: "Content + Sections" },
-  { label: "Next", value: "Projects / Media" },
-  { label: "Deploy", value: "Vercel Preview" }
-];
 
 export default function HomePage() {
   return (
     <PageShell className="space-y-12">
+      <div className="space-y-8">
+        <PageHeader
+          eyebrow="RESEARCH • ENGINEERING • SYSTEMS"
+          title="Engineering intelligent systems — from silicon to algorithms"
+          subtitle={siteConfig.tagline}
+        />
+
+        <p className="max-w-2xl text-sm text-muted-foreground">
+          This site documents projects, research experiments, and engineering decisions — not marketing demos.
+        </p>
+
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href="/projects"
+            className="rounded-full bg-foreground px-5 py-2 text-sm text-background transition hover:opacity-90"
+          >
+            Engineering Projects
+          </Link>
+          <Link
+            href="/academics"
+            className="rounded-full border px-5 py-2 text-sm transition hover:bg-muted"
+          >
+            Research & Academics
+          </Link>
+        </div>
+      </div>
+
       <div className="grid gap-10 lg:grid-cols-[3fr,2fr] lg:items-start">
-        <div className="space-y-8">
-          <PageHeader
-            eyebrow="RESEARCH • ENGINEERING • SYSTEMS"
-            title="Engineering intelligent systems — from silicon to algorithms"
-            subtitle={siteConfig.tagline}
-          />
-
-          <p className="max-w-2xl text-sm text-muted-foreground">
-            This site documents projects, research experiments, and engineering decisions — not marketing demos.
-          </p>
-
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/projects"
-              className="rounded-full bg-foreground px-5 py-2 text-sm text-background transition hover:opacity-90"
-            >
-              Engineering Projects
-            </Link>
-            <Link
-              href="/academics"
-              className="rounded-full border px-5 py-2 text-sm transition hover:bg-muted"
-            >
-              Research & Academics
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            {highlights.map((item) => (
-              <div
-                key={item.title}
-                className="space-y-2 rounded-2xl border bg-background/60 p-4 shadow-sm backdrop-blur"
-              >
-                <h3 className="text-base font-semibold text-foreground">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{item.description}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="space-y-3 text-sm text-muted-foreground">
-            <p>
-              This is the current staging version of my personal website. The focus right now is getting a clean,
-              reliable build and deployment pipeline.
-            </p>
-            <p>
-              Sections for projects, research, and experiments will be added and refined in future iterations.
-            </p>
-          </div>
+        <div className="space-y-10">
+          <FocusAreas />
+          <RecentWork />
         </div>
-
-        <div className="space-y-5 rounded-2xl border bg-background/60 p-6 shadow-sm backdrop-blur">
-          <div className="space-y-1">
-            <p className="text-sm uppercase tracking-[0.2em] text-muted-foreground">System Status</p>
-            <h3 className="text-2xl font-semibold text-foreground">Operational</h3>
-          </div>
-          <div className="space-y-3">
-            {systemStatuses.map((status) => (
-              <div
-                key={status.label}
-                className="flex items-center justify-between rounded-xl bg-muted/50 px-3 py-2"
-              >
-                <span className="text-sm text-muted-foreground">{status.label}</span>
-                <span className="text-xs rounded-full border px-2 py-1">{status.value}</span>
-              </div>
-            ))}
-          </div>
-        </div>
+        <SystemStatus />
       </div>
     </PageShell>
   );
