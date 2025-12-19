@@ -17,6 +17,9 @@ export default function AchievementsPage() {
             title="Achievements"
             subtitle="Recognition across research showcases, competitions, and verification excellence."
           />
+          <p className="max-w-2xl text-sm text-muted-foreground">
+            This page highlights measurable outcomes across research, competitions, and verification work.
+          </p>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             {achievements.map((item) => (
               <div
