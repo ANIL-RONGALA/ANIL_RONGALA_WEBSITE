@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageTransition } from "@/components/PageTransition";
+import { PageHeader } from "@/components/PageHeader";
 import { PageShell } from "@/components/PageShell";
-import { SectionHeader } from "@/components/SectionHeader";
 import { achievements } from "@/lib/achievements";
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default function AchievementsPage() {
     <PageShell>
       <PageTransition>
         <div className="space-y-10">
-          <SectionHeader
+          <PageHeader
             title="Achievements"
             subtitle="Recognition across research showcases, competitions, and verification excellence."
           />
@@ -24,10 +24,10 @@ export default function AchievementsPage() {
             {achievements.map((item) => (
               <div
                 key={item.title}
-                className="flex h-full flex-col rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-8 shadow-lg transition-colors duration-500 backdrop-blur dark:shadow-[0_0_24px_rgba(34,211,238,0.18)]"
+                className="flex h-full flex-col rounded-2xl border bg-background/60 p-6 shadow-sm backdrop-blur"
               >
-                <h3 className="text-lg font-bold text-[var(--accent-cyan)]">{item.title}</h3>
-                <p className="mt-2 flex-1 text-sm text-slate-700 transition-colors duration-300 dark:text-gray-300">{item.description}</p>
+                <h3 className="text-lg font-semibold line-clamp-2">{item.title}</h3>
+                <p className="mt-2 flex-1 text-sm text-muted-foreground">{item.description}</p>
                 {item.link && (
                   <a
                     href={item.link}

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { PageTransition } from '@/components/PageTransition';
 import { PageShell } from '@/components/PageShell';
-import { SectionHeader } from '@/components/SectionHeader';
+import { PageHeader } from "@/components/PageHeader";
 import { personalProfile } from '@/lib/personal';
 
 export const metadata: Metadata = {
@@ -13,7 +13,7 @@ export default function PersonalPage() {
     <PageShell>
       <PageTransition>
         <div className="space-y-10">
-          <SectionHeader
+          <PageHeader
             title="Inside the Lab"
             subtitle="A warmer pulse of the engineer guiding circuits, teams, and storytelling."
           />
@@ -34,8 +34,8 @@ export default function PersonalPage() {
               </ul>
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 transition-colors duration-500 backdrop-blur">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="h-full rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 transition-colors duration-500 backdrop-blur">
               <h3 className="text-xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">Interests</h3>
               <ul className="mt-4 space-y-2 text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">
                 {personalProfile.interests.map((interest) => (
@@ -46,7 +46,7 @@ export default function PersonalPage() {
                 ))}
               </ul>
             </div>
-            <div className="rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 transition-colors duration-500 backdrop-blur">
+            <div className="h-full rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 transition-colors duration-500 backdrop-blur">
               <h3 className="text-xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">Goals</h3>
               <ul className="mt-4 space-y-2 text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">
                 {personalProfile.goals.map((goal) => (
