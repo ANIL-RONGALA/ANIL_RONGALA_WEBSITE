@@ -32,7 +32,7 @@ export const mediaItems: MediaItem[] = [
     title: 'Live Circuit Telemetry Demo',
     youtubeUrl: 'https://www.youtube.com/watch?v=aqz-KE-bpKQ',
     youtubeId: 'aqz-KE-bpKQ',
-    description: 'A visual feed of telemetry overlays, waveform capture, and futuristic board diagnostics.',
+    description: 'A visual feed of telemetry overlays, waveform capture, and board diagnostics.',
     tags: ['Telemetry', 'Visualization', 'Showcase']
   }
 ];

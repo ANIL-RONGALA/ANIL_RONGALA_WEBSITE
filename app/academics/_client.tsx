@@ -1,7 +1,7 @@
 "use client";
 import type { Metadata } from 'next';
 import { PageTransition } from '@/components/PageTransition';
-import { SectionHeader } from '@/components/SectionHeader';
+import { PageHeader } from "@/components/PageHeader";
 import { academics } from '@/lib/academics';
 import { motion } from 'framer-motion';
 
@@ -13,7 +13,7 @@ export default function AcademicsPage() {
   return (
     <PageTransition>
       <div className="space-y-10">
-        <SectionHeader
+        <PageHeader
           title="Academic Journey"
           subtitle="Formal education and research tracks building the foundation for silicon innovation."
         />

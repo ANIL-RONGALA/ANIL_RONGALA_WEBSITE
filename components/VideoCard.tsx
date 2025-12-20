@@ -46,7 +46,7 @@ export function VideoCard({ video }: VideoCardProps) {
             setOpen(true);
           }
         }}
-        className="group flex cursor-pointer flex-col overflow-hidden rounded-xl border border-[var(--surface-border)] bg-[var(--surface-card)] shadow-lg transition-colors duration-300"
+        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border border-[var(--surface-border)] bg-[var(--surface-card)] shadow-lg transition-colors duration-300"
       >
         <div className="relative aspect-video w-full overflow-hidden">
           <Image

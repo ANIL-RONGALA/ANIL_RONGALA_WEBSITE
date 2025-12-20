@@ -53,7 +53,7 @@ export function HeroIntro() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
-        Neural Motherboard of{' '}
+        Engineering Logbook for{" "}
         <span className="bright-underline bg-gradient-to-r from-sky-500 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
           {siteConfig.ownerName}
         </span>
@@ -65,8 +65,8 @@ export function HeroIntro() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}
       >
-        Projects, academics, publications and personal logs wired into one interactive board. Every module is a live access port to
-        my work in AI, VLSI, verification and embedded systems.
+        Projects, academics, publications, and personal logs organized into a structured interface. Every section links directly to
+        work in AI, VLSI, verification, and embedded systems.
       </motion.p>
     </section>
   );

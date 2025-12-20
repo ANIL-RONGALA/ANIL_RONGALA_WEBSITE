@@ -7,7 +7,7 @@ export type PersonalProfile = {
 
 export const personalProfile: PersonalProfile = {
   bio:
-    'I am a digital design verification engineer crafting resilient silicon and embedded systems where reliability meets futuristic user experiences.',
+    'I am a digital design verification engineer crafting resilient silicon and embedded systems where reliability meets trusted user experiences.',
   interests: [
     'FPGA/ASIC prototyping and timing closure',
     'SystemVerilog UVM methodology evangelism',
