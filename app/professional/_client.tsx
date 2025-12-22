@@ -1,7 +1,7 @@
 "use client";
 import type { Metadata } from 'next';
 import { PageTransition } from '@/components/PageTransition';
-import { SectionHeader } from '@/components/SectionHeader';
+import { PageHeader } from "@/components/PageHeader";
 import { professionalHistory } from '@/lib/professional';
 import { siteConfig } from '@/lib/siteConfig';
 import { motion } from 'framer-motion';
@@ -15,30 +15,24 @@ export default function ProfessionalPage() {
   return (
     <PageTransition>
       <div className="space-y-10">
-        <SectionHeader
+        <PageHeader
           title="Professional Experience"
           subtitle="Coverage-driven verification leadership, lab mentorship, and silicon-ready deliverables."
-          action={
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href={siteConfig.resumeAcademicUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-pink-300 bg-pink-50 px-4 py-2 text-xs font-semibold text-pink-700 transition-colors duration-300 hover:bg-pink-100 dark:border-fuchsia-500/40 dark:bg-fuchsia-500/10 dark:text-fuchsia-100 dark:hover:bg-fuchsia-500/20"
-              >
-                Academic Résumé (PDF)
-              </Link>
-              <Link
-                href={siteConfig.resumeIndustryUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-700 transition-colors duration-300 hover:bg-emerald-100 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-100 dark:hover:bg-emerald-500/20"
-              >
-                Industry Résumé (PDF)
-              </Link>
-            </div>
-          }
         />
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href={siteConfig.resumeAcademicUrl}
+            className="rounded-full border border-pink-300 bg-pink-50 px-4 py-2 text-xs font-semibold text-pink-700 transition-colors duration-300 hover:bg-pink-100 dark:border-fuchsia-500/40 dark:bg-fuchsia-500/10 dark:text-fuchsia-100 dark:hover:bg-fuchsia-500/20"
+          >
+            Request Academic Résumé
+          </Link>
+          <Link
+            href={siteConfig.resumeIndustryUrl}
+            className="rounded-full border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-700 transition-colors duration-300 hover:bg-emerald-100 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-100 dark:hover:bg-emerald-500/20"
+          >
+            Request Industry Résumé
+          </Link>
+        </div>
         <p className="max-w-2xl text-sm text-muted-foreground">
           This page highlights roles, responsibilities, and shipped outcomes from industry and lab experience.
         </p>

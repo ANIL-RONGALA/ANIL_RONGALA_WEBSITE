@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 :root {
   color-scheme: dark;
   --bg-dark: radial-gradient(circle at center, #020617 0%, #0a0f1e 100%);

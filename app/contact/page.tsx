@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { PageTransition } from '@/components/PageTransition';
 import { PageShell } from '@/components/PageShell';
-import { SectionHeader } from '@/components/SectionHeader';
+import { PageHeader } from "@/components/PageHeader";
 import { siteConfig } from '@/lib/siteConfig';
 import Link from 'next/link';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
@@ -16,12 +16,12 @@ export default function ContactPage() {
     <PageShell>
       <PageTransition>
         <div className="space-y-10">
-          <SectionHeader
+          <PageHeader
             title="Contact"
             subtitle="Reach out for collaborations, verification strategy, or speaking engagements."
           />
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="space-y-6 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-8 transition-colors duration-500 backdrop-blur">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div className="flex h-full flex-col space-y-6 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-8 transition-colors duration-500 backdrop-blur">
               <h3 className="text-xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">Connect</h3>
               <div className="flex flex-col gap-3">
                 <a
@@ -48,7 +48,7 @@ export default function ContactPage() {
                 </Link>
               </div>
             </div>
-            <div className="space-y-6 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-8 transition-colors duration-500 backdrop-blur">
+            <div className="flex h-full flex-col space-y-6 rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-8 transition-colors duration-500 backdrop-blur">
               <h3 className="text-xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">Send a Signal</h3>
               <form className="space-y-4">
                 <div className="space-y-2">
