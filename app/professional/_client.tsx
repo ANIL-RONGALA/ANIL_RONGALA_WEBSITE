@@ -22,15 +22,19 @@ export default function ProfessionalPage() {
         <div className="flex flex-wrap gap-3">
           <Link
             href={siteConfig.resumeAcademicUrl}
+            target="_blank"
+            rel="noreferrer"
             className="rounded-full border border-pink-300 bg-pink-50 px-4 py-2 text-xs font-semibold text-pink-700 transition-colors duration-300 hover:bg-pink-100 dark:border-fuchsia-500/40 dark:bg-fuchsia-500/10 dark:text-fuchsia-100 dark:hover:bg-fuchsia-500/20"
           >
-            Request Academic Résumé
+            Academic Résumé (PDF)
           </Link>
           <Link
             href={siteConfig.resumeIndustryUrl}
+            target="_blank"
+            rel="noreferrer"
             className="rounded-full border border-emerald-300 bg-emerald-50 px-4 py-2 text-xs font-semibold text-emerald-700 transition-colors duration-300 hover:bg-emerald-100 dark:border-emerald-500/40 dark:bg-emerald-500/10 dark:text-emerald-100 dark:hover:bg-emerald-500/20"
           >
-            Request Industry Résumé
+            Industry Résumé (PDF)
           </Link>
         </div>
         <p className="max-w-2xl text-sm text-muted-foreground">
