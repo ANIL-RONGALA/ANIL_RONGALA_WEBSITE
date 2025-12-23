@@ -16,7 +16,7 @@ export const projects: Project[] = [
     shortDescription:
       'A Cyclone V FPGA design integrating authentication, adaptive control, and persistent on-chip memory.',
     longDescription:
-      'Architected a 30+ module FPGA system with ROM-backed authentication, RAM persistence, and entropy-driven FSM control for secure operator workflows.',
+      'Architected a multi-module FPGA system with ROM-backed authentication, RAM persistence, and entropy-driven FSM control for secure operator workflows.',
     tags: ['FPGA', 'SystemVerilog', 'Security', 'Embedded'],
     externalUrl: 'https://github.com/ANIL-RONGALA',
     youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
@@ -24,7 +24,7 @@ export const projects: Project[] = [
   {
     slug: 'alu-uvm-verification',
     title: 'Coverage-Driven ALU Verification Framework',
-    shortDescription: 'SystemVerilog UVM environment closing functional coverage to 95%+ for a 32-bit ALU.',
+    shortDescription: 'SystemVerilog UVM environment targeting functional coverage closure for a 32-bit ALU.',
     longDescription:
       'Developed adaptive stimulus with constrained randomization, coverage cross bins, and scoreboard predictions to mirror silicon sign-off workflows.',
     tags: ['SystemVerilog', 'UVM', 'Verification'],
@@ -45,7 +45,7 @@ export const projects: Project[] = [
     slug: 'uart-uvm-controller',
     title: 'UART Controller with Full Register-Model Verification',
     shortDescription:
-      'Implemented USART/UART controller and UVM register-level testbench achieving 100% coverage.',
+      'Implemented USART/UART controller and a UVM register-level testbench for coverage-driven validation.',
     longDescription:
       'Engineered register abstraction layers, callback-based sequences, and golden predictor models to validate interrupts and error handling paths.',
     tags: ['UART', 'FPGA', 'Verification'],
