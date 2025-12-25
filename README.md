@@ -16,8 +16,8 @@ A research-focused engineering portfolio for **Anil Rongala**. Built with Next.j
 npm install
 npm run dev
 ```
-Then open [localhost:3000](http://localhost:3000) to view the site.
-#Note: Stilll Under Process.
+Then open [localhost:3000](http://localhost:3000) to view the site
+#Note: Stilll Under Process
 
 ## 🧭 Project Structure
 - `app/` – App Router pages with shared layout, a structured home, and internal sections.
