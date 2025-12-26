@@ -1,12 +1,12 @@
-import type { Metadata } from 'next';
-import { PageTransition } from '@/components/PageTransition';
-import { PageHeader } from "@/components/PageHeader";
-import { PageShell } from '@/components/PageShell';
-import { mediaItems } from '@/lib/media';
+import type { Metadata } from "next";
+import { PageTransition } from "@/components/PageTransition";
+import { mediaItems } from "@/lib/media";
 import { VideoSection } from "@/components/VideoSection";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
 
 export const metadata: Metadata = {
-  title: 'Media | ANIL RONGALA WEBSITE'
+  title: "Media | ANIL RONGALA WEBSITE"
 };
 
 export default function MediaPage() {
@@ -18,20 +18,20 @@ export default function MediaPage() {
   }));
 
   return (
-    <PageShell>
-      <PageTransition>
-        <div className="space-y-10">
-          <PageHeader
-            title="Media Signals"
-            subtitle="Talks, demos, and recorded walkthroughs from labs and live sessions."
-          />
+    <Container>
+      <Section
+        eyebrow="MEDIA"
+        title="Media Signals"
+        subtitle="Talks, demos, and recorded walkthroughs from labs and live sessions."
+      >
+        <PageTransition>
           <VideoSection
             title="Recorded Sessions"
             subtitle="Talks, walkthroughs, and in-lab captures from recent work."
             videos={videos}
           />
-        </div>
-      </PageTransition>
-    </PageShell>
+        </PageTransition>
+      </Section>
+    </Container>
   );
 }

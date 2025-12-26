@@ -46,7 +46,7 @@ export function VideoCard({ video }: VideoCardProps) {
             setOpen(true);
           }
         }}
-        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-xl border border-[var(--surface-border)] bg-[var(--surface-card)] shadow-lg transition-colors duration-300"
+        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border bg-background/60 shadow-sm backdrop-blur transition hover:bg-background/70 hover:shadow-md"
       >
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
@@ -76,7 +76,7 @@ export function VideoCard({ video }: VideoCardProps) {
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+                  className="rounded-full border px-2 py-1 text-xs text-muted-foreground"
                 >
                   {tag}
                 </span>

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Container } from "@/components/ui/Container";
 
 type PageShellProps = {
   children: ReactNode;
@@ -10,7 +11,7 @@ export function PageShell({ children, className }: PageShellProps) {
 
   return (
     <div className={wrapperClasses}>
-      <div className="max-w-6xl mx-auto px-4 py-10 sm:px-6 lg:px-8">{children}</div>
+      <Container className="py-12 sm:py-16">{children}</Container>
     </div>
   );
 }
