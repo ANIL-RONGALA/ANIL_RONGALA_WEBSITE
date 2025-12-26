@@ -11,6 +11,15 @@
 
 :root {
   color-scheme: dark;
+  --background: 222 47% 7%;
+  --foreground: 210 40% 96%;
+  --muted: 223 20% 16%;
+  --muted-foreground: 215 20% 70%;
+  --border: 220 18% 22%;
+  --card: 222 30% 10%;
+  --card-foreground: 210 40% 96%;
+  --primary: 190 85% 55%;
+  --primary-foreground: 222 47% 12%;
   --bg-dark: radial-gradient(circle at center, #020617 0%, #0a0f1e 100%);
   --bg-light: radial-gradient(circle at top, #ffffff, #eef3ff, #dde7ff);
   --app-background: radial-gradient(circle at center, #020617, #0a0f1e);
@@ -73,6 +82,19 @@
 /* Bright mode namespace */
 html.light .theme-light {
   color-scheme: light;
+}
+
+html.light {
+  color-scheme: light;
+  --background: 210 40% 98%;
+  --foreground: 222 47% 12%;
+  --muted: 210 24% 94%;
+  --muted-foreground: 215 20% 40%;
+  --border: 215 20% 82%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 12%;
+  --primary: 192 90% 42%;
+  --primary-foreground: 210 40% 98%;
 }
 
 .theme-light .genz-gradient {
@@ -158,9 +180,13 @@ html {
 
 body {
   min-height: 100%;
-  background: var(--bg-dark);
-  color: #e0f2fe;
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
   font-feature-settings: 'liga' 1;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition: background 0.6s ease, color 0.6s ease;
 }
 
@@ -173,10 +199,51 @@ body::before {
   position: fixed;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 80%, rgba(255, 0, 255, 0.15), transparent 60%),
-    radial-gradient(circle at 80% 20%, rgba(0, 150, 255, 0.18), transparent 60%);
-  filter: blur(60px);
+    radial-gradient(circle at 15% 20%, hsl(var(--primary) / 0.16), transparent 45%),
+    radial-gradient(circle at 85% 80%, hsl(var(--primary) / 0.12), transparent 50%);
+  opacity: 0.8;
+  filter: blur(70px);
   z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 3px,
+      transparent 4px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 2px,
+      rgba(255, 255, 255, 0.015) 3px,
+      transparent 4px
+    );
+  opacity: 0.4;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: -1;
+}
+
+::selection {
+  background: hsl(var(--primary) / 0.25);
+  color: hsl(var(--foreground));
+}
+
+.glow {
+  box-shadow: 0 0 32px hsl(var(--primary) / 0.15);
+}
+
+.glass {
+  background: hsl(var(--background) / 0.65);
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--border) / 0.6);
 }
 
 /* GEN-Z PAGE BOOT SEQUENCE */
