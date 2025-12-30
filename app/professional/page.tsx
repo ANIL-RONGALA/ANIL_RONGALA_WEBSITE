@@ -16,7 +16,7 @@ export default function ProfessionalPage() {
       <Section
         eyebrow="PROFESSIONAL"
         title="Professional Experience"
-        subtitle="Verification leadership, lab mentorship, and silicon-ready deliverables."
+        subtitle="Verification leadership, lab mentorship, and documented deliverables with supporting evidence."
       >
         <PageTransition>
           <div className="space-y-6">
@@ -27,7 +27,7 @@ export default function ProfessionalPage() {
                 rel="noreferrer"
                 className="rounded-full border border-border/60 px-4 py-2 text-xs font-semibold text-muted-foreground transition hover:bg-muted"
               >
-                Academic Résumé (PDF)
+                Request Academic Résumé
               </Link>
               <Link
                 href={siteConfig.resumeIndustryUrl}
@@ -35,7 +35,7 @@ export default function ProfessionalPage() {
                 rel="noreferrer"
                 className="rounded-full border border-border/60 px-4 py-2 text-xs font-semibold text-muted-foreground transition hover:bg-muted"
               >
-                Industry Résumé (PDF)
+                Request Industry Résumé
               </Link>
             </div>
             <p className="max-w-2xl text-sm text-muted-foreground">

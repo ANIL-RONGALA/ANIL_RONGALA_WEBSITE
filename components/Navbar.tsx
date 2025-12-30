@@ -45,16 +45,16 @@ export function Navbar() {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className="navbar"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-[color:var(--text-muted)] transition-colors duration-300 sm:px-6 md:px-8">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-muted-foreground transition-colors duration-300 sm:px-6 md:px-8">
         <Link
           href="/"
-          className="font-semibold uppercase tracking-[0.2em] text-[var(--accent-cyan)] transition-colors duration-300 hover:text-[var(--accent-pink)]"
+          className="font-semibold uppercase tracking-[0.2em] text-foreground transition-colors duration-300 hover:text-foreground/80"
         >
           {siteConfig.siteName}
         </Link>
-        <nav className="hidden items-center gap-6 text-sm text-[color:var(--text-subtle)] transition-colors duration-300 lg:flex">
+        <nav className="hidden items-center gap-6 text-sm text-muted-foreground transition-colors duration-300 lg:flex">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:text-[var(--accent-cyan)] transition-colors">
+            <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground">
               {link.label}
             </Link>
           ))}
@@ -64,7 +64,7 @@ export function Navbar() {
             href={siteConfig.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-soft)] text-xl text-[color:var(--text-muted)] transition-colors duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
             aria-label="GitHub"
           >
             <FaGithub />
@@ -73,14 +73,14 @@ export function Navbar() {
             href={siteConfig.linkedinUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-soft)] text-xl text-[color:var(--text-muted)] transition-colors duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
             aria-label="LinkedIn"
           >
             <FaLinkedin />
           </a>
           <a
             href={`mailto:${siteConfig.email}`}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-soft)] text-xl text-[color:var(--text-muted)] transition-colors duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)]"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
             aria-label="Email"
           >
             <HiOutlineMail />
@@ -89,7 +89,7 @@ export function Navbar() {
             type="button"
             onClick={handleToggle}
             disabled={!mounted}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[var(--surface-border)] bg-[var(--surface-soft)] text-xl text-[color:var(--text-muted)] transition-all duration-300 hover:border-[var(--accent-cyan)] hover:text-[var(--accent-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent-cyan)] disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-all duration-300 hover:border-foreground/40 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground disabled:cursor-not-allowed disabled:opacity-60"
             aria-label={toggleLabel}
           >
             <span aria-hidden className="text-lg">
@@ -98,9 +98,9 @@ export function Navbar() {
           </button>
         </div>
       </div>
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap gap-4 px-4 pb-4 text-xs text-[color:var(--text-subtle)] transition-colors duration-300 lg:hidden">
+      <div className="mx-auto flex w-full max-w-6xl flex-wrap gap-4 px-4 pb-4 text-xs text-muted-foreground transition-colors duration-300 lg:hidden">
         {navLinks.map((link) => (
-          <Link key={link.href} href={link.href} className="hover:text-[var(--accent-cyan)] transition-colors">
+          <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground">
             {link.label}
           </Link>
         ))}

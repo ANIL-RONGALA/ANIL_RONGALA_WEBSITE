@@ -8,7 +8,7 @@ export function Footer() {
   return (
     <footer className="footer-shell">
       <Container className="py-6">
-        <div className="flex flex-col items-center justify-between gap-4 text-sm text-[color:var(--text-subtle)] transition-colors duration-300 md:flex-row">
+        <div className="flex flex-col items-center justify-between gap-4 text-sm text-muted-foreground transition-colors duration-300 md:flex-row">
           <p>
             © {year} {siteConfig.ownerName}. All rights reserved.
           </p>
@@ -17,7 +17,7 @@ export function Footer() {
               href={siteConfig.githubUrl}
               target="_blank"
               rel="noreferrer"
-              className="transition-colors hover:text-[var(--accent-cyan)]"
+              className="transition-colors hover:text-foreground"
             >
               GitHub
             </a>
@@ -25,11 +25,11 @@ export function Footer() {
               href={siteConfig.linkedinUrl}
               target="_blank"
               rel="noreferrer"
-              className="transition-colors hover:text-[var(--accent-cyan)]"
+              className="transition-colors hover:text-foreground"
             >
               LinkedIn
             </a>
-            <Link href={`mailto:${siteConfig.email}`} className="transition-colors hover:text-[var(--accent-cyan)]">
+            <Link href={`mailto:${siteConfig.email}`} className="transition-colors hover:text-foreground">
               {siteConfig.email}
             </Link>
           </div>
