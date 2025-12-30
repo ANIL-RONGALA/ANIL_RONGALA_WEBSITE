@@ -17,7 +17,7 @@ export default function ContactPage() {
       <Section
         eyebrow="CONTACT"
         title="Contact"
-        subtitle="Reach out for collaborations, verification strategy, or speaking engagements."
+        subtitle="Direct channels for collaboration, verification strategy, and documented work follow-ups."
       >
         <PageTransition>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">

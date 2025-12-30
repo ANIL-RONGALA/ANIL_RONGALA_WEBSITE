@@ -14,7 +14,7 @@ export default function PersonalPage() {
       <Section
         eyebrow="PERSONAL"
         title="Inside the Lab"
-        subtitle="A warmer pulse of the engineer guiding circuits, teams, and storytelling."
+        subtitle="Personal context behind the engineering log, values, and long-term goals."
       >
         <PageTransition>
           <div className="space-y-8">

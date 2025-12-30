@@ -8,24 +8,27 @@ export type Achievement = {
 
 export const achievements: Achievement[] = [
   {
-    title: 'High-Speed D-Flip-Flop Designs for Low-Power Applications',
-    issuer: 'University of Houston Research Symposium',
-    year: '2024',
+    title: "Secure HMI FPGA Platform (Research Showcase)",
+    issuer: "Verification & Security Track",
+    year: "2024",
     description:
-      'Engineered CMOS, pass-transistor, and semi-dynamic flip-flops surpassing 1.8 GHz with a 20% power reduction for VLSI systems.'
+      "Documented an authenticated FPGA control stack with persistent state management and reproducible demo evidence.",
+    link: "/projects/fpga-secure-hmi"
   },
   {
-    title: 'Asian E-Bike Challenge Certification',
-    issuer: 'Asian E-Bike Challenge',
-    year: '2022',
+    title: "Coverage-Driven ALU Verification (Lab Excellence)",
+    issuer: "Digital Design Lab",
+    year: "2025",
     description:
-      'Served on core technical team delivering a competition-ready electric bike across endurance, braking, and torque trials.'
+      "Established a UVM-based verification harness with traceable coverage closure artifacts.",
+    link: "/projects/alu-uvm-verification"
   },
   {
-    title: 'Coverage-Driven Verification Excellence',
-    issuer: 'University of Houston Digital Design Lab',
-    year: '2025',
+    title: "Systolic-Array Accelerator Architecture (Research Preview)",
+    issuer: "AI Hardware Systems",
+    year: "2024",
     description:
-      'Recognized for building UVM environments that achieved >95% functional coverage on advanced ALU verification flows.'
+      "Produced a modular accelerator design backed by reproducible architecture demos.",
+    link: "/projects/systolic-accelerator"
   }
 ];
