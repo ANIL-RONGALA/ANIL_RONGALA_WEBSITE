@@ -21,6 +21,13 @@ export default function AcademicsPage() {
           </div>
           <p className="mt-3 text-sm text-muted-foreground">{entry.institution}</p>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{entry.description}</p>
+          <div className="mt-4 flex flex-wrap gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+            {entry.proof.map((item) => (
+              <a key={item.label} href={item.url} target="_blank" rel="noreferrer" className="hover:text-foreground">
+                {item.label}
+              </a>
+            ))}
+          </div>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             {entry.highlights.map((highlight) => (
               <li key={highlight} className="flex items-start gap-2">

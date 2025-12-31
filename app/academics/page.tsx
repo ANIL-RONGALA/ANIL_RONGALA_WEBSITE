@@ -14,7 +14,7 @@ export default function AcademicsPage() {
       <Section
         eyebrow="ACADEMICS"
         title="Academic Journey"
-        subtitle="Formal education and research tracks building the foundation for silicon innovation."
+        subtitle="Formal education and research tracks with evidence links and documented coursework."
       >
         <PageTransition>
           <div className="space-y-6">

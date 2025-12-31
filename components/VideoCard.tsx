@@ -76,7 +76,7 @@ export function VideoCard({ video }: VideoCardProps) {
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border px-2 py-1 text-xs text-muted-foreground"
+                  className="rounded-full border px-2 py-1 text-xs font-mono text-muted-foreground"
                 >
                   {tag}
                 </span>

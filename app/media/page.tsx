@@ -22,7 +22,7 @@ export default function MediaPage() {
       <Section
         eyebrow="MEDIA"
         title="Media Signals"
-        subtitle="Talks, demos, and recorded walkthroughs from labs and live sessions."
+        subtitle="Talks, demos, and recorded walkthroughs with direct video proof."
       >
         <PageTransition>
           <VideoSection

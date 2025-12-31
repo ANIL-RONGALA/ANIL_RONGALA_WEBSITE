@@ -20,9 +20,9 @@ Then open [localhost:3000](http://localhost:3000) to view the site
 #Note: Stilll Under Process
 
 ## 🧭 Project Structure
-- `app/` – App Router pages with shared layout, a structured home, and internal sections.
-- `components/` – Reusable UI pieces (navbar, animated chips, project cards, carousel, etc.).
-- `lib/` – Structured data for projects, academics, professional history, achievements, media, and personal profile.
+- `app/` – App Router pages with shared layout, a structured home, and internal sections
+- `components/` – Reusable UI pieces (navbar, animated chips, project cards, carousel, etc.)
+- `lib/` – Structured data for projects, academics, professional history, achievements, media, and personal profile
 
 ## 🔧 Customisation Checklist
 - **Update links** in [`lib/siteConfig.ts`](lib/siteConfig.ts): GitHub, résumés, email, LinkedIn.
@@ -44,4 +44,4 @@ AI for Hardware domain
 ## 📄 License
 This project is tailored as the main personal website and portfolio hub for **Anil Rongala**. Feel free to adapt it for personal use.
 
-# Stilll Under Development.
+# Stilll Under Development(new features)

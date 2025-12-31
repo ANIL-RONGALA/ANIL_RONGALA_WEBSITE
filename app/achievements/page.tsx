@@ -4,6 +4,7 @@ import { achievements } from "@/lib/achievements";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { Badge } from "@/components/ui/Badge";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Achievements | ANIL RONGALA WEBSITE",
@@ -15,7 +16,7 @@ export default function AchievementsPage() {
       <Section
         eyebrow="HIGHLIGHTS"
         title="Achievements"
-        subtitle="Recognition across research showcases, competitions, and verification excellence."
+        subtitle="Recognition highlights with direct links to documented case-study evidence."
       >
         <PageTransition>
           <div className="space-y-8">
@@ -29,11 +30,14 @@ export default function AchievementsPage() {
                   className="flex h-full flex-col rounded-2xl border bg-background/60 p-6 shadow-sm backdrop-blur transition hover:bg-background/70 hover:shadow-md"
                 >
                   <h3 className="text-lg font-semibold text-foreground line-clamp-2">{item.title}</h3>
+                  <p className="mt-1 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+                    {item.issuer} · {item.year}
+                  </p>
                   <p className="mt-2 flex-1 text-sm text-muted-foreground">{item.description}</p>
                   {item.link ? (
-                    <a href={item.link} target="_blank" rel="noreferrer" className="mt-4 inline-flex">
+                    <Link href={item.link} className="mt-4 inline-flex">
                       <Badge className="border-border/60">View</Badge>
-                    </a>
+                    </Link>
                   ) : null}
                 </div>
               ))}

@@ -7,5 +7,9 @@ type BadgeProps = {
 };
 
 export function Badge({ children, className }: BadgeProps) {
-  return <span className={cx("rounded-full border px-2 py-1 text-xs text-muted-foreground", className)}>{children}</span>;
+  return (
+    <span className={cx("rounded-full border px-2 py-1 text-xs font-mono text-muted-foreground", className)}>
+      {children}
+    </span>
+  );
 }
