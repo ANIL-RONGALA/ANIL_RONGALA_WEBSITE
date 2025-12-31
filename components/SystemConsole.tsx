@@ -1,29 +1,33 @@
 import { Badge } from "@/components/ui/Badge";
 
 const lines = [
-  { label: "STATUS", value: "ACTIVE" },
-  { label: "FOCUS", value: "AI-EDA / RTL Verification" },
-  { label: "CURRENT", value: "Portfolio hardening" },
-  { label: "NEXT", value: "Case studies + demos" },
-  { label: "DEPLOY", value: "Vercel" },
-  { label: "UPDATED", value: "2025-02-12" }
+  { label: "Build", value: "Active" },
+  { label: "Focus", value: "AI-EDA / RTL Verification" },
+  { label: "Current", value: "Portfolio hardening" },
+  { label: "Next", value: "Case studies + demos" },
+  { label: "Deploy", value: "Vercel" },
+  { label: "Updated", value: "2025-02-12" }
 ];
 
 export function SystemConsole() {
   return (
-    <aside className="rounded-2xl border border-border/60 bg-background/60 p-6 shadow-sm backdrop-blur">
+    <aside className="relative overflow-hidden rounded-2xl border border-border/60 bg-background/60 p-6 shadow-sm backdrop-blur">
       <div className="flex items-center justify-between">
-        <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">System Console</p>
+        <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">System Status</p>
         <Badge className="border-border/60 text-foreground/80">Live</Badge>
       </div>
-      <div className="mt-6 space-y-3 text-sm">
+      <div className="mt-6 space-y-3">
         {lines.map((line) => (
-          <div key={line.label} className="flex items-center justify-between gap-4 font-mono text-xs text-muted-foreground">
-            <span>{line.label}</span>
-            <span className="text-foreground/90">{line.value}</span>
+          <div key={line.label} className="flex items-center gap-3 text-xs text-muted-foreground">
+            <span className="w-20 font-mono uppercase tracking-[0.2em]">{line.label}</span>
+            <span className="flex-1 border-b border-dashed border-border/60" />
+            <span className="rounded-full border border-border/60 px-2 py-1 text-[0.7rem] text-foreground/90">
+              {line.value}
+            </span>
           </div>
         ))}
       </div>
+      <div className="pointer-events-none absolute inset-x-6 bottom-3 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
     </aside>
   );
 }

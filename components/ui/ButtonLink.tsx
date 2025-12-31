@@ -13,9 +13,12 @@ type ButtonLinkProps = LinkProps & {
 };
 
 const variantClasses: Record<ButtonVariant, string> = {
-  primary: "rounded-full bg-foreground px-5 py-2 text-sm text-background transition hover:opacity-90",
-  secondary: "rounded-full border px-5 py-2 text-sm transition hover:bg-muted",
-  ghost: "rounded-full px-4 py-2 text-sm transition hover:bg-muted"
+  primary:
+    "ring-glow rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-background shadow-sm transition duration-200 hover:-translate-y-[1px] hover:shadow-md",
+  secondary:
+    "ring-glow rounded-full border border-border/70 bg-background/40 px-5 py-2.5 text-sm font-semibold text-foreground/90 transition duration-200 hover:bg-muted",
+  ghost:
+    "rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground transition duration-200 hover:bg-muted/70 hover:text-foreground"
 };
 
 export function ButtonLink({
@@ -30,7 +33,11 @@ export function ButtonLink({
   return (
     <Link
       href={href}
-      className={cx(variantClasses[variant], className)}
+      className={cx(
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        variantClasses[variant],
+        className
+      )}
       target={target}
       rel={rel}
       {...props}

@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { projects } from "@/lib/projects";
 import { Container } from "@/components/ui/Container";
 import { Badge } from "@/components/ui/Badge";
+import { Section } from "@/components/ui/Section";
+import { Divider } from "@/components/ui/Divider";
 
 export const dynamicParams = false;
 
@@ -33,33 +35,37 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
 
   return (
     <Container>
-      <section className="py-16 sm:py-20">
-        <div className="space-y-4">
-          <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">Case Study</p>
-          <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">{project.title}</h1>
-          <p className="max-w-2xl text-muted-foreground">{project.oneLiner}</p>
-          <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <Badge key={tag}>{tag}</Badge>
-            ))}
-          </div>
+      <Section
+        className="pt-16 sm:pt-20"
+        eyebrow="Case Study"
+        title={project.title}
+        subtitle={project.oneLiner}
+      >
+        <div className="flex flex-wrap gap-2">
+          {project.tags.map((tag) => (
+            <Badge key={tag}>{tag}</Badge>
+          ))}
         </div>
+      </Section>
 
-        <div className="mt-10 grid gap-8">
+      <Divider className="my-4 sm:my-6" />
+
+      <Section className="pt-0">
+        <div className="grid gap-8">
           <div className="space-y-2">
-            <h2 className="text-xl font-semibold text-foreground">Problem</h2>
-            <p className="text-sm text-muted-foreground">{project.problem}</p>
+            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Problem</h2>
+            <p className="max-w-2xl text-muted-foreground">{project.problem}</p>
           </div>
           <div className="space-y-2">
-            <h2 className="text-xl font-semibold text-foreground">Approach</h2>
-            <p className="text-sm text-muted-foreground">{project.approach}</p>
+            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Approach</h2>
+            <p className="max-w-2xl text-muted-foreground">{project.approach}</p>
           </div>
           <div className="space-y-2">
-            <h2 className="text-xl font-semibold text-foreground">Outcome</h2>
-            <p className="text-sm text-muted-foreground">{project.outcome}</p>
+            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Outcome</h2>
+            <p className="max-w-2xl text-muted-foreground">{project.outcome}</p>
           </div>
           <div className="space-y-3">
-            <h2 className="text-xl font-semibold text-foreground">Proof</h2>
+            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Proof</h2>
             <div className="flex flex-wrap gap-4 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
               {project.proof.map((item) => (
                 <Link key={item.label} href={item.url} target="_blank" rel="noreferrer" className="hover:text-foreground">
@@ -69,7 +75,7 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
             </div>
           </div>
         </div>
-      </section>
+      </Section>
     </Container>
   );
 }

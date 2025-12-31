@@ -3,6 +3,7 @@ import { PageTransition } from "@/components/PageTransition";
 import { personalProfile } from "@/lib/personal";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { MotionCard } from "@/components/ui/MotionCard";
 
 export const metadata: Metadata = {
   title: 'Personal | ANIL RONGALA WEBSITE'
@@ -18,7 +19,7 @@ export default function PersonalPage() {
       >
         <PageTransition>
           <div className="space-y-8">
-            <div className="grid grid-cols-1 gap-6 rounded-2xl border bg-background/60 p-8 backdrop-blur md:grid-cols-2">
+            <MotionCard className="grid grid-cols-1 gap-6 p-8 md:grid-cols-2">
               <div className="space-y-4">
                 <h3 className="text-2xl font-semibold text-foreground">Bio</h3>
                 <p className="text-sm leading-relaxed text-muted-foreground">{personalProfile.bio}</p>
@@ -34,9 +35,9 @@ export default function PersonalPage() {
                   ))}
                 </ul>
               </div>
-            </div>
+            </MotionCard>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div className="h-full rounded-2xl border bg-background/60 p-6 shadow-sm backdrop-blur transition hover:bg-background/70 hover:shadow-md">
+              <MotionCard className="h-full p-6">
                 <h3 className="text-xl font-semibold text-foreground">Interests</h3>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                   {personalProfile.interests.map((interest) => (
@@ -46,8 +47,8 @@ export default function PersonalPage() {
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div className="h-full rounded-2xl border bg-background/60 p-6 shadow-sm backdrop-blur transition hover:bg-background/70 hover:shadow-md">
+              </MotionCard>
+              <MotionCard className="h-full p-6">
                 <h3 className="text-xl font-semibold text-foreground">Goals</h3>
                 <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
                   {personalProfile.goals.map((goal) => (
@@ -57,7 +58,7 @@ export default function PersonalPage() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </MotionCard>
             </div>
           </div>
         </PageTransition>

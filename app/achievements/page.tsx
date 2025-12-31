@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { Badge } from "@/components/ui/Badge";
 import Link from "next/link";
+import { MotionCard } from "@/components/ui/MotionCard";
 
 export const metadata: Metadata = {
   title: "Achievements | ANIL RONGALA WEBSITE",
@@ -23,23 +24,30 @@ export default function AchievementsPage() {
             <p className="max-w-2xl text-sm text-muted-foreground">
               This page highlights measurable outcomes across research, competitions, and verification work.
             </p>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {achievements.map((item) => (
-                <div
-                  key={item.title}
-                  className="flex h-full flex-col rounded-2xl border bg-background/60 p-6 shadow-sm backdrop-blur transition hover:bg-background/70 hover:shadow-md"
-                >
-                  <h3 className="text-lg font-semibold text-foreground line-clamp-2">{item.title}</h3>
-                  <p className="mt-1 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
-                    {item.issuer} · {item.year}
+                <MotionCard key={item.title} className="flex h-full flex-col p-6">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="text-lg font-semibold text-foreground line-clamp-2">{item.title}</h3>
+                    <Badge className="border-border/60 text-[0.65rem] uppercase tracking-[0.2em]">
+                      {item.year}
+                    </Badge>
+                  </div>
+                  <p className="mt-2 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground truncate">
+                    {item.issuer}
                   </p>
-                  <p className="mt-2 flex-1 text-sm text-muted-foreground">{item.description}</p>
-                  {item.link ? (
-                    <Link href={item.link} className="mt-4 inline-flex">
-                      <Badge className="border-border/60">View</Badge>
-                    </Link>
-                  ) : null}
-                </div>
+                  <p className="mt-3 flex-1 text-sm text-muted-foreground line-clamp-3">{item.description}</p>
+                  <div className="mt-5 flex items-center justify-between gap-3">
+                    <div className="flex flex-wrap gap-2">
+                      <Badge className="border-border/60">{item.issuer}</Badge>
+                    </div>
+                    {item.link ? (
+                      <Link href={item.link} className="text-sm font-semibold text-foreground hover:text-primary">
+                        Open →
+                      </Link>
+                    ) : null}
+                  </div>
+                </MotionCard>
               ))}
             </div>
           </div>

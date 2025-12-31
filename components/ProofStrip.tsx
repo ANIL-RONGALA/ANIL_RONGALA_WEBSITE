@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MotionCard } from "@/components/ui/MotionCard";
 
 export type ProofItem = {
   title: string;
@@ -15,10 +16,10 @@ export function ProofStrip({ items }: ProofStripProps) {
   return (
     <div className="grid gap-4 sm:grid-cols-3">
       {items.map((item) => (
-        <div key={item.title} className="rounded-2xl border border-border/60 bg-background/60 p-4 shadow-sm backdrop-blur">
+        <MotionCard key={item.title} className="p-4">
           <div className="space-y-2">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">{item.title}</p>
-            <p className="text-sm text-foreground/90">{item.description}</p>
+            <p className="text-sm text-foreground/90 line-clamp-2">{item.description}</p>
             <Link
               href={item.href}
               target={item.external ? "_blank" : undefined}
@@ -28,7 +29,7 @@ export function ProofStrip({ items }: ProofStripProps) {
               View proof
             </Link>
           </div>
-        </div>
+        </MotionCard>
       ))}
     </div>
   );
