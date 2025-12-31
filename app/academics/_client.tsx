@@ -1,42 +1,53 @@
 "use client";
 
 import { academics } from "@/lib/academics";
-import { motion } from "framer-motion";
+import { Badge } from "@/components/ui/Badge";
+import { MotionCard } from "@/components/ui/MotionCard";
+import Link from "next/link";
 
 export default function AcademicsPage() {
   return (
-    <div className="space-y-8">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {academics.map((entry) => (
-        <motion.article
-          key={entry.degree}
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="rounded-2xl border bg-background/60 p-8 shadow-sm backdrop-blur transition hover:bg-background/70 hover:shadow-md"
-        >
-          <div className="flex flex-col gap-2 md:flex-row md:items-baseline md:justify-between">
-            <h3 className="text-2xl font-semibold text-foreground">{entry.degree}</h3>
-            <p className="text-sm text-[var(--accent-cyan)]">{entry.years}</p>
-          </div>
-          <p className="mt-3 text-sm text-muted-foreground">{entry.institution}</p>
-          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{entry.description}</p>
-          <div className="mt-4 flex flex-wrap gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
-            {entry.proof.map((item) => (
-              <a key={item.label} href={item.url} target="_blank" rel="noreferrer" className="hover:text-foreground">
-                {item.label}
-              </a>
-            ))}
+        <MotionCard key={entry.degree} className="flex h-full flex-col p-8">
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h3 className="text-2xl font-semibold text-foreground line-clamp-2">{entry.degree}</h3>
+              <Badge className="border-border/60 text-[0.65rem] uppercase tracking-[0.2em]">
+                {entry.years}
+              </Badge>
+            </div>
+            <p className="text-sm text-muted-foreground line-clamp-2">{entry.institution}</p>
+            <p className="text-sm text-muted-foreground line-clamp-3">{entry.description}</p>
           </div>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-            {entry.highlights.map((highlight) => (
+            {entry.highlights.slice(0, 2).map((highlight) => (
               <li key={highlight} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--accent-cyan)]" />
                 <span>{highlight}</span>
               </li>
             ))}
           </ul>
-        </motion.article>
+          <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex flex-wrap gap-2">
+              {entry.proof.map((item) => (
+                <Badge key={item.label} className="border-border/60">
+                  {item.label}
+                </Badge>
+              ))}
+            </div>
+            {entry.proof[0] ? (
+              <Link
+                href={entry.proof[0].url}
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-semibold text-foreground hover:text-primary"
+              >
+                Open →
+              </Link>
+            ) : null}
+          </div>
+        </MotionCard>
       ))}
     </div>
   );
