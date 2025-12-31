@@ -19,7 +19,7 @@ export function Section({ children, className, eyebrow, title, subtitle }: Secti
           {eyebrow ? (
             <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">{eyebrow}</p>
           ) : null}
-          {title ? <h2 className="text-3xl font-semibold text-foreground sm:text-4xl">{title}</h2> : null}
+          {title ? <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">{title}</h2> : null}
           {subtitle ? <p className="max-w-2xl text-muted-foreground">{subtitle}</p> : null}
         </div>
       ) : null}

@@ -6,15 +6,9 @@ type CardProps = {
   className?: string;
 };
 
+export const cardBaseClasses =
+  "rounded-2xl border bg-background/60 backdrop-blur shadow-sm transition duration-200 will-change-transform hover:-translate-y-[1px] hover:bg-background/70 hover:shadow-md";
+
 export function Card({ children, className }: CardProps) {
-  return (
-    <div
-      className={cx(
-        "rounded-2xl border bg-background/60 backdrop-blur shadow-sm transition hover:bg-background/70 hover:shadow-md",
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
+  return <div className={cx(cardBaseClasses, className)}>{children}</div>;
 }

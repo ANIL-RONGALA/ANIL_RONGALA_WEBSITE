@@ -46,7 +46,7 @@ export function VideoCard({ video }: VideoCardProps) {
             setOpen(true);
           }
         }}
-        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border bg-background/60 shadow-sm backdrop-blur transition hover:bg-background/70 hover:shadow-md"
+        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border bg-background/60 shadow-sm backdrop-blur transition duration-200 hover:-translate-y-[1px] hover:bg-background/70 hover:shadow-md"
       >
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
@@ -66,9 +66,9 @@ export function VideoCard({ video }: VideoCardProps) {
         </div>
         <div className="flex flex-1 flex-col gap-2 p-4">
           <div className="space-y-1">
-            <h3 className="text-lg font-semibold text-foreground">{video.title}</h3>
+            <h3 className="text-lg font-semibold text-foreground line-clamp-2">{video.title}</h3>
             {video.subtitle ? (
-              <p className="text-sm text-muted-foreground">{video.subtitle}</p>
+              <p className="text-sm text-muted-foreground line-clamp-3">{video.subtitle}</p>
             ) : null}
           </div>
           {tags.length > 0 ? (

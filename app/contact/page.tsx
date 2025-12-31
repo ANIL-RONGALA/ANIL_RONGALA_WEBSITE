@@ -6,6 +6,7 @@ import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { HiOutlineMail } from "react-icons/hi";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
+import { MotionCard } from "@/components/ui/MotionCard";
 
 export const metadata: Metadata = {
   title: "Contact | ANIL RONGALA WEBSITE"
@@ -21,7 +22,7 @@ export default function ContactPage() {
       >
         <PageTransition>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            <div className="flex h-full flex-col space-y-6 rounded-2xl border bg-background/60 p-8 shadow-sm backdrop-blur transition hover:bg-background/70 hover:shadow-md">
+            <MotionCard className="flex h-full flex-col space-y-6 p-8">
               <h3 className="text-xl font-semibold text-foreground">Connect</h3>
               <div className="flex flex-col gap-3">
                 <a
@@ -47,8 +48,8 @@ export default function ContactPage() {
                   <HiOutlineMail /> {siteConfig.email}
                 </Link>
               </div>
-            </div>
-            <div className="flex h-full flex-col space-y-6 rounded-2xl border bg-background/60 p-8 shadow-sm backdrop-blur transition hover:bg-background/70 hover:shadow-md">
+            </MotionCard>
+            <MotionCard className="flex h-full flex-col space-y-6 p-8">
               <h3 className="text-xl font-semibold text-foreground">Send a Signal</h3>
               <form className="space-y-4">
                 <div className="space-y-2">
@@ -97,7 +98,7 @@ export default function ContactPage() {
               <p className="text-xs text-muted-foreground">
                 * This form is a UI placeholder. Connect via email or LinkedIn for fastest response.
               </p>
-            </div>
+            </MotionCard>
           </div>
         </PageTransition>
       </Section>
