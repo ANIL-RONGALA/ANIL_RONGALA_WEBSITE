@@ -38,6 +38,10 @@ export function Navbar() {
     setTimeout(() => document.body.classList.remove('theme-transition'), 600);
   };
 
+  const handleOpenSearch = () => {
+    window.dispatchEvent(new Event('open-command-palette'));
+  };
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
@@ -60,6 +64,15 @@ export function Navbar() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleOpenSearch}
+            className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-2 text-[0.65rem] font-mono uppercase tracking-[0.2em] text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+            aria-label="Search"
+          >
+            Search
+            <span className="rounded-full border border-border/60 px-2 py-1 text-[0.6rem]">⌘K</span>
+          </button>
           <a
             href={siteConfig.githubUrl}
             target="_blank"

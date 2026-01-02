@@ -41,10 +41,20 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
         title={project.title}
         subtitle={project.oneLiner}
       >
-        <div className="flex flex-wrap gap-2">
-          {project.tags.map((tag) => (
-            <Badge key={tag}>{tag}</Badge>
-          ))}
+        <div className="flex flex-wrap items-center gap-4">
+          <Link href="/projects" className="text-sm font-semibold text-foreground hover:text-primary">
+            ← Back to Projects
+          </Link>
+          {project.externalUrl ? (
+            <Link
+              href={project.externalUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm font-semibold text-muted-foreground hover:text-foreground"
+            >
+              View external →
+            </Link>
+          ) : null}
         </div>
       </Section>
 
@@ -71,6 +81,14 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
                 <Link key={item.label} href={item.url} target="_blank" rel="noreferrer" className="hover:text-foreground">
                   {item.label}
                 </Link>
+              ))}
+            </div>
+          </div>
+          <div className="space-y-3">
+            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Tags</h2>
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <Badge key={tag}>{tag}</Badge>
               ))}
             </div>
           </div>

@@ -7,6 +7,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import { ReactNode } from "react";
 import { Providers } from "./providers";
 import BootScreen from "@/components/BootScreen";
+import { CommandPalette } from "@/components/CommandPalette";
 
 type RootLayoutProps = { children: ReactNode };
 
@@ -51,6 +52,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body className={`${inter.variable} ${jetBrainsMono.variable} min-h-screen bg-background text-foreground`}>
         <Providers>
           <BootScreen />
+          <CommandPalette />
           <div className="flex min-h-screen flex-col">
             <Navbar />
             <main className="flex-1">{children}</main>
