@@ -18,6 +18,9 @@
 
 :root {
   color-scheme: dark;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans",
+    sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --background: 222 47% 7%;
   --foreground: 210 40% 96%;
   --muted: 223 20% 16%;
@@ -189,7 +192,7 @@ body {
   min-height: 100%;
   background: hsl(var(--background));
   color: hsl(var(--foreground));
-  font-family: var(--font-sans), system-ui, sans-serif;
+  font-family: var(--font-sans);
   font-feature-settings: 'liga' 1;
   line-height: 1.6;
   text-rendering: geometricPrecision;
@@ -198,6 +201,12 @@ body {
   transition: background 0.6s ease, color 0.6s ease;
   position: relative;
   isolation: isolate;
+}
+
+code,
+pre,
+.mono {
+  font-family: var(--font-mono);
 }
 
 body::before {
@@ -1046,7 +1055,7 @@ html.light .pcb-container {
 }
 
 .bus-label {
-  font-family: 'Share Tech Mono', 'Space Mono', monospace;
+  font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.32em;
   fill: var(--bus-label);
