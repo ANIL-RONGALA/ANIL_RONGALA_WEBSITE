@@ -21,6 +21,9 @@ export default function ContactPage() {
         subtitle="Direct channels for collaboration, verification strategy, and documented work follow-ups."
       >
         <PageTransition>
+          <p className="mb-6 max-w-2xl text-sm text-muted-foreground">
+            Email and social links for collaborations and opportunities.
+          </p>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <MotionCard className="flex h-full flex-col space-y-6 p-8">
               <h3 className="text-xl font-semibold text-foreground">Connect</h3>

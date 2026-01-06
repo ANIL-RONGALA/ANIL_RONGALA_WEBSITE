@@ -25,6 +25,9 @@ export default function MediaPage() {
         subtitle="Talks, demos, and recorded walkthroughs with direct video proof."
       >
         <PageTransition>
+          <p className="mb-6 max-w-2xl text-sm text-muted-foreground">
+            Curated demos and talks (YouTube).
+          </p>
           <VideoSection
             title="Recorded Sessions"
             subtitle="Talks, walkthroughs, and in-lab captures from recent work."

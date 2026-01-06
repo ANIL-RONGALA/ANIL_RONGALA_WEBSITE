@@ -17,12 +17,12 @@ export default function AchievementsPage() {
       <Section
         eyebrow="HIGHLIGHTS"
         title="Achievements"
-        subtitle="Recognition highlights with direct links to documented case-study evidence."
+        subtitle="Recognition highlights with direct links to documented evidence."
       >
         <PageTransition>
           <div className="space-y-8">
             <p className="max-w-2xl text-sm text-muted-foreground">
-              This page highlights measurable outcomes across research, competitions, and verification work.
+              Measurable outcomes: milestones, awards, and high-impact deliverables.
             </p>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {achievements.map((item) => (

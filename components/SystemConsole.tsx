@@ -2,8 +2,8 @@ import { Badge } from "@/components/ui/Badge";
 
 const lines = [
   { label: "Build", value: "Active" },
-  { label: "Focus", value: "AI-EDA / RTL Verification" },
-  { label: "Current", value: "Portfolio hardening" },
+  { label: "Focus", value: "AI for Hardware / RTL Verification" },
+  { label: "Current", value: "Research portfolio updates" },
   { label: "Next", value: "Case studies + demos" },
   { label: "Deploy", value: "Vercel" },
   { label: "Updated", value: "2025-02-12" }
