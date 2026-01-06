@@ -831,7 +831,7 @@ a:hover {
   text-transform: uppercase;
 }
 
-/* PCB motherboard */
+/* PCB system layout */
 .pcb-container {
   background: var(--pcb-background);
 }
@@ -847,20 +847,20 @@ html.light .pcb-container {
     inset 0 0 100px rgba(255,0,255,0.12);
 }
 
-.motherboard-layout {
+.system-layout {
   display: flex;
   flex-direction: column;
   gap: clamp(2.5rem, 5vw, 4rem);
   padding: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 6vw, 5rem);
 }
 
-.motherboard-stage {
+.system-stage {
   display: none;
   justify-content: center;
 }
 
 @media (min-width: 1024px) {
-  .motherboard-stage {
+  .system-stage {
     display: flex;
   }
 }
@@ -1307,7 +1307,7 @@ html.light .pcb-container {
     filter: blur(40px);
   }
 
-  .motherboard-layout .pcb-wrapper {
+.system-layout .pcb-wrapper {
     max-width: 90%;
     margin-inline: auto;
   }

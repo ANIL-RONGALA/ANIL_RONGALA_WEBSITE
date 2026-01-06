@@ -140,7 +140,7 @@ function ModuleCard({ module }: ModuleCardProps) {
   );
 }
 
-export function Motherboard() {
+export function SystemsBoard() {
   const modules = useMemo(() => MODULES, []);
   const { scrollYProgress } = useScroll();
   const parallaxY = useTransform(scrollYProgress, [0, 1], [0, 80]);
@@ -169,7 +169,7 @@ export function Motherboard() {
   );
 
   return (
-    <div className="motherboard-layout">
+    <div className="system-layout">
       <motion.div
         className="relative mx-auto w-full max-w-6xl px-4 sm:px-6 md:px-10"
         style={{ y: parallaxY, scale: parallaxGlow }}
@@ -180,7 +180,7 @@ export function Motherboard() {
           transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
           style={{ background: 'radial-gradient(circle at center, rgba(59,130,246,0.15), transparent 70%)' }}
         />
-        <div className="motherboard-stage hidden lg:flex">
+        <div className="system-stage hidden lg:flex">
           <div className="pcb-wrapper">
             <div className="pcb-scaler">
               <div
