@@ -19,6 +19,9 @@ export default function PersonalPage() {
       >
         <PageTransition>
           <div className="space-y-8">
+            <p className="max-w-2xl text-sm text-muted-foreground">
+              Background, interests, and long-term direction.
+            </p>
             <MotionCard className="grid grid-cols-1 gap-6 p-8 md:grid-cols-2">
               <div className="space-y-4">
                 <h3 className="text-2xl font-semibold text-foreground">Bio</h3>

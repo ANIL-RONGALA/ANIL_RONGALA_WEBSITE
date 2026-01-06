@@ -14,12 +14,12 @@ export default function AcademicsPage() {
       <Section
         eyebrow="ACADEMICS"
         title="Academic Journey"
-        subtitle="Formal education and research tracks with evidence links and documented coursework."
+        subtitle="Formal education and research tracks organized for quick reference and verification."
       >
         <PageTransition>
           <div className="space-y-6">
             <p className="max-w-2xl text-sm text-muted-foreground">
-              This page documents coursework, research foundations, and academic milestones that shaped my technical focus.
+              Coursework and research notes aligned with AI for hardware and verification.
             </p>
             <ClientAcademics />
           </div>

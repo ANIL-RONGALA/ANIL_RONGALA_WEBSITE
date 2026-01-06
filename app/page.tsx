@@ -34,12 +34,12 @@ export default function HomePage() {
       description: "UVM-driven coverage closure with proof-backed artifacts."
     },
     {
-      title: "AI-EDA Focus",
-      description: "Applied ML pipelines for verification and flow automation."
+      title: "AI for Hardware",
+      description: "Applied ML pipelines for verification and EDA workflow automation."
     },
     {
-      title: "Systems Thinking",
-      description: "Architecture-level tradeoffs grounded in measurable outcomes."
+      title: "Interface Theme",
+      description: "Dark neon styling with glassmorphism panels and a structured layout."
     }
   ];
 
@@ -53,15 +53,18 @@ export default function HomePage() {
                 RESEARCH • ENGINEERING • SYSTEMS
               </p>
               <h1 className="text-4xl font-semibold text-foreground sm:text-5xl">
-                Engineering intelligent{" "}
+                Research-focused engineering{" "}
                 <span className="relative inline-block">
-                  systems
+                  portfolio
                   <span className="absolute -bottom-1 left-0 h-[3px] w-full bg-gradient-to-r from-primary/70 via-primary/40 to-transparent" />
                 </span>
                 .
               </h1>
               <p className="max-w-2xl text-base text-muted-foreground">
-                VLSI • AI-driven EDA • verification • applied ML — documented with proof, not hype.
+                VLSI, RTL verification, AI-driven EDA, and applied ML — organized as a clean, structured interface.
+              </p>
+              <p className="max-w-2xl text-sm text-muted-foreground">
+                Projects link to repos/demos; media highlights talks and builds.
               </p>
               <div className="flex flex-wrap gap-3">
                 <ButtonLink href="/projects" variant="primary">
@@ -75,7 +78,7 @@ export default function HomePage() {
                 </ButtonLink>
               </div>
               <div>
-                <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">Highlights</p>
+                <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">System Highlights</p>
                 <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {highlights.map((item) => (
                     <MotionCard key={item.title} className="p-4">

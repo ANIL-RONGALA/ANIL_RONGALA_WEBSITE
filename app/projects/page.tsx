@@ -19,8 +19,11 @@ export default function ProjectsPage() {
       <Section
         eyebrow="PROJECTS"
         title="Selected Work"
-        subtitle="Case studies with direct proof links to repositories, demos, and research artifacts."
+        subtitle="Case studies with direct links to repositories, demos, and research artifacts."
       >
+        <p className="mb-8 max-w-2xl text-sm text-muted-foreground">
+          External links point to GitHub repos or hosted demos. Each entry is a compact case-study.
+        </p>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featuredProjects.map((project) => (
             <MotionCard key={project.slug} className="flex h-full flex-col p-6">
