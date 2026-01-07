@@ -1,70 +1,211 @@
 import type { Metadata } from "next";
-import { PageTransition } from "@/components/PageTransition";
-import { personalProfile } from "@/lib/personal";
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
-import { MotionCard } from "@/components/ui/MotionCard";
+import { Card } from "@/components/ui/Card";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { ProfileTabs } from "@/components/profile/ProfileTabs";
+import { Accordion } from "@/components/profile/Accordion";
+import { CopyField } from "@/components/profile/CopyField";
+import { profileData } from "@/lib/profile";
 
 export const metadata: Metadata = {
-  title: 'Personal | ANIL RONGALA WEBSITE'
+  title: "Personal | ANIL RONGALA WEBSITE"
 };
 
 export default function PersonalPage() {
+  const skillItems = profileData.skills.map((group) => ({
+    id: group.group,
+    title: group.group,
+    body: (
+      <div className="flex flex-wrap gap-2">
+        {group.items.map((item) => (
+          <span
+            key={item}
+            className="rounded-full border border-border/70 bg-muted/40 px-2.5 py-0.5 text-[11px] font-mono uppercase tracking-wide text-muted-foreground"
+          >
+            {item}
+          </span>
+        ))}
+      </div>
+    )
+  }));
+
+  const highlightItems = profileData.highlights.map((highlight) => ({
+    id: highlight.title,
+    title: highlight.title,
+    body: (
+      <div className="space-y-3">
+        <p className="text-sm text-muted-foreground line-clamp-3">{highlight.detail}</p>
+        {highlight.proofUrl ? (
+          <div className="flex items-center">
+            <a
+              href={highlight.proofUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="group relative inline-flex items-center gap-2 rounded-full border border-border/70 bg-muted/40 px-3 py-1 text-[11px] font-mono uppercase tracking-wide text-muted-foreground transition hover:bg-muted"
+            >
+              Proof
+              <span className="pointer-events-none absolute left-full top-1/2 ml-3 -translate-y-1/2 whitespace-nowrap rounded-full border border-border/70 bg-background/80 px-2 py-1 text-[11px] text-muted-foreground opacity-0 transition group-hover:opacity-100">
+                Open Proof
+              </span>
+            </a>
+          </div>
+        ) : null}
+      </div>
+    )
+  }));
+
   return (
     <Container>
       <Section
         eyebrow="PERSONAL"
-        title="Inside the Lab"
+        title="Profile"
         subtitle="Personal context behind the engineering log, values, and long-term goals."
       >
-        <PageTransition>
-          <div className="space-y-8">
-            <p className="max-w-2xl text-sm text-muted-foreground">
-              Background, interests, and long-term direction.
-            </p>
-            <MotionCard className="grid grid-cols-1 gap-6 p-8 md:grid-cols-2">
-              <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-foreground">Bio</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">{personalProfile.bio}</p>
+        <div className="space-y-8">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">{profileData.name}</p>
+                <h3 className="text-2xl font-semibold text-foreground sm:text-3xl line-clamp-2">
+                  {profileData.headline}
+                </h3>
+                <p className="max-w-2xl text-sm text-muted-foreground line-clamp-3">{profileData.summary}</p>
               </div>
-              <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-foreground">Values</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  {personalProfile.values.map((value) => (
-                    <li key={value} className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--accent-cyan)]" />
-                      <span>{value}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div className="flex flex-wrap gap-2">
+                {profileData.focusAreas.slice(0, 3).map((area) => (
+                  <span
+                    key={area.title}
+                    className="rounded-full border border-border/70 bg-muted/40 px-3 py-1 text-[11px] font-mono uppercase tracking-wide text-muted-foreground"
+                  >
+                    {area.title}
+                  </span>
+                ))}
               </div>
-            </MotionCard>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <MotionCard className="h-full p-6">
-                <h3 className="text-xl font-semibold text-foreground">Interests</h3>
-                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                  {personalProfile.interests.map((interest) => (
-                    <li key={interest} className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--accent-cyan)]" />
-                      <span>{interest}</span>
-                    </li>
-                  ))}
-                </ul>
-              </MotionCard>
-              <MotionCard className="h-full p-6">
-                <h3 className="text-xl font-semibold text-foreground">Goals</h3>
-                <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-                  {personalProfile.goals.map((goal) => (
-                    <li key={goal} className="flex items-start gap-2">
-                      <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--accent-cyan)]" />
-                      <span>{goal}</span>
-                    </li>
-                  ))}
-                </ul>
-              </MotionCard>
+            </div>
+            <Card className="p-6">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-semibold text-foreground">Profile Console</h4>
+                <span className="text-xs font-mono uppercase tracking-wide text-muted-foreground">status</span>
+              </div>
+              <div className="mt-4 space-y-3 text-sm text-muted-foreground">
+                <div className="flex items-center justify-between border-b border-border/60 pb-2 font-mono text-xs uppercase tracking-wide">
+                  <span>Focus</span>
+                  <span className="text-foreground">AI-driven EDA / RTL verification</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-border/60 pb-2 font-mono text-xs uppercase tracking-wide">
+                  <span>Base</span>
+                  <span className="text-foreground">University of Houston</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-border/60 pb-2 font-mono text-xs uppercase tracking-wide">
+                  <span>Role</span>
+                  <span className="text-foreground">Lead TA</span>
+                </div>
+                <div className="flex items-center justify-between font-mono text-xs uppercase tracking-wide">
+                  <span>Availability</span>
+                  <span className="text-foreground">Open to PhD / RA</span>
+                </div>
+              </div>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            {[
+              { title: "Domains", detail: "VLSI / Verification / ML" },
+              { title: "Tooling", detail: "SystemVerilog, UVM, Python" },
+              { title: "Output", detail: "Projects, Demos, Reports" }
+            ].map((item) => (
+              <Card key={item.title} className="p-4">
+                <p className="text-xs font-mono uppercase tracking-wide text-muted-foreground">{item.title}</p>
+                <p className="mt-2 text-sm font-semibold text-foreground">{item.detail}</p>
+              </Card>
+            ))}
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+            <div className="space-y-6">
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold text-foreground">Summary</h3>
+                <p className="mt-3 text-sm text-muted-foreground">{profileData.summary}</p>
+              </Card>
+              <Card className="p-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold text-foreground">Focus & Growth</h3>
+                  <span className="text-xs font-mono uppercase tracking-wide text-muted-foreground">interactive</span>
+                </div>
+                <div className="mt-4">
+                  <ProfileTabs
+                    focusAreas={profileData.focusAreas}
+                    skills={profileData.skills}
+                    timeline={profileData.timeline}
+                  />
+                </div>
+              </Card>
+            </div>
+
+            <div className="space-y-6">
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold text-foreground">Quick Links</h3>
+                <div className="mt-4 space-y-3">
+                  <CopyField label="Email" value={profileData.links.email} href={`mailto:${profileData.links.email}`} />
+                  <CopyField label="GitHub" value={profileData.links.github} href={profileData.links.github} />
+                  <CopyField label="LinkedIn" value={profileData.links.linkedin} href={profileData.links.linkedin} />
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    <Link
+                      href={profileData.links.resumeAcademic}
+                      className="rounded-2xl border border-border/70 bg-background/40 px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground transition hover:bg-muted"
+                    >
+                      Academic Resume
+                    </Link>
+                    <Link
+                      href={profileData.links.resumeIndustry}
+                      className="rounded-2xl border border-border/70 bg-background/40 px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-muted-foreground transition hover:bg-muted"
+                    >
+                      Industry Resume
+                    </Link>
+                  </div>
+                </div>
+              </Card>
+
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold text-foreground">Skill Matrix</h3>
+                <p className="mt-2 text-sm text-muted-foreground">Grouped tooling to keep projects moving fast.</p>
+                <div className="mt-4">
+                  <Accordion items={skillItems} defaultOpenIds={profileData.skills[0] ? [profileData.skills[0].group] : []} />
+                </div>
+              </Card>
+
+              <Card className="p-6">
+                <h3 className="text-lg font-semibold text-foreground">Highlights</h3>
+                <p className="mt-2 text-sm text-muted-foreground">Recent milestones and proof points.</p>
+                <div className="mt-4">
+                  <Accordion items={highlightItems} />
+                </div>
+              </Card>
             </div>
           </div>
-        </PageTransition>
+
+          <Card className="flex flex-col items-start justify-between gap-4 p-6 sm:flex-row sm:items-center">
+            <div>
+              <h3 className="text-lg font-semibold text-foreground">Explore more</h3>
+              <p className="text-sm text-muted-foreground">
+                Dive into project work or start a conversation about research collaboration.
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <ButtonLink href="/projects" variant="primary">
+                View Projects
+              </ButtonLink>
+              <ButtonLink href="/contact" variant="secondary">
+                Contact
+              </ButtonLink>
+              <ButtonLink href={profileData.links.github} variant="ghost" target="_blank" rel="noreferrer">
+                Open GitHub
+              </ButtonLink>
+            </div>
+          </Card>
+        </div>
       </Section>
     </Container>
   );
