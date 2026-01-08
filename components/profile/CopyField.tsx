@@ -47,7 +47,7 @@ export function CopyField({ label, value, href }: CopyFieldProps) {
           href={href}
           target="_blank"
           rel="noreferrer"
-          className="break-all text-sm text-foreground transition hover:text-primary"
+          className="break-all text-sm text-foreground transition hover:text-accent"
         >
           {value}
         </a>
