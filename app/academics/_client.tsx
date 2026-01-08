@@ -23,7 +23,7 @@ export default function AcademicsPage() {
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             {entry.highlights.slice(0, 2).map((highlight) => (
               <li key={highlight} className="flex items-start gap-2">
-                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--accent-cyan)]" />
+                <span className="mt-1 h-1.5 w-1.5 rounded-full bg-accent" />
                 <span>{highlight}</span>
               </li>
             ))}
@@ -41,7 +41,7 @@ export default function AcademicsPage() {
                 href={entry.proof[0].url}
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm font-semibold text-foreground hover:text-primary"
+                className="text-sm font-semibold text-accent hover:text-accent hover:underline"
               >
                 Open →
               </Link>

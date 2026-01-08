@@ -53,12 +53,8 @@ export default function HomePage() {
                 RESEARCH • ENGINEERING • SYSTEMS
               </p>
               <h1 className="text-4xl font-semibold text-foreground sm:text-5xl">
-                Research-focused engineering{" "}
-                <span className="relative inline-block">
-                  portfolio
-                  <span className="absolute -bottom-1 left-0 h-[3px] w-full bg-gradient-to-r from-primary/70 via-primary/40 to-transparent" />
-                </span>
-                .
+                Research-focused{" "}
+                <span className="gradient-accent bg-clip-text text-transparent">engineering</span> portfolio.
               </h1>
               <p className="max-w-2xl text-base text-muted-foreground">
                 VLSI, RTL verification, AI-driven EDA, and applied ML — organized as a clean, structured interface.

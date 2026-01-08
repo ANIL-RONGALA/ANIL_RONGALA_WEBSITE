@@ -42,7 +42,7 @@ export default function AchievementsPage() {
                       <Badge className="border-border/60">{item.issuer}</Badge>
                     </div>
                     {item.link ? (
-                      <Link href={item.link} className="text-sm font-semibold text-foreground hover:text-primary">
+                      <Link href={item.link} className="text-sm font-semibold text-accent hover:text-accent hover:underline">
                         Open →
                       </Link>
                     ) : null}

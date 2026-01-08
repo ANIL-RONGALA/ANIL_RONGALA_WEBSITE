@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/Badge";
 
 export type Video = {
   title: string;
@@ -46,7 +47,7 @@ export function VideoCard({ video }: VideoCardProps) {
             setOpen(true);
           }
         }}
-        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border bg-background/60 shadow-sm backdrop-blur transition duration-200 hover:-translate-y-[1px] hover:bg-background/70 hover:shadow-md"
+        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border bg-background/60 shadow-sm backdrop-blur transition duration-200 hover:-translate-y-[1px] hover:bg-background/70 hover:shadow-md hover:border-accent hover:glow-accent"
       >
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
@@ -74,12 +75,7 @@ export function VideoCard({ video }: VideoCardProps) {
           {tags.length > 0 ? (
             <div className="mt-auto flex flex-wrap gap-2">
               {tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border px-2 py-1 text-xs font-mono text-muted-foreground"
-                >
-                  {tag}
-                </span>
+                <Badge key={tag}>{tag}</Badge>
               ))}
             </div>
           ) : null}

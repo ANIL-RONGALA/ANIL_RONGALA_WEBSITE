@@ -24,7 +24,7 @@ export function ProofStrip({ items }: ProofStripProps) {
               href={item.href}
               target={item.external ? "_blank" : undefined}
               rel={item.external ? "noreferrer" : undefined}
-              className="text-xs font-mono uppercase tracking-[0.2em] text-primary hover:text-primary/80"
+              className="text-xs font-mono uppercase tracking-[0.2em] text-accent hover:text-accent"
             >
               View proof
             </Link>

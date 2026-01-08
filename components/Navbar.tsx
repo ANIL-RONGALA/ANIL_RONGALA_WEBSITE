@@ -7,6 +7,8 @@ import { useEffect, useState } from 'react';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
 import { useTheme } from 'next-themes';
+import { usePathname } from 'next/navigation';
+import { cx } from '@/components/ui/classNames';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -22,6 +24,7 @@ const navLinks = [
 export function Navbar() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
   useEffect(() => {
     setMounted(true);
@@ -54,7 +57,16 @@ export function Navbar() {
         </Link>
         <nav className="hidden items-center gap-6 text-sm text-muted-foreground transition-colors duration-300 lg:flex">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground">
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cx(
+                "relative transition-colors hover:text-accent",
+                pathname === link.href
+                  ? "text-accent after:absolute after:-bottom-2 after:left-0 after:h-[2px] after:w-full after:bg-[hsl(var(--accent))]"
+                  : "text-muted-foreground"
+              )}
+            >
               {link.label}
             </Link>
           ))}
@@ -100,7 +112,16 @@ export function Navbar() {
       </div>
       <div className="mx-auto flex w-full max-w-6xl flex-wrap gap-4 px-4 pb-4 text-xs text-muted-foreground transition-colors duration-300 lg:hidden">
         {navLinks.map((link) => (
-          <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground">
+          <Link
+            key={link.href}
+            href={link.href}
+            className={cx(
+              "relative transition-colors hover:text-accent",
+              pathname === link.href
+                ? "text-accent after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-full after:bg-[hsl(var(--accent))]"
+                : "text-muted-foreground"
+            )}
+          >
             {link.label}
           </Link>
         ))}
