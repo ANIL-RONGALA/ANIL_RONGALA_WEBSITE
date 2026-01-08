@@ -45,7 +45,7 @@ export default function ProjectsPage() {
                       href={item.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="hover:text-foreground"
+                      className="text-accent hover:text-accent hover:underline"
                     >
                       {item.label}
                     </Link>
@@ -53,7 +53,7 @@ export default function ProjectsPage() {
                 </div>
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="text-sm font-semibold text-foreground hover:text-primary"
+                  className="text-sm font-semibold text-accent hover:text-accent hover:underline"
                 >
                   Open →
                 </Link>
@@ -90,7 +90,7 @@ export default function ProjectsPage() {
                       href={item.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="hover:text-foreground"
+                      className="text-accent hover:text-accent hover:underline"
                     >
                       {item.label}
                     </Link>
@@ -98,7 +98,7 @@ export default function ProjectsPage() {
                 </div>
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="text-sm font-semibold text-foreground hover:text-primary"
+                  className="text-sm font-semibold text-accent hover:text-accent hover:underline"
                 >
                   Open →
                 </Link>

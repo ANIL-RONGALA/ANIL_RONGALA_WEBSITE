@@ -54,7 +54,7 @@ export function HeroIntro() {
         transition={{ duration: 0.7, delay: 0.1 }}
       >
         Engineering Logbook for{" "}
-        <span className="bright-underline bg-gradient-to-r from-sky-500 via-violet-500 to-fuchsia-500 bg-clip-text text-transparent">
+        <span className="gradient-accent bg-clip-text text-transparent">
           {siteConfig.ownerName}
         </span>
       </motion.h1>
