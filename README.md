@@ -36,7 +36,8 @@ Then open [localhost:3000](http://localhost:3000) to view the site.
 - Project cards linking out to external GitHub repos or hosted demos.
 - Media carousel and grid of embedded YouTube content.
 - Responsive, dark neon theme with glassmorphism panels.
-
+- 
+#Note: Stilll Under Process(advanced features)
 ## Author
 ANIL RONGALA
 AI for Hardware domain
