@@ -6,6 +6,7 @@ import { siteConfig } from "@/lib/siteConfig";
 import { ReactNode } from "react";
 import { Providers } from "./providers";
 import BootScreen from "@/components/BootScreen";
+import { HelpBot } from "@/components/HelpBot";
 
 type RootLayoutProps = { children: ReactNode };
 
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
+          <HelpBot />
         </Providers>
       </body>
     </html>
