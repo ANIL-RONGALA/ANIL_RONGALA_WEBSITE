@@ -215,6 +215,7 @@ body {
 
 code,
 pre,
+.font-mono,
 .mono {
   font-family: var(--font-mono);
 }
