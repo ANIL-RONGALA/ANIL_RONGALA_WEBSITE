@@ -17,6 +17,7 @@ npm install
 npm run dev
 ```
 Then open [localhost:3000](http://localhost:3000) to view the site.
+# Fonts: Add font files to public/fonts: Inter-Variable.woff2, JetBrainsMono-Variable.woff2
 #Note: Stilll Under Process(advanced features)
 
 ## 🧭 Project Structure
