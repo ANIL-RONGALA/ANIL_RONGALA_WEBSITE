@@ -7,6 +7,22 @@ import { ReactNode } from "react";
 import { Providers } from "./providers";
 import BootScreen from "@/components/BootScreen";
 import { HelpBot } from "@/components/HelpBot";
+import { SupportWidget } from "@/components/SupportWidget";
+import localFont from "next/font/local";
+
+const sansFont = localFont({
+  src: "../public/fonts/Inter-Variable.woff2",
+  variable: "--font-sans",
+  weight: "100 900",
+  display: "swap",
+});
+
+const monoFont = localFont({
+  src: "../public/fonts/JetBrainsMono-Variable.woff2",
+  variable: "--font-mono",
+  weight: "100 800",
+  display: "swap",
+});
 
 type RootLayoutProps = { children: ReactNode };
 
@@ -36,7 +52,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-background text-foreground">
+      <body
+        className={`${sansFont.variable} ${monoFont.variable} min-h-screen bg-background text-foreground`}
+      >
         <Providers>
           <BootScreen />
           <div className="flex min-h-screen flex-col">
@@ -45,6 +63,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <Footer />
           </div>
           <HelpBot />
+          <SupportWidget />
         </Providers>
       </body>
     </html>

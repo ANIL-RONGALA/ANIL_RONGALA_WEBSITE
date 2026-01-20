@@ -41,6 +41,10 @@ export function Navbar() {
     setTimeout(() => document.body.classList.remove('theme-transition'), 600);
   };
 
+  const handleOpenSupport = () => {
+    window.dispatchEvent(new CustomEvent('open-support-widget'));
+  };
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
@@ -72,6 +76,13 @@ export function Navbar() {
           ))}
         </nav>
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleOpenSupport}
+            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground lg:inline-flex"
+          >
+            Live Support
+          </button>
           <a
             href={siteConfig.githubUrl}
             target="_blank"
@@ -125,6 +136,13 @@ export function Navbar() {
             {link.label}
           </Link>
         ))}
+        <button
+          type="button"
+          onClick={handleOpenSupport}
+          className="rounded-full border border-border/60 bg-background/60 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground"
+        >
+          Live Support
+        </button>
       </div>
     </motion.header>
   );
