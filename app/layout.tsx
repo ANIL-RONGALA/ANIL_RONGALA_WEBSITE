@@ -11,14 +11,14 @@ import { SupportWidget } from "@/components/SupportWidget";
 import localFont from "next/font/local";
 
 const sansFont = localFont({
-  src: "../public/fonts/Inter-Variable.woff2",
+  src: "public/fonts/Inter-Variable.woff2",
   variable: "--font-sans",
   weight: "100 900",
   display: "swap",
 });
 
 const monoFont = localFont({
-  src: "../public/fonts/JetBrainsMono-Variable.woff2",
+  src: "public/fonts/JetBrainsMono-Variable.woff2",
   variable: "--font-mono",
   weight: "100 800",
   display: "swap",
