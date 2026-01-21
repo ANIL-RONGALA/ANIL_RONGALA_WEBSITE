@@ -213,6 +213,22 @@ body {
   isolation: isolate;
 }
 
+@layer utilities {
+  .glass {
+    background-color: hsl(var(--background) / 0.7);
+    border: 1px solid hsl(var(--border) / 0.6);
+    backdrop-filter: blur(16px);
+  }
+
+  .ring-accent {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent;
+  }
+
+  .border-accent {
+    border-color: hsl(var(--border-accent) / 0.6);
+  }
+}
+
 code,
 pre,
 .font-mono,

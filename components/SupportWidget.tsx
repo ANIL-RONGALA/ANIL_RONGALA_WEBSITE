@@ -22,6 +22,7 @@ export function SupportWidget() {
   const label =
     process.env.NEXT_PUBLIC_SUPPORT_LABEL || "Ask Anil — Live Support";
   const [open, setOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [{ isStreaming, isThinking }, setStreamState] = useState<StreamState>({
@@ -47,6 +48,15 @@ export function SupportWidget() {
     if (open) {
       inputRef.current?.focus();
     }
+  }, [open]);
+
+  useEffect(() => {
+    if (open) {
+      setIsVisible(true);
+      return undefined;
+    }
+    const timeout = window.setTimeout(() => setIsVisible(false), 200);
+    return () => window.clearTimeout(timeout);
   }, [open]);
 
   const stopStreaming = useCallback(() => {
@@ -195,49 +205,80 @@ export function SupportWidget() {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-medium text-white shadow-lg backdrop-blur transition hover:border-white/30 hover:bg-white/20"
-      >
-        Ask Anil
-        <span className="rounded bg-white/10 px-2 py-0.5 text-xs text-white/70">
-          Ctrl+/
-        </span>
-      </button>
+      <div className="fixed bottom-5 right-5 z-50 sm:bottom-6 sm:right-6">
+        <div className="group relative">
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label="Open live support chat"
+            aria-expanded={open}
+            className="glass ring-accent flex h-12 w-12 items-center justify-center gap-2 rounded-full border border-border/60 bg-background/70 text-foreground shadow-lg transition-all duration-200 hover:border-[hsl(var(--border-accent))] hover:shadow-xl sm:w-auto sm:px-4"
+          >
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--accent)/0.15)] text-[13px] font-semibold text-foreground">
+              AI
+            </span>
+            <span className="hidden text-sm font-semibold sm:inline">
+              Ask Anil
+            </span>
+          </button>
+          <div className="pointer-events-none absolute bottom-full right-0 mb-3 flex translate-y-1 scale-95 items-center gap-2 rounded-xl border border-border/70 bg-background/75 px-3 py-2 text-xs text-foreground/80 opacity-0 shadow-sm backdrop-blur transition duration-200 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:scale-100 group-focus-within:opacity-100">
+            <span>Ask Anil — Live Support</span>
+            <span className="rounded-md border border-border/60 bg-background/70 px-1.5 py-0.5 text-[10px] text-foreground/70">
+              Ctrl+/
+            </span>
+          </div>
+        </div>
+      </div>
 
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4 sm:items-center">
+      {isVisible && (
+        <div className="fixed bottom-5 left-4 right-4 z-50 sm:bottom-6 sm:left-auto sm:right-6 sm:w-[420px]">
           <div
             ref={panelRef}
-            className="w-full max-w-xl rounded-2xl border border-white/10 bg-slate-950/90 p-5 text-white shadow-[0_0_30px_rgba(56,189,248,0.25)] backdrop-blur-xl"
+            className={`glass ring-accent relative w-full rounded-2xl border border-border/70 bg-background/75 p-5 text-foreground shadow-2xl backdrop-blur-xl transition duration-200 ease-out ${
+              open
+                ? "pointer-events-auto scale-100 opacity-100"
+                : "pointer-events-none scale-[0.98] opacity-0"
+            }`}
             role="dialog"
             aria-modal="true"
             aria-label={label}
           >
-            <header className="flex items-start justify-between gap-3 border-b border-white/10 pb-4">
+            <div className="pointer-events-none absolute -inset-6 rounded-[28px] bg-[radial-gradient(circle_at_top,_rgba(56,189,248,0.3),_transparent_65%)] opacity-60" />
+            <header className="relative z-10 flex items-start justify-between gap-3 border-b border-border/60 pb-4">
               <div>
-                <h2 className="text-xl font-semibold">{label}</h2>
-                <p className="text-sm text-white/70">
-                  Questions about projects, research, verification, and
-                  navigation.
+                <h2 className="text-lg font-semibold">{label}</h2>
+                <p className="text-xs text-muted-foreground">
+                  Projects • Research • Verification • Navigation
                 </p>
               </div>
               <button
                 type="button"
                 onClick={closePanel}
-                className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/70 transition hover:border-white/30 hover:text-white"
+                aria-label="Close live support"
+                className="ring-accent inline-flex h-9 w-9 items-center justify-center rounded-full border border-border/60 text-foreground/70 transition hover:border-[hsl(var(--border-accent))] hover:text-foreground"
               >
-                Close
+                <svg
+                  aria-hidden
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
               </button>
             </header>
 
-            <div className="mt-4 flex flex-wrap gap-2">
+            <div className="relative z-10 mt-4 flex flex-wrap gap-2">
               {starterPrompts.map((prompt) => (
                 <button
                   key={prompt}
                   type="button"
-                  className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/80 transition hover:border-white/30 hover:bg-white/10"
+                  className="ring-accent rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs text-muted-foreground transition hover:border-[hsl(var(--border-accent))] hover:text-foreground"
                   onClick={() => handleSuggestion(prompt)}
                 >
                   {prompt}
@@ -245,25 +286,36 @@ export function SupportWidget() {
               ))}
             </div>
 
-            <div className="mt-4 max-h-72 space-y-3 overflow-y-auto rounded-xl border border-white/10 bg-white/5 p-4">
+            <div className="relative z-10 mt-4 h-[50vh] space-y-4 overflow-y-auto rounded-2xl border border-border/60 bg-background/60 p-4 sm:h-[360px] sm:p-5">
               {visibleMessages.map((message, index) => (
                 <div
                   key={`${message.role}-${index}`}
-                  className={`rounded-xl px-3 py-2 text-sm leading-relaxed ${
-                    message.role === "user"
-                      ? "ml-auto w-fit max-w-[80%] bg-sky-500/20 text-white"
-                      : "w-fit max-w-[85%] bg-white/10 text-white/90"
-                  }`}
+                  className="flex flex-col gap-3"
                 >
-                  {message.content}
-                  {isThinking && message.role === "assistant" && !message.content && (
-                    <span className="italic text-white/70">Thinking…</span>
+                  <div
+                    className={`w-fit max-w-[85%] rounded-2xl border px-4 py-2 text-sm leading-relaxed ${
+                      message.role === "user"
+                        ? "ml-auto border-[hsl(var(--border-accent)/0.35)] bg-[hsl(var(--accent)/0.12)] text-foreground"
+                        : "border-border/60 bg-background/70 text-foreground/90"
+                    }`}
+                  >
+                    {message.content}
+                    {isThinking &&
+                      message.role === "assistant" &&
+                      !message.content && (
+                        <span className="italic text-muted-foreground">
+                          Thinking…
+                        </span>
+                      )}
+                  </div>
+                  {index < visibleMessages.length - 1 && (
+                    <div className="h-px w-full bg-border/50" aria-hidden />
                   )}
                 </div>
               ))}
             </div>
 
-            <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+            <form onSubmit={handleSubmit} className="relative z-10 mt-4 space-y-3">
               <textarea
                 ref={inputRef}
                 value={input}
@@ -275,13 +327,15 @@ export function SupportWidget() {
                   }
                 }}
                 placeholder="Ask about projects, research, or how to reach Anil..."
-                className="min-h-[80px] w-full resize-none rounded-xl border border-white/15 bg-white/10 px-4 py-3 text-sm text-white placeholder:text-white/50 outline-none transition focus:border-sky-400"
+                aria-label="Live support message"
+                className="ring-accent min-h-[72px] w-full resize-none rounded-xl border border-border/60 bg-background/70 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground outline-none transition focus:border-[hsl(var(--border-accent))]"
               />
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="submit"
                   disabled={!input.trim() || isStreaming}
-                  className="rounded-full bg-sky-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-sky-400 disabled:cursor-not-allowed disabled:opacity-50"
+                  aria-label="Send message"
+                  className="ring-accent rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition hover:bg-[hsl(var(--accent))] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Send
                 </button>
@@ -289,7 +343,8 @@ export function SupportWidget() {
                   <button
                     type="button"
                     onClick={stopStreaming}
-                    className="rounded-full border border-white/20 px-3 py-2 text-xs text-white/80 transition hover:border-white/40"
+                    aria-label="Stop streaming response"
+                    className="ring-accent rounded-full border border-border/70 px-3 py-2 text-xs text-foreground/80 transition hover:border-[hsl(var(--border-accent))] hover:text-foreground"
                   >
                     Stop
                   </button>
@@ -297,11 +352,12 @@ export function SupportWidget() {
                 <button
                   type="button"
                   onClick={clearChat}
-                  className="rounded-full border border-white/20 px-3 py-2 text-xs text-white/70 transition hover:border-white/40 hover:text-white"
+                  aria-label="Clear conversation"
+                  className="ring-accent rounded-full border border-border/60 px-3 py-2 text-xs text-muted-foreground transition hover:border-[hsl(var(--border-accent))] hover:text-foreground"
                 >
                   Clear
                 </button>
-                <span className="ml-auto text-xs text-white/50">
+                <span className="ml-auto text-xs text-muted-foreground">
                   Responses are AI-generated; for official contact use the
                   Contact page.
                 </span>
