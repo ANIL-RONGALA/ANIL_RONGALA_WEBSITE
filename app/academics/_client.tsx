@@ -12,15 +12,15 @@ export default function AcademicsPage() {
         <MotionCard key={entry.degree} className="flex h-full flex-col p-8">
           <div className="flex flex-col gap-3">
             <div className="flex flex-wrap items-start justify-between gap-3">
-              <h3 className="text-2xl font-semibold text-foreground line-clamp-2">{entry.degree}</h3>
+              <h3 className="text-2xl font-semibold text-body line-clamp-2">{entry.degree}</h3>
               <Badge className="border-border/60 text-[0.65rem] uppercase tracking-[0.2em]">
                 {entry.years}
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground line-clamp-2">{entry.institution}</p>
-            <p className="text-sm text-muted-foreground line-clamp-3">{entry.description}</p>
+            <p className="text-sm leading-relaxed text-muted line-clamp-2">{entry.institution}</p>
+            <p className="text-sm leading-relaxed text-muted line-clamp-3">{entry.description}</p>
           </div>
-          <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
+          <ul className="mt-4 space-y-2 text-sm text-muted">
             {entry.highlights.slice(0, 2).map((highlight) => (
               <li key={highlight} className="flex items-start gap-2">
                 <span className="mt-1 h-1.5 w-1.5 rounded-full bg-accent" />
@@ -41,7 +41,7 @@ export default function AcademicsPage() {
                 href={entry.proof[0].url}
                 target="_blank"
                 rel="noreferrer"
-                className="text-sm font-semibold text-accent hover:text-accent hover:underline"
+                className="ring-accent neon-ring text-sm font-semibold text-body transition-colors duration-200 hover:neon-text hover:underline"
               >
                 Open →
               </Link>

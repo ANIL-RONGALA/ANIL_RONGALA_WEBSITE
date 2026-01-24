@@ -26,13 +26,13 @@ export function ProfileTabs({ focusAreas, skills, timeline }: ProfileTabsProps) 
         <div className="grid gap-4 md:grid-cols-2">
           {focusAreas.map((area) => (
             <div key={area.title} className="rounded-2xl border border-border/70 bg-background/40 p-4">
-              <h4 className="text-sm font-semibold text-foreground line-clamp-2">{area.title}</h4>
-              <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{area.description}</p>
+              <h4 className="line-clamp-2 text-sm font-semibold text-body">{area.title}</h4>
+              <p className="mt-2 text-sm leading-relaxed text-muted line-clamp-3">{area.description}</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {area.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-border/70 bg-muted/40 px-2.5 py-0.5 text-[11px] font-mono uppercase tracking-wide text-muted-foreground"
+                    className="rounded-full border border-border/70 bg-muted/40 px-2.5 py-0.5 text-[11px] font-mono uppercase tracking-wide text-muted"
                   >
                     {tag}
                   </span>
@@ -49,12 +49,12 @@ export function ProfileTabs({ focusAreas, skills, timeline }: ProfileTabsProps) 
         <div className="space-y-4">
           {skills.map((group) => (
             <div key={group.group} className="rounded-2xl border border-border/70 bg-background/40 p-4">
-              <h4 className="text-sm font-semibold text-foreground">{group.group}</h4>
+              <h4 className="text-sm font-semibold text-body">{group.group}</h4>
               <div className="mt-3 flex flex-wrap gap-2">
                 {group.items.map((item) => (
                   <span
                     key={item}
-                    className="rounded-full border border-border/70 bg-muted/40 px-2.5 py-0.5 text-[11px] font-mono uppercase tracking-wide text-muted-foreground"
+                    className="rounded-full border border-border/70 bg-muted/40 px-2.5 py-0.5 text-[11px] font-mono uppercase tracking-wide text-muted"
                   >
                     {item}
                   </span>
@@ -71,18 +71,18 @@ export function ProfileTabs({ focusAreas, skills, timeline }: ProfileTabsProps) 
         {timeline.map((item) => (
           <div key={`${item.yearOrDate}-${item.title}`} className="rounded-2xl border border-border/70 bg-background/40 p-4">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <h4 className="text-sm font-semibold text-foreground line-clamp-2">{item.title}</h4>
-              <span className="text-xs font-mono uppercase tracking-wide text-muted-foreground">
+              <h4 className="line-clamp-2 text-sm font-semibold text-body">{item.title}</h4>
+              <span className="text-xs font-mono uppercase tracking-wide text-muted">
                 {item.yearOrDate}
               </span>
             </div>
-            <p className="mt-2 text-sm text-muted-foreground line-clamp-3">{item.description}</p>
+            <p className="mt-2 text-sm leading-relaxed text-muted line-clamp-3">{item.description}</p>
             {item.tags ? (
               <div className="mt-3 flex flex-wrap gap-2">
                 {item.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-border/70 bg-muted/40 px-2.5 py-0.5 text-[11px] font-mono uppercase tracking-wide text-muted-foreground"
+                    className="rounded-full border border-border/70 bg-muted/40 px-2.5 py-0.5 text-[11px] font-mono uppercase tracking-wide text-muted"
                   >
                     {tag}
                   </span>
@@ -126,10 +126,10 @@ export function ProfileTabs({ focusAreas, skills, timeline }: ProfileTabsProps) 
             aria-selected={index === activeIndex}
             aria-controls={`profile-tab-panel-${tab.toLowerCase()}`}
             className={cx(
-              "rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition",
+              "ring-accent neon-ring rounded-full border px-4 py-1.5 text-xs font-semibold uppercase tracking-wide transition duration-200",
               index === activeIndex
-                ? "border-border bg-muted/70 text-foreground"
-                : "border-border/60 text-muted-foreground hover:bg-muted/40"
+                ? "border-[hsl(var(--accent)/0.45)] bg-[hsl(var(--accent)/0.1)] neon-text"
+                : "border-border/60 text-muted hover:bg-muted/40 hover:text-foreground"
             )}
             onClick={() => setActiveIndex(index)}
           >

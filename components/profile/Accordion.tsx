@@ -33,18 +33,18 @@ export function Accordion({ items, className, defaultOpenIds = [] }: AccordionPr
           <div key={item.id} className="rounded-2xl border border-border/70 bg-background/40">
             <button
               type="button"
-              className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
+              className="ring-accent neon-ring flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors duration-200"
               aria-expanded={isOpen}
               onClick={() => toggle(item.id)}
             >
               <div>
-                <h4 className="text-sm font-semibold text-foreground">{item.title}</h4>
-                {item.meta ? <div className="mt-1 text-xs text-muted-foreground">{item.meta}</div> : null}
+                <h4 className="text-sm font-semibold text-body">{item.title}</h4>
+                {item.meta ? <div className="mt-1 text-xs text-muted">{item.meta}</div> : null}
               </div>
               <span
                 className={cx(
-                  "flex h-7 w-7 items-center justify-center rounded-full border border-border/70 text-xs font-semibold text-muted-foreground transition",
-                  isOpen ? "bg-muted/60 text-foreground" : "bg-background/40"
+                  "flex h-7 w-7 items-center justify-center rounded-full border border-border/70 text-xs font-semibold text-muted transition",
+                  isOpen ? "bg-muted/60 text-body" : "bg-background/40"
                 )}
                 aria-hidden="true"
               >
@@ -58,7 +58,7 @@ export function Accordion({ items, className, defaultOpenIds = [] }: AccordionPr
               )}
             >
               <div className="overflow-hidden">
-                <div className="px-4 pb-4 text-sm text-muted-foreground">{item.body}</div>
+                <div className="px-4 pb-4 text-sm leading-relaxed text-muted">{item.body}</div>
               </div>
             </div>
           </div>

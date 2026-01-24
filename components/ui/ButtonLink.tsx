@@ -14,11 +14,11 @@ type ButtonLinkProps = LinkProps & {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "ring-glow rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-[hsl(var(--accent-foreground))] shadow-sm transition duration-200 hover:-translate-y-[1px] hover:shadow-md hover:brightness-110",
+    "ring-glow gradient-accent rounded-full px-5 py-2.5 text-sm font-semibold text-[hsl(var(--accent-foreground))] shadow-sm transition duration-200 hover:-translate-y-[1px] hover:brightness-105 hover:neon-glow",
   secondary:
-    "ring-glow rounded-full border border-accent bg-background/40 px-5 py-2.5 text-sm font-semibold text-accent transition duration-200 hover:bg-[hsl(var(--accent)/0.12)]",
+    "ring-glow rounded-full border border-border/70 bg-background/60 px-5 py-2.5 text-sm font-semibold text-body transition duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:bg-[hsl(var(--accent)/0.08)] hover:neon-text hover:neon-glow",
   ghost:
-    "rounded-full px-4 py-2 text-sm font-semibold text-muted-foreground transition duration-200 hover:bg-muted/70 hover:text-foreground"
+    "rounded-full px-4 py-2 text-sm font-semibold text-muted transition duration-200 hover:bg-muted/70 hover:text-foreground"
 };
 
 export function ButtonLink({
@@ -34,7 +34,7 @@ export function ButtonLink({
     <Link
       href={href}
       className={cx(
-        "ring-accent focus-visible:outline-none",
+        "ring-accent neon-ring focus-visible:outline-none",
         variantClasses[variant],
         className
       )}

@@ -52,14 +52,14 @@ export default function HomePage() {
               <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">
                 RESEARCH • ENGINEERING • SYSTEMS
               </p>
-              <h1 className="text-4xl font-semibold text-foreground sm:text-5xl">
+              <h1 className="text-4xl font-semibold tracking-tight text-body sm:text-5xl">
                 Research-focused{" "}
-                <span className="gradient-accent bg-clip-text text-transparent">engineering</span> portfolio.
+                <span className="neon-text neon-underline">engineering</span> portfolio.
               </h1>
-              <p className="max-w-2xl text-base text-muted-foreground">
+              <p className="max-w-2xl text-base leading-relaxed text-muted">
                 VLSI, RTL verification, AI-driven EDA, and applied ML — organized as a clean, structured interface.
               </p>
-              <p className="max-w-2xl text-sm text-muted-foreground">
+              <p className="max-w-2xl text-sm leading-relaxed text-muted">
                 Projects link to repos/demos; media highlights talks and builds.
               </p>
               <div className="flex flex-wrap gap-3">
@@ -78,8 +78,8 @@ export default function HomePage() {
                 <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
                   {highlights.map((item) => (
                     <MotionCard key={item.title} className="p-4">
-                      <p className="text-sm font-semibold text-foreground">{item.title}</p>
-                      <p className="mt-2 text-xs text-muted-foreground line-clamp-3">{item.description}</p>
+                      <p className="text-sm font-semibold text-body">{item.title}</p>
+                      <p className="mt-2 text-xs leading-relaxed text-muted line-clamp-3">{item.description}</p>
                     </MotionCard>
                   ))}
                 </div>

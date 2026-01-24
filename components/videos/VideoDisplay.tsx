@@ -39,14 +39,14 @@ export function VideoDisplay({ label, videos }: VideoDisplayProps) {
       <div className="video-display-glow" />
       <div className="video-display-overlay" />
       <div className="relative z-10 flex flex-col gap-4 p-4">
-        <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#8f7bff]">
-          <span className="rounded-full bg-white/60 px-3 py-1 text-[11px] font-bold text-[#5c7cfa] shadow-sm backdrop-blur dark:bg-white/10 dark:text-cyan-100">
+        <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
+          <span className="ring-accent neon-ring rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] px-3 py-1 text-[11px] font-bold neon-text shadow-sm backdrop-blur">
             {label}
           </span>
-          <span className="text-slate-700/80 dark:text-white/70">Now Streaming</span>
+          <span className="text-muted">Now Streaming</span>
         </div>
 
-        <div className="overflow-hidden rounded-3xl border border-white/40 shadow-[0_0_40px_rgba(255,170,240,0.45)] backdrop-blur-xl dark:border-white/10">
+        <div className="overflow-hidden rounded-3xl border border-border/60 shadow-lg backdrop-blur-xl">
           <AnimatePresence mode="wait">
             <motion.div
               key={index}
@@ -60,7 +60,7 @@ export function VideoDisplay({ label, videos }: VideoDisplayProps) {
                 className="absolute inset-0"
                 animate={{ scale: [1, 1.02, 1] }}
                 transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-                style={{ background: "radial-gradient(circle at 50% 20%, rgba(255,255,255,0.25), transparent 55%)" }}
+                style={{ background: "radial-gradient(circle at 50% 20%, hsl(var(--accent) / 0.18), transparent 55%)" }}
               />
               <iframe
                 src={embedUrl}
@@ -69,18 +69,18 @@ export function VideoDisplay({ label, videos }: VideoDisplayProps) {
                 allowFullScreen
                 className="relative z-10 h-full w-full rounded-3xl object-cover"
               />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/60 via-white/20 to-transparent opacity-50 dark:from-slate-900/60 dark:via-slate-900/30" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[hsl(var(--accent)/0.16)] via-transparent to-transparent opacity-60" />
             </motion.div>
           </AnimatePresence>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-slate-800 transition-colors duration-500 dark:text-slate-200">
+        <div className="flex items-center justify-between text-sm text-body transition-colors duration-500">
           <div className="flex flex-col">
-            <span className="text-xs uppercase tracking-[0.15em] text-[#ff9ae0] dark:text-cyan-300">Featured</span>
-            <span className="text-base font-semibold text-slate-900 dark:text-white">{current.title}</span>
+            <span className="text-xs uppercase tracking-[0.15em] neon-text">Featured</span>
+            <span className="text-base font-semibold text-body">{current.title}</span>
           </div>
           <motion.span
-            className="rounded-full bg-[#728aff]/15 px-3 py-1 text-[11px] font-semibold text-[#728aff] shadow-inner backdrop-blur dark:bg-cyan-500/20 dark:text-cyan-100"
+            className="ring-accent neon-ring rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] px-3 py-1 text-[11px] font-semibold neon-text shadow-inner backdrop-blur"
             animate={{ opacity: [0.6, 1, 0.6], scale: [1, 1.08, 1] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
           >
