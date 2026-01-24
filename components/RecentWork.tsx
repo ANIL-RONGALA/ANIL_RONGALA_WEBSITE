@@ -25,8 +25,8 @@ export function RecentWork() {
   return (
     <section className="space-y-4">
       <div className="space-y-1">
-        <h2 className="text-xl font-semibold text-foreground">Recent Work</h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="text-2xl font-semibold text-body sm:text-3xl">Recent Work</h2>
+        <p className="max-w-2xl text-sm leading-relaxed text-muted">
           A running log of verification, research, and hardware design experiments.
         </p>
       </div>
@@ -34,14 +34,17 @@ export function RecentWork() {
         {recentWork.map((item) => (
           <div key={item.title} className="space-y-1">
             <div className="flex flex-wrap items-center gap-3">
-              <Link href={item.href} className="text-sm font-semibold text-foreground hover:underline">
+              <Link
+                href={item.href}
+                className="ring-accent neon-ring text-sm font-semibold text-body transition-colors duration-200 hover:neon-text hover:underline"
+              >
                 {item.title}
               </Link>
-              <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              <span className="text-xs uppercase tracking-[0.2em] text-muted">
                 {item.type}
               </span>
             </div>
-            <p className="text-sm text-muted-foreground">{item.description}</p>
+            <p className="text-sm leading-relaxed text-muted">{item.description}</p>
           </div>
         ))}
       </div>

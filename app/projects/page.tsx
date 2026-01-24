@@ -21,31 +21,31 @@ export default function ProjectsPage() {
         title="Selected Work"
         subtitle="Case studies with direct links to repositories, demos, and research artifacts."
       >
-        <p className="mb-8 max-w-2xl text-sm text-muted-foreground">
+        <p className="mb-8 max-w-2xl text-sm leading-relaxed text-muted">
           External links point to GitHub repos or hosted demos. Each entry is a compact case-study.
         </p>
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {featuredProjects.map((project) => (
             <MotionCard key={project.slug} className="flex h-full flex-col p-6">
               <div className="flex items-start justify-between gap-3">
-                <h3 className="text-xl font-semibold text-foreground line-clamp-2">{project.title}</h3>
+                <h3 className="text-xl font-semibold text-body line-clamp-2">{project.title}</h3>
                 <Badge className="border-border/60 text-[0.65rem] uppercase tracking-[0.2em]">Featured</Badge>
               </div>
-              <p className="mt-3 flex-1 text-sm text-muted-foreground line-clamp-3">{project.oneLiner}</p>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted line-clamp-3">{project.oneLiner}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.tags.slice(0, 3).map((tag) => (
                   <Badge key={tag}>{tag}</Badge>
                 ))}
               </div>
               <div className="mt-5 flex items-center justify-between gap-3">
-                <div className="flex flex-wrap gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+                <div className="flex flex-wrap gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted">
                   {project.proof.slice(0, 2).map((item) => (
                     <Link
                       key={item.label}
                       href={item.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-accent hover:text-accent hover:underline"
+                      className="ring-accent neon-ring text-body transition-colors duration-200 hover:neon-text hover:underline"
                     >
                       {item.label}
                     </Link>
@@ -53,7 +53,7 @@ export default function ProjectsPage() {
                 </div>
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="text-sm font-semibold text-accent hover:text-accent hover:underline"
+                  className="ring-accent neon-ring text-sm font-semibold text-body transition-colors duration-200 hover:neon-text hover:underline"
                 >
                   Open →
                 </Link>
@@ -73,24 +73,24 @@ export default function ProjectsPage() {
           {projects.map((project) => (
             <MotionCard key={project.slug} className="flex h-full flex-col p-6">
               <div className="flex items-start justify-between gap-3">
-                <h3 className="text-lg font-semibold text-foreground line-clamp-2">{project.title}</h3>
+                <h3 className="text-lg font-semibold text-body line-clamp-2">{project.title}</h3>
                 <Badge className="border-border/60 text-[0.65rem] uppercase tracking-[0.2em]">Case Study</Badge>
               </div>
-              <p className="mt-3 flex-1 text-sm text-muted-foreground line-clamp-3">{project.oneLiner}</p>
+              <p className="mt-3 flex-1 text-sm leading-relaxed text-muted line-clamp-3">{project.oneLiner}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {project.tags.slice(0, 3).map((tag) => (
                   <Badge key={tag}>{tag}</Badge>
                 ))}
               </div>
               <div className="mt-5 flex items-center justify-between gap-3">
-                <div className="flex flex-wrap gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+                <div className="flex flex-wrap gap-3 text-xs font-mono uppercase tracking-[0.2em] text-muted">
                   {project.proof.slice(0, 2).map((item) => (
                     <Link
                       key={item.label}
                       href={item.url}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-accent hover:text-accent hover:underline"
+                      className="ring-accent neon-ring text-body transition-colors duration-200 hover:neon-text hover:underline"
                     >
                       {item.label}
                     </Link>
@@ -98,7 +98,7 @@ export default function ProjectsPage() {
                 </div>
                 <Link
                   href={`/projects/${project.slug}`}
-                  className="text-sm font-semibold text-accent hover:text-accent hover:underline"
+                  className="ring-accent neon-ring text-sm font-semibold text-body transition-colors duration-200 hover:neon-text hover:underline"
                 >
                   Open →
                 </Link>

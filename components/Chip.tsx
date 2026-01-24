@@ -356,11 +356,11 @@ export function Chip({
           animate={{ opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <div className="relative z-[1] flex items-center justify-between text-[10px] uppercase tracking-[0.35em] text-blue-700/70 transition-colors duration-300 dark:text-cyan-100/70">
+        <div className="relative z-[1] flex items-center justify-between text-[10px] uppercase tracking-[0.35em] text-muted transition-colors duration-300">
           <span>{label}</span>
-          <span className="text-[9px] text-slate-600/70 transition-colors duration-300 dark:text-slate-300/70">Module</span>
+          <span className="text-[9px] text-muted transition-colors duration-300">Module</span>
         </div>
-        <div className="relative z-[1] mt-3 flex-1 overflow-hidden rounded-xl border border-[var(--surface-border)] bg-white/75 p-3 transition-colors duration-500 dark:bg-black/50">
+        <div className="relative z-[1] mt-3 flex-1 overflow-hidden rounded-xl border border-[var(--surface-border)] bg-background/70 p-3 transition-colors duration-500">
           <div className="absolute inset-0 rounded-xl border border-[var(--surface-border)] opacity-30" />
           {videoUrl ? (
             <video
@@ -394,8 +394,8 @@ export function Chip({
           />
         </div>
         <div className="relative z-[1] mt-4 space-y-1">
-          <p className="text-[11px] uppercase tracking-[0.28em] text-slate-600/80 transition-colors duration-300 dark:text-slate-300/80">Access Port</p>
-          <p className="text-lg font-semibold text-slate-900 drop-shadow-[0_0_4px_rgba(0,0,0,0.15)] transition-colors duration-300 dark:text-white dark:drop-shadow-[0_0_4px_rgba(0,0,0,0.45)]">{subtitle}</p>
+          <p className="text-[11px] uppercase tracking-[0.28em] text-muted transition-colors duration-300">Access Port</p>
+          <p className="text-lg font-semibold text-body drop-shadow-[0_0_4px_rgba(0,0,0,0.15)] transition-colors duration-300">{subtitle}</p>
           <motion.span
             aria-hidden
             className="mt-2 block h-1 rounded-full"

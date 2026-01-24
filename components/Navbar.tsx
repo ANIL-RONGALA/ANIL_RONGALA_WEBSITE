@@ -52,23 +52,23 @@ export function Navbar() {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className="navbar"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-muted-foreground transition-colors duration-300 sm:px-6 md:px-8">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-muted transition-colors duration-300 sm:px-6 md:px-8">
         <Link
           href="/"
-          className="font-semibold uppercase tracking-[0.2em] text-foreground transition-colors duration-300 hover:text-foreground/80"
+          className="rounded-full px-2 py-1 font-semibold uppercase tracking-[0.2em] text-body transition-colors duration-200 hover:neon-text ring-accent neon-ring"
         >
           {siteConfig.siteName}
         </Link>
-        <nav className="hidden items-center gap-6 text-sm text-muted-foreground transition-colors duration-300 lg:flex">
+        <nav className="hidden items-center gap-4 text-sm text-muted transition-colors duration-300 lg:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cx(
-                "relative transition-colors hover:text-accent",
+                "relative rounded-full px-3 py-1.5 text-muted transition-colors duration-200 hover:text-foreground hover:neon-text ring-accent neon-ring",
                 pathname === link.href
-                  ? "text-accent after:absolute after:-bottom-2 after:left-0 after:h-[2px] after:w-full after:bg-[hsl(var(--accent))]"
-                  : "text-muted-foreground"
+                  ? "neon-text neon-underline bg-[hsl(var(--accent)/0.1)]"
+                  : ""
               )}
             >
               {link.label}
@@ -79,7 +79,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={handleOpenSupport}
-            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground lg:inline-flex"
+            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:neon-text ring-accent neon-ring lg:inline-flex"
           >
             Live Support
           </button>
@@ -87,7 +87,7 @@ export function Navbar() {
             href={siteConfig.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:neon-text ring-accent neon-ring"
             aria-label="GitHub"
           >
             <FaGithub />
@@ -96,14 +96,14 @@ export function Navbar() {
             href={siteConfig.linkedinUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:neon-text ring-accent neon-ring"
             aria-label="LinkedIn"
           >
             <FaLinkedin />
           </a>
           <a
             href={`mailto:${siteConfig.email}`}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:neon-text ring-accent neon-ring"
             aria-label="Email"
           >
             <HiOutlineMail />
@@ -112,7 +112,7 @@ export function Navbar() {
             type="button"
             onClick={handleToggle}
             disabled={!mounted}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-all duration-300 hover:border-foreground/40 hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted transition-all duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:neon-text ring-accent neon-ring disabled:cursor-not-allowed disabled:opacity-60"
             aria-label={toggleLabel}
           >
             <span aria-hidden className="text-lg">
@@ -121,16 +121,16 @@ export function Navbar() {
           </button>
         </div>
       </div>
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap gap-4 px-4 pb-4 text-xs text-muted-foreground transition-colors duration-300 lg:hidden">
+      <div className="mx-auto flex w-full max-w-6xl flex-wrap gap-3 px-4 pb-4 text-xs text-muted transition-colors duration-300 lg:hidden">
         {navLinks.map((link) => (
           <Link
             key={link.href}
             href={link.href}
             className={cx(
-              "relative transition-colors hover:text-accent",
+              "relative rounded-full px-3 py-1.5 text-muted transition-colors duration-200 hover:text-foreground hover:neon-text ring-accent neon-ring",
               pathname === link.href
-                ? "text-accent after:absolute after:-bottom-1 after:left-0 after:h-[2px] after:w-full after:bg-[hsl(var(--accent))]"
-                : "text-muted-foreground"
+                ? "neon-text neon-underline bg-[hsl(var(--accent)/0.12)]"
+                : ""
             )}
           >
             {link.label}
@@ -139,7 +139,7 @@ export function Navbar() {
         <button
           type="button"
           onClick={handleOpenSupport}
-          className="rounded-full border border-border/60 bg-background/60 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground transition-colors duration-300 hover:border-foreground/40 hover:text-foreground"
+          className="rounded-full border border-border/60 bg-background/60 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:neon-text ring-accent neon-ring"
         >
           Live Support
         </button>

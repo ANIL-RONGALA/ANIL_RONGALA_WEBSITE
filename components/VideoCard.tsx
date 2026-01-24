@@ -47,7 +47,7 @@ export function VideoCard({ video }: VideoCardProps) {
             setOpen(true);
           }
         }}
-        className="group flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border bg-background/60 shadow-sm backdrop-blur transition duration-200 hover:-translate-y-[1px] hover:bg-background/70 hover:shadow-md hover:border-accent hover:glow-accent"
+        className="group ring-accent neon-ring flex h-full cursor-pointer flex-col overflow-hidden rounded-2xl border border-border/60 bg-background/60 shadow-sm backdrop-blur transition duration-200 hover:-translate-y-[1px] hover:bg-background/70 hover:shadow-md hover:border-[hsl(var(--accent)/0.45)] hover:neon-glow"
       >
         <div className="relative aspect-video w-full overflow-hidden">
           <Image
@@ -60,16 +60,16 @@ export function VideoCard({ video }: VideoCardProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/40" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white/90 text-black shadow-lg transition-transform duration-200 group-hover:scale-105">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.18)] text-body shadow-lg transition-transform duration-200 group-hover:scale-105">
               ▶
             </span>
           </div>
         </div>
         <div className="flex flex-1 flex-col gap-2 p-4">
           <div className="space-y-1">
-            <h3 className="text-lg font-semibold text-foreground line-clamp-2">{video.title}</h3>
+            <h3 className="text-lg font-semibold text-body line-clamp-2">{video.title}</h3>
             {video.subtitle ? (
-              <p className="text-sm text-muted-foreground line-clamp-3">{video.subtitle}</p>
+              <p className="text-sm leading-relaxed text-muted line-clamp-3">{video.subtitle}</p>
             ) : null}
           </div>
           {tags.length > 0 ? (
@@ -95,7 +95,7 @@ export function VideoCard({ video }: VideoCardProps) {
               type="button"
               aria-label="Close video"
               onClick={() => setOpen(false)}
-              className="absolute right-3 top-3 z-10 rounded-full bg-black/60 px-3 py-1 text-sm text-white transition hover:bg-black/80"
+              className="ring-accent neon-ring absolute right-3 top-3 z-10 rounded-full border border-border/60 bg-background/80 px-3 py-1 text-sm text-body transition duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:neon-text"
             >
               ✕
             </button>

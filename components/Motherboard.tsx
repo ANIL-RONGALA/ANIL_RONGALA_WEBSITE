@@ -124,7 +124,7 @@ function ModuleCard({ module }: ModuleCardProps) {
       >
         <span className="module-card__subtitle">{module.section}</span>
         <div className="flex items-center justify-center gap-2 text-[color:var(--module-title)]">
-          <span className="text-cyan-300 drop-shadow">{ICONS[module.id]}</span>
+          <span className="neon-text drop-shadow">{ICONS[module.id]}</span>
           <span className="module-card__title text-[0.7rem] tracking-[0.34em]">{module.title}</span>
         </div>
         <div className="module-card__divider" />

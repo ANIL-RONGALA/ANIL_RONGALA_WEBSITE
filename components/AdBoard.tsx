@@ -58,12 +58,12 @@ export function AdBoard({ youtubeUrl, title, position, rotation = 0, isActive = 
         rotate: `${rotation}deg`
       }}
     >
-      <div className="relative overflow-hidden rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-2 shadow-xl transition-colors duration-500 backdrop-blur dark:shadow-[0_0_30px_rgba(34,211,238,0.35)]">
-        <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-cyan-500/30 via-transparent to-fuchsia-500/30 opacity-60 blur-2xl" />
-      <div className="relative overflow-hidden rounded-2xl border border-[var(--surface-border)] bg-white/85 transition-colors duration-500 dark:bg-black/70">
-        <VideoCard video={{ youtubeId: videoId, title }} />
-      </div>
-        <div className="mt-3 text-[11px] uppercase tracking-[0.25em] text-[var(--accent-cyan)]">{title}</div>
+      <div className="relative overflow-hidden rounded-3xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-2 shadow-xl transition-colors duration-500 backdrop-blur">
+        <div className="absolute inset-0 -z-10 rounded-3xl bg-[radial-gradient(circle_at_center,_hsl(var(--accent)/0.22),_transparent_68%)] opacity-70 blur-2xl" />
+        <div className="relative overflow-hidden rounded-2xl border border-[var(--surface-border)] bg-background/80 transition-colors duration-500">
+          <VideoCard video={{ youtubeId: videoId, title }} />
+        </div>
+        <div className="mt-3 text-[11px] uppercase tracking-[0.25em] neon-text">{title}</div>
       </div>
     </motion.div>
   );

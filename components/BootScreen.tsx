@@ -12,8 +12,8 @@ export default function BootScreen() {
   if (done) return null;
 
   return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black">
-      <h1 className="text-cyan-400 text-4xl font-bold animate-pulse">
+    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-background">
+      <h1 className="animate-pulse text-4xl font-semibold tracking-tight neon-text">
         INITIALIZING ANIL.OS…
       </h1>
     </div>

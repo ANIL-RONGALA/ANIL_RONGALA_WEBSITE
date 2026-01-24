@@ -53,22 +53,28 @@ export default function ProjectDetailPage({ params }: { params: { slug: string }
       <Section className="pt-0">
         <div className="grid gap-8">
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Problem</h2>
-            <p className="max-w-2xl text-muted-foreground">{project.problem}</p>
+            <h2 className="text-2xl font-semibold text-body sm:text-3xl">Problem</h2>
+            <p className="max-w-2xl leading-relaxed text-muted">{project.problem}</p>
           </div>
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Approach</h2>
-            <p className="max-w-2xl text-muted-foreground">{project.approach}</p>
+            <h2 className="text-2xl font-semibold text-body sm:text-3xl">Approach</h2>
+            <p className="max-w-2xl leading-relaxed text-muted">{project.approach}</p>
           </div>
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Outcome</h2>
-            <p className="max-w-2xl text-muted-foreground">{project.outcome}</p>
+            <h2 className="text-2xl font-semibold text-body sm:text-3xl">Outcome</h2>
+            <p className="max-w-2xl leading-relaxed text-muted">{project.outcome}</p>
           </div>
           <div className="space-y-3">
-            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Proof</h2>
-            <div className="flex flex-wrap gap-4 text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
+            <h2 className="text-2xl font-semibold text-body sm:text-3xl">Proof</h2>
+            <div className="flex flex-wrap gap-4 text-xs font-mono uppercase tracking-[0.2em] text-muted">
               {project.proof.map((item) => (
-                <Link key={item.label} href={item.url} target="_blank" rel="noreferrer" className="hover:text-foreground">
+                <Link
+                  key={item.label}
+                  href={item.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ring-accent neon-ring text-body transition-colors duration-200 hover:neon-text hover:underline"
+                >
                   {item.label}
                 </Link>
               ))}

@@ -17,12 +17,12 @@ export function ProjectCard({ project }: ProjectCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="flex h-full flex-col rounded-2xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 shadow-lg transition-colors duration-500 backdrop-blur hover:border-accent hover:glow-accent dark:shadow-[0_0_24px_rgba(34,211,238,0.2)]"
+      className="flex h-full flex-col rounded-2xl border border-[var(--surface-border)] bg-[var(--surface-card)] p-6 shadow-lg transition duration-300 backdrop-blur hover:border-[hsl(var(--accent)/0.45)] hover:neon-glow"
     >
       <div className="flex flex-1 flex-col">
-        <h3 className="text-xl font-semibold text-slate-900 transition-colors duration-300 dark:text-white">{project.title}</h3>
-        <p className="mt-2 text-sm text-slate-700 transition-colors duration-300 dark:text-slate-300">{project.oneLiner}</p>
-        <p className="mt-3 text-sm text-slate-600 transition-colors duration-300 dark:text-slate-400">{project.outcome}</p>
+        <h3 className="text-xl font-semibold text-body">{project.title}</h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted">{project.oneLiner}</p>
+        <p className="mt-3 text-sm leading-relaxed text-muted">{project.outcome}</p>
         <div className="mt-4 flex flex-wrap gap-2">
           {project.tags.map((tag) => (
             <Badge key={tag}>{tag}</Badge>
@@ -33,7 +33,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             href={project.externalUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[hsl(var(--accent)/0.12)] px-4 py-2 text-sm font-medium text-accent transition-colors duration-300 hover:bg-[hsl(var(--accent)/0.2)]"
+            className="ring-accent neon-ring inline-flex items-center gap-2 rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] px-4 py-2 text-sm font-medium text-body transition duration-200 hover:border-[hsl(var(--accent)/0.5)] hover:bg-[hsl(var(--accent)/0.18)] hover:neon-text hover:neon-glow"
           >
             <FaExternalLinkAlt className="text-xs" />
             View Project

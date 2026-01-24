@@ -220,12 +220,62 @@ body {
     backdrop-filter: blur(16px);
   }
 
+  .text-body {
+    color: hsl(var(--foreground));
+  }
+
+  .text-muted {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .neon-text {
+    color: hsl(var(--accent));
+    text-shadow:
+      0 0 10px hsl(var(--accent) / 0.35),
+      0 0 30px hsl(var(--accent2) / 0.18);
+  }
+
+  .hover\:neon-text:hover {
+    color: hsl(var(--accent));
+    text-shadow:
+      0 0 10px hsl(var(--accent) / 0.35),
+      0 0 30px hsl(var(--accent2) / 0.18);
+  }
+
+  .neon-underline {
+    background-image: linear-gradient(90deg, hsl(var(--accent)), hsl(var(--accent2)));
+    background-size: 100% 2px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    padding-bottom: 2px;
+  }
+
+  .neon-ring:focus-visible {
+    box-shadow: 0 0 0 3px hsl(var(--accent) / 0.22);
+  }
+
   .ring-accent {
-    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--ring))] focus-visible:ring-offset-2 focus-visible:ring-offset-transparent;
+    outline: none;
+  }
+
+  .ring-accent:focus-visible {
+    box-shadow: 0 0 0 3px hsl(var(--accent) / 0.22);
   }
 
   .border-accent {
     border-color: hsl(var(--border-accent) / 0.6);
+  }
+
+  .neon-glow {
+    box-shadow:
+      0 0 0 1px hsl(var(--accent) / 0.25),
+      0 10px 35px hsl(var(--accent2) / 0.14);
+  }
+
+  .hover\:neon-glow:hover {
+    box-shadow:
+      0 0 0 1px hsl(var(--accent) / 0.25),
+      0 10px 35px hsl(var(--accent2) / 0.14);
   }
 }
 
@@ -292,8 +342,8 @@ p {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  border: 1px solid hsl(var(--primary) / 0.35);
-  box-shadow: 0 0 24px hsl(var(--primary) / 0.18);
+  border: 1px solid hsl(var(--accent) / 0.32);
+  box-shadow: 0 0 24px hsl(var(--accent2) / 0.18);
   opacity: 0;
   transition: opacity 0.2s ease;
   pointer-events: none;
@@ -683,20 +733,14 @@ a:hover {
   color: hsl(var(--accent-foreground));
 }
 
-.ring-accent {
-  outline: none;
-}
-
-.ring-accent:focus-visible {
-  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.5), 0 0 0 5px hsl(var(--background));
-}
-
 .border-accent {
-  border-color: hsl(var(--border-accent) / 0.35);
+  border-color: hsl(var(--border-accent) / 0.6);
 }
 
 .glow-accent {
-  box-shadow: 0 18px 45px hsl(var(--accent) / 0.12);
+  box-shadow:
+    0 0 0 1px hsl(var(--accent) / 0.25),
+    0 10px 35px hsl(var(--accent2) / 0.14);
 }
 
 .gradient-accent {
@@ -705,14 +749,19 @@ a:hover {
 
 .hover\:text-accent:hover {
   color: hsl(var(--accent));
+  text-shadow:
+    0 0 10px hsl(var(--accent) / 0.35),
+    0 0 30px hsl(var(--accent2) / 0.18);
 }
 
 .hover\:border-accent:hover {
-  border-color: hsl(var(--border-accent) / 0.35);
+  border-color: hsl(var(--border-accent) / 0.45);
 }
 
 .hover\:glow-accent:hover {
-  box-shadow: 0 18px 45px hsl(var(--accent) / 0.12);
+  box-shadow:
+    0 0 0 1px hsl(var(--accent) / 0.25),
+    0 10px 35px hsl(var(--accent2) / 0.14);
 }
 
 .navbar {
@@ -811,33 +860,34 @@ a:hover {
   cursor: pointer;
   overflow: hidden;
   border-radius: 24px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(238, 243, 255, 0.7));
-  box-shadow: 0 0 40px rgba(255, 170, 240, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, hsl(var(--background) / 0.94), hsl(var(--muted) / 0.78));
+  box-shadow: 0 0 36px hsl(var(--accent2) / 0.16);
+  border: 1px solid hsl(var(--border) / 0.7);
   transition: box-shadow 0.5s ease, transform 0.5s ease;
 }
 
 .video-display-shell:hover {
-  box-shadow: 0 0 50px rgba(114, 138, 255, 0.35), 0 0 70px rgba(255, 154, 224, 0.35);
+  box-shadow:
+    0 0 0 1px hsl(var(--accent) / 0.28),
+    0 18px 45px hsl(var(--accent2) / 0.18);
 }
 
 .video-display-glow {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 20% 20%, rgba(201, 214, 255, 0.18), transparent 40%),
-    radial-gradient(circle at 80% 0%, rgba(225, 211, 255, 0.16), transparent 45%),
-    radial-gradient(circle at 50% 90%, rgba(255, 154, 224, 0.12), transparent 50%);
-  opacity: 0.9;
+    radial-gradient(circle at 20% 20%, hsl(var(--accent) / 0.18), transparent 40%),
+    radial-gradient(circle at 80% 0%, hsl(var(--accent2) / 0.16), transparent 45%),
+    radial-gradient(circle at 50% 90%, hsl(var(--accent) / 0.1), transparent 52%);
+  opacity: 0.82;
   filter: blur(22px);
 }
 
 .video-display-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.18), rgba(238, 243, 255, 0.15));
-  mix-blend-mode: screen;
-  opacity: 0.65;
+  background: linear-gradient(140deg, hsl(var(--accent) / 0.12), transparent 70%);
+  opacity: 0.55;
 }
 
 @media (max-width: 900px) {
