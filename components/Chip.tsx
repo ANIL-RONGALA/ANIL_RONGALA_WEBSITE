@@ -342,7 +342,7 @@ export function Chip({
     >
       <Link
         href={href}
-        className="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-[18px] border border-[var(--surface-border)] bg-gradient-to-br from-slate-100 via-white to-slate-200 p-4 text-left transition-colors duration-500 dark:from-[#141414]/90 dark:to-[#0c0c0c]/90"
+        className="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-[18px] border border-border bg-gradient-to-br from-card via-background to-muted p-4 text-left transition-colors duration-500"
       >
         <div
           aria-hidden
@@ -356,12 +356,12 @@ export function Chip({
           animate={{ opacity: [0.3, 0.6, 0.3] }}
           transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
         />
-        <div className="relative z-[1] flex items-center justify-between text-[10px] uppercase tracking-[0.35em] text-muted transition-colors duration-300">
+        <div className="relative z-[1] flex items-center justify-between text-[10px] uppercase tracking-[0.35em] text-muted-foreground transition-colors duration-300">
           <span>{label}</span>
-          <span className="text-[9px] text-muted transition-colors duration-300">Module</span>
+          <span className="text-[9px] text-muted-foreground transition-colors duration-300">Module</span>
         </div>
-        <div className="relative z-[1] mt-3 flex-1 overflow-hidden rounded-xl border border-[var(--surface-border)] bg-background/70 p-3 transition-colors duration-500">
-          <div className="absolute inset-0 rounded-xl border border-[var(--surface-border)] opacity-30" />
+        <div className="relative z-[1] mt-3 flex-1 overflow-hidden rounded-xl border border-border bg-background/70 p-3 transition-colors duration-500">
+          <div className="absolute inset-0 rounded-xl border border-border opacity-30" />
           {videoUrl ? (
             <video
               className="absolute inset-0 h-full w-full object-cover opacity-75 mix-blend-screen transition duration-500 ease-out group-hover:opacity-100"
@@ -394,8 +394,8 @@ export function Chip({
           />
         </div>
         <div className="relative z-[1] mt-4 space-y-1">
-          <p className="text-[11px] uppercase tracking-[0.28em] text-muted transition-colors duration-300">Access Port</p>
-          <p className="text-lg font-semibold text-body drop-shadow-[0_0_4px_rgba(0,0,0,0.15)] transition-colors duration-300">{subtitle}</p>
+          <p className="text-[11px] uppercase tracking-[0.28em] text-muted-foreground transition-colors duration-300">Access Port</p>
+          <p className="text-lg font-semibold text-foreground drop-shadow-[0_0_4px_rgba(0,0,0,0.15)] transition-colors duration-300">{subtitle}</p>
           <motion.span
             aria-hidden
             className="mt-2 block h-1 rounded-full"

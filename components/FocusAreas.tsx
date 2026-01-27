@@ -25,8 +25,8 @@ export function FocusAreas() {
   return (
     <section className="space-y-4">
       <div className="space-y-1">
-        <h2 className="text-2xl font-semibold text-body sm:text-3xl">Focus Areas</h2>
-        <p className="max-w-2xl text-sm leading-relaxed text-muted">
+        <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Focus Areas</h2>
+        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Four technical lanes that anchor my research and engineering work.
         </p>
       </div>
@@ -37,12 +37,12 @@ export function FocusAreas() {
             className="space-y-3 rounded-2xl border bg-background/60 p-4 shadow-sm backdrop-blur"
           >
             <div className="space-y-1">
-              <h3 className="text-base font-semibold text-body">{area.title}</h3>
-              <p className="text-sm leading-relaxed text-muted">{area.description}</p>
+              <h3 className="text-base font-semibold text-foreground">{area.title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">{area.description}</p>
             </div>
             <div className="flex flex-wrap gap-2">
               {area.tags.map((tag) => (
-                <span key={tag} className="rounded-full border px-2 py-1 text-xs text-muted">
+                <span key={tag} className="rounded-full border px-2 py-1 text-xs text-muted-foreground">
                   {tag}
                 </span>
               ))}
