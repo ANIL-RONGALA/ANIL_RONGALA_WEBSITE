@@ -39,11 +39,11 @@ export function VideoDisplay({ label, videos }: VideoDisplayProps) {
       <div className="video-display-glow" />
       <div className="video-display-overlay" />
       <div className="relative z-10 flex flex-col gap-4 p-4">
-        <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted">
-          <span className="ring-accent neon-ring rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] px-3 py-1 text-[11px] font-bold neon-text shadow-sm backdrop-blur">
+        <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          <span className="neon-accent rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] px-3 py-1 text-[11px] font-bold shadow-sm backdrop-blur">
             {label}
           </span>
-          <span className="text-muted">Now Streaming</span>
+          <span className="text-muted-foreground">Now Streaming</span>
         </div>
 
         <div className="overflow-hidden rounded-3xl border border-border/60 shadow-lg backdrop-blur-xl">
@@ -74,13 +74,13 @@ export function VideoDisplay({ label, videos }: VideoDisplayProps) {
           </AnimatePresence>
         </div>
 
-        <div className="flex items-center justify-between text-sm text-body transition-colors duration-500">
+        <div className="flex items-center justify-between text-sm text-foreground transition-colors duration-500">
           <div className="flex flex-col">
-            <span className="text-xs uppercase tracking-[0.15em] neon-text">Featured</span>
-            <span className="text-base font-semibold text-body">{current.title}</span>
+            <span className="neon-accent text-xs uppercase tracking-[0.15em]">Featured</span>
+            <span className="text-base font-semibold text-foreground">{current.title}</span>
           </div>
           <motion.span
-            className="ring-accent neon-ring rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] px-3 py-1 text-[11px] font-semibold neon-text shadow-inner backdrop-blur"
+            className="neon-accent rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] px-3 py-1 text-[11px] font-semibold shadow-inner backdrop-blur"
             animate={{ opacity: [0.6, 1, 0.6], scale: [1, 1.08, 1] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
           >

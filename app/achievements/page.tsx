@@ -21,22 +21,22 @@ export default function AchievementsPage() {
       >
         <PageTransition>
           <div className="space-y-8">
-            <p className="max-w-2xl text-sm leading-relaxed text-muted">
+            <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
               Measurable outcomes: milestones, awards, and high-impact deliverables.
             </p>
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {achievements.map((item) => (
                 <MotionCard key={item.title} className="flex h-full flex-col p-6">
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-lg font-semibold text-body line-clamp-2">{item.title}</h3>
+                    <h3 className="text-lg font-semibold text-foreground line-clamp-2">{item.title}</h3>
                     <Badge className="border-border/60 text-[0.65rem] uppercase tracking-[0.2em]">
                       {item.year}
                     </Badge>
                   </div>
-                  <p className="mt-2 truncate text-xs font-mono uppercase tracking-[0.2em] text-muted">
+                  <p className="mt-2 truncate text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">
                     {item.issuer}
                   </p>
-                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted line-clamp-3">{item.description}</p>
+                  <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground line-clamp-3">{item.description}</p>
                   <div className="mt-5 flex items-center justify-between gap-3">
                     <div className="flex flex-wrap gap-2">
                       <Badge className="border-border/60">{item.issuer}</Badge>
@@ -44,7 +44,7 @@ export default function AchievementsPage() {
                     {item.link ? (
                       <Link
                         href={item.link}
-                        className="ring-accent neon-ring text-sm font-semibold text-body transition-colors duration-200 hover:neon-text hover:underline"
+                        className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 text-sm font-semibold text-foreground transition-colors duration-200 hover:text-accent hover:underline"
                       >
                         Open →
                       </Link>

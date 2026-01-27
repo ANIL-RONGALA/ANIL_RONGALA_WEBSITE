@@ -17,7 +17,7 @@ export function SectionHeader({ title, subtitle, action }: SectionHeaderProps) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="text-4xl font-semibold tracking-tight text-body transition-colors duration-300 sm:text-5xl"
+          className="text-4xl font-semibold tracking-tight text-foreground transition-colors duration-300 sm:text-5xl"
         >
           {title}
         </motion.h1>
@@ -26,7 +26,7 @@ export function SectionHeader({ title, subtitle, action }: SectionHeaderProps) {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1, duration: 0.4 }}
-            className="max-w-2xl text-sm leading-relaxed text-muted transition-colors duration-300 md:text-base"
+            className="max-w-2xl text-sm leading-relaxed text-muted-foreground transition-colors duration-300 md:text-base"
           >
             {subtitle}
           </motion.p>

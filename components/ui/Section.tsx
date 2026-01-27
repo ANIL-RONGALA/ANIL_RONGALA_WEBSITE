@@ -17,10 +17,10 @@ export function Section({ children, className, eyebrow, title, subtitle }: Secti
       {hasHeader ? (
         <div className="space-y-3">
           {eyebrow ? (
-            <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted">{eyebrow}</p>
+            <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">{eyebrow}</p>
           ) : null}
-          {title ? <h2 className="text-2xl font-semibold text-body sm:text-3xl">{title}</h2> : null}
-          {subtitle ? <p className="max-w-2xl leading-relaxed text-muted">{subtitle}</p> : null}
+          {title ? <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">{title}</h2> : null}
+          {subtitle ? <p className="max-w-2xl leading-relaxed text-muted-foreground">{subtitle}</p> : null}
         </div>
       ) : null}
       <div className={cx(hasHeader ? "mt-8" : "", "space-y-6")}>{children}</div>

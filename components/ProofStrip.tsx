@@ -19,12 +19,12 @@ export function ProofStrip({ items }: ProofStripProps) {
         <MotionCard key={item.title} className="p-4">
           <div className="space-y-2">
             <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground">{item.title}</p>
-            <p className="text-sm leading-relaxed text-body line-clamp-2">{item.description}</p>
+            <p className="text-sm leading-relaxed text-foreground line-clamp-2">{item.description}</p>
             <Link
               href={item.href}
               target={item.external ? "_blank" : undefined}
               rel={item.external ? "noreferrer" : undefined}
-              className="text-xs font-mono uppercase tracking-[0.2em] neon-text neon-underline ring-accent neon-ring"
+              className="text-xs font-mono uppercase tracking-[0.2em] text-accent underline decoration-[hsl(var(--accent)/0.4)] underline-offset-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
             >
               View proof
             </Link>

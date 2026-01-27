@@ -39,7 +39,7 @@ export function HeroIntro() {
       <ParticleField count={40} speed={0.4} />
 
       <motion.span
-        className="text-[11px] uppercase tracking-[0.4em] text-muted"
+        className="text-[11px] uppercase tracking-[0.4em] text-muted-foreground"
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -48,19 +48,19 @@ export function HeroIntro() {
       </motion.span>
 
       <motion.h1
-        className="text-4xl font-semibold tracking-tight text-body sm:text-5xl"
+        className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl"
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.1 }}
       >
         Engineering Logbook for{" "}
-        <span className="neon-text neon-underline">
+        <span className="neon-accent">
           {siteConfig.ownerName}
         </span>
       </motion.h1>
 
       <motion.p
-        className="mx-auto max-w-2xl text-sm leading-relaxed text-muted"
+        className="mx-auto max-w-2xl text-sm leading-relaxed text-muted-foreground"
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.2 }}

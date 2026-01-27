@@ -25,26 +25,26 @@ export function RecentWork() {
   return (
     <section className="space-y-4">
       <div className="space-y-1">
-        <h2 className="text-2xl font-semibold text-body sm:text-3xl">Recent Work</h2>
-        <p className="max-w-2xl text-sm leading-relaxed text-muted">
+        <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">Recent Work</h2>
+        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
           A running log of verification, research, and hardware design experiments.
         </p>
       </div>
-      <div className="space-y-4 border-l-2 border-muted pl-4">
+      <div className="space-y-4 border-l-2 border-border pl-4">
         {recentWork.map((item) => (
           <div key={item.title} className="space-y-1">
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href={item.href}
-                className="ring-accent neon-ring text-sm font-semibold text-body transition-colors duration-200 hover:neon-text hover:underline"
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 text-sm font-semibold text-foreground transition-colors duration-200 hover:text-accent hover:underline"
               >
                 {item.title}
               </Link>
-              <span className="text-xs uppercase tracking-[0.2em] text-muted">
+              <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 {item.type}
               </span>
             </div>
-            <p className="text-sm leading-relaxed text-muted">{item.description}</p>
+            <p className="text-sm leading-relaxed text-muted-foreground">{item.description}</p>
           </div>
         ))}
       </div>

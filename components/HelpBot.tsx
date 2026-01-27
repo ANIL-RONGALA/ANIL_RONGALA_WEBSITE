@@ -148,32 +148,32 @@ export function HelpBot() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="glass ring-accent neon-ring fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm font-medium text-body shadow-lg backdrop-blur transition duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:neon-text hover:neon-glow"
+        className="glass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm font-medium text-foreground shadow-lg backdrop-blur transition duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-accent"
       >
         Ask
-        <span className="rounded border border-border/60 bg-background/60 px-2 py-0.5 text-xs text-muted">
+        <span className="rounded border border-border/60 bg-background/60 px-2 py-0.5 text-xs text-muted-foreground">
           Ctrl+/
         </span>
       </button>
 
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-foreground/60 p-4 dark:bg-background/80"
           onClick={() => {
             stopStreaming();
             setOpen(false);
           }}
         >
           <div
-            className="ring-accent neon-ring w-full max-w-2xl rounded-2xl border border-border/60 bg-background/80 p-6 text-body shadow-2xl backdrop-blur-xl"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 w-full max-w-2xl rounded-2xl border border-border/60 bg-background/80 p-6 text-foreground shadow-2xl backdrop-blur-xl"
             onClick={(event) => event.stopPropagation()}
             role="dialog"
             aria-modal="true"
             aria-label="Live Help Bot"
           >
             <header className="space-y-1 border-b border-border/60 pb-4">
-              <h2 className="text-2xl font-semibold neon-text">Ask Anil</h2>
-              <p className="text-sm leading-relaxed text-muted">
+              <h2 className="text-2xl font-semibold text-foreground">Ask Anil</h2>
+              <p className="text-sm leading-relaxed text-muted-foreground">
                 Questions about projects, research, verification, site navigation.
               </p>
             </header>
@@ -183,7 +183,7 @@ export function HelpBot() {
                 <button
                   key={prompt}
                   type="button"
-                  className="ring-accent neon-ring rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs text-muted transition duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:neon-text"
+                  className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 rounded-full border border-border/60 bg-background/60 px-3 py-1 text-xs text-muted-foreground transition duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:text-accent"
                   onClick={() => handleSuggestion(prompt)}
                 >
                   {prompt}
@@ -193,7 +193,7 @@ export function HelpBot() {
 
             <div className="mt-4 max-h-72 space-y-3 overflow-y-auto rounded-xl border border-border/60 bg-background/60 p-4">
               {messages.length === 0 && (
-                <p className="text-sm leading-relaxed text-muted">
+                <p className="text-sm leading-relaxed text-muted-foreground">
                   Start a conversation to get tailored help about Anil’s work and
                   the site.
                 </p>
@@ -203,13 +203,13 @@ export function HelpBot() {
                   key={`${message.role}-${index}`}
                   className={`rounded-xl border px-3 py-2 text-sm leading-relaxed ${
                     message.role === "user"
-                      ? "ml-auto w-fit max-w-[80%] border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] text-body"
-                      : "w-fit max-w-[85%] border-border/60 bg-background/70 text-body"
+                      ? "ml-auto w-fit max-w-[80%] border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] text-foreground"
+                      : "w-fit max-w-[85%] border-border/60 bg-background/70 text-foreground"
                   }`}
                 >
                   {message.content}
                   {isThinking && message.role === "assistant" && !message.content && (
-                    <span className="italic text-muted">Thinking…</span>
+                    <span className="italic text-muted-foreground">Thinking…</span>
                   )}
                 </div>
               ))}
@@ -224,12 +224,12 @@ export function HelpBot() {
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
                 placeholder="Ask about projects, research, or how to reach me..."
-                className="ring-accent neon-ring flex-1 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm text-body placeholder:text-muted outline-none transition duration-200 focus:border-[hsl(var(--accent)/0.5)]"
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 flex-1 rounded-full border border-border/60 bg-background/70 px-4 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none transition duration-200 focus:border-[hsl(var(--accent)/0.5)]"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isStreaming}
-                className="ring-accent neon-ring rounded-full gradient-accent px-4 py-2 text-sm font-semibold text-[hsl(var(--accent-foreground))] transition duration-200 hover:brightness-105 hover:neon-glow disabled:cursor-not-allowed disabled:opacity-50"
+                className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 rounded-full bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition duration-200 hover:brightness-105 hover:neon-glow disabled:cursor-not-allowed disabled:opacity-50"
               >
                 Send
               </button>
@@ -237,7 +237,7 @@ export function HelpBot() {
                 <button
                   type="button"
                   onClick={stopStreaming}
-                  className="ring-accent neon-ring rounded-full border border-border/70 px-3 py-2 text-xs text-body transition duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:neon-text"
+                  className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 rounded-full border border-border/70 px-3 py-2 text-xs text-foreground transition duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground hover:text-accent"
                 >
                   Stop
                 </button>
