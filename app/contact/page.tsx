@@ -7,6 +7,7 @@ import { HiOutlineMail } from "react-icons/hi";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { MotionCard } from "@/components/ui/MotionCard";
+import { CopyButton } from "@/components/ui/CopyButton";
 
 export const metadata: Metadata = {
   title: "Contact | ANIL RONGALA WEBSITE"
@@ -50,6 +51,7 @@ export default function ContactPage() {
                 >
                   <HiOutlineMail /> {siteConfig.email}
                 </Link>
+                <CopyButton text={siteConfig.email} label="Copy email" className="w-fit" />
               </div>
             </MotionCard>
             <MotionCard className="flex h-full flex-col space-y-6 p-8">

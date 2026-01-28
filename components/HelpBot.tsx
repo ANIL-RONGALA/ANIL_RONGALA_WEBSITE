@@ -52,8 +52,16 @@ export function HelpBot() {
         setOpen(false);
       }
     };
+    const handleClose = () => {
+      stopStreaming();
+      setOpen(false);
+    };
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("close-overlays", handleClose as EventListener);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("close-overlays", handleClose as EventListener);
+    };
   }, [open, stopStreaming]);
 
   const appendAssistantChunk = (index: number, chunk: string) => {

@@ -7,6 +7,7 @@ import { Section } from "@/components/ui/Section";
 import { Divider } from "@/components/ui/Divider";
 import { MotionCard } from "@/components/ui/MotionCard";
 import { PageTransition } from "@/components/PageTransition";
+import { now } from "@/lib/now";
 
 export default function HomePage() {
   const proofItems = [
@@ -52,6 +53,14 @@ export default function HomePage() {
               <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">
                 RESEARCH • ENGINEERING • SYSTEMS
               </p>
+              <div className="flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+                <span className="rounded-full border border-border/60 bg-card px-3 py-1 text-foreground">
+                  Now: {now.status}
+                </span>
+                <span className="rounded-full border border-border/60 bg-background/60 px-3 py-1">
+                  Updated {now.updated}
+                </span>
+              </div>
               <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
                 Research-focused{" "}
                 <span className="neon-accent">engineering</span> portfolio.
