@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { now } from "@/lib/now";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -17,6 +18,7 @@ const starterPrompts = [
 ];
 
 const SUPPORT_EVENT = "open-support-widget";
+const CLOSE_EVENT = "close-overlays";
 
 export function SupportWidget() {
   const label =
@@ -84,12 +86,15 @@ export function SupportWidget() {
     };
 
     const handleCustomOpen = () => setOpen(true);
+    const handleCustomClose = () => closePanel();
 
     window.addEventListener("keydown", handleKeyDown);
     window.addEventListener(SUPPORT_EVENT, handleCustomOpen as EventListener);
+    window.addEventListener(CLOSE_EVENT, handleCustomClose as EventListener);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener(SUPPORT_EVENT, handleCustomOpen as EventListener);
+      window.removeEventListener(CLOSE_EVENT, handleCustomClose as EventListener);
     };
   }, [closePanel, open]);
 
@@ -250,6 +255,9 @@ export function SupportWidget() {
                 <p className="text-xs text-muted-foreground">
                   Projects • Research • Verification • Navigation
                 </p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  Now: {now.status} • Updated {now.updated}
+                </p>
               </div>
               <button
                 type="button"
@@ -358,7 +366,7 @@ export function SupportWidget() {
                   Clear
                 </button>
                 <span className="ml-auto text-xs text-muted-foreground">
-                  Responses are AI-generated; for official contact use the
+                  {now.note} Responses are AI-generated; for official contact use the
                   Contact page.
                 </span>
               </div>

@@ -8,6 +8,8 @@ import { Providers } from "./providers";
 import BootScreen from "@/components/BootScreen";
 import { HelpBot } from "@/components/HelpBot";
 import { SupportWidget } from "@/components/SupportWidget";
+import { ResumeDrawer } from "@/components/ResumeDrawer";
+import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import localFont from "next/font/local";
 
 const sansFont = localFont({
@@ -64,6 +66,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
           </div>
           <HelpBot />
           <SupportWidget />
+          <ResumeDrawer />
+          <KeyboardShortcuts />
         </Providers>
       </body>
     </html>

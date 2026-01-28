@@ -45,6 +45,10 @@ export function Navbar() {
     window.dispatchEvent(new CustomEvent('open-support-widget'));
   };
 
+  const handleOpenResume = () => {
+    window.dispatchEvent(new CustomEvent('open-resume-drawer'));
+  };
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
@@ -82,6 +86,13 @@ export function Navbar() {
             className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 lg:inline-flex"
           >
             Live Support
+          </button>
+          <button
+            type="button"
+            onClick={handleOpenResume}
+            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 lg:inline-flex"
+          >
+            Resume
           </button>
           <a
             href={siteConfig.githubUrl}
@@ -142,6 +153,13 @@ export function Navbar() {
           className="rounded-full border border-border/60 bg-background/60 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
         >
           Live Support
+        </button>
+        <button
+          type="button"
+          onClick={handleOpenResume}
+          className="rounded-full border border-border/60 bg-background/60 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+        >
+          Resume
         </button>
       </div>
     </motion.header>
