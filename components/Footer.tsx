@@ -12,6 +12,9 @@ export function Footer() {
           <p>
             © {year} {siteConfig.ownerName}. All rights reserved.
           </p>
+          <p className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground/80">
+            Tip: Press ⌘K / Ctrl+K to search.
+          </p>
           <div className="flex flex-wrap items-center gap-4">
             <a
               href={siteConfig.githubUrl}

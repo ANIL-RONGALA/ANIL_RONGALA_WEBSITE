@@ -17,12 +17,16 @@ export function ProjectCard({ project }: ProjectCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-lg transition duration-300 backdrop-blur hover:border-[hsl(var(--accent)/0.45)]"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-lg transition duration-300 backdrop-blur hover:border-[hsl(var(--accent)/0.45)]"
     >
+      <span className="pointer-events-none absolute left-0 top-0 h-[2px] w-full -translate-x-full bg-[hsl(var(--accent)/0.5)] opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
       <div className="flex flex-1 flex-col">
         <h3 className="text-xl font-semibold text-foreground">{project.title}</h3>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{project.oneLiner}</p>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.outcome}</p>
+        <p className="mt-3 text-xs font-mono uppercase tracking-wide text-muted-foreground opacity-0 transition duration-300 group-hover:opacity-100">
+          Proof: {project.proof.map((item) => item.label).join(" / ")}
+        </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {project.tags.map((tag) => (
             <Badge key={tag}>{tag}</Badge>

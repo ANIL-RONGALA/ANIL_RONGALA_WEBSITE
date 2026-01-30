@@ -8,6 +8,7 @@ import { Divider } from "@/components/ui/Divider";
 import { MotionCard } from "@/components/ui/MotionCard";
 import { PageTransition } from "@/components/PageTransition";
 import { now } from "@/lib/now";
+import Link from "next/link";
 
 export default function HomePage() {
   const proofItems = [
@@ -44,6 +45,19 @@ export default function HomePage() {
     }
   ];
 
+  const systemChips = [
+    { label: "Signal", value: now.status },
+    { label: "Mode", value: now.focus[0] },
+    { label: "Session", value: `Updated ${now.updated}` }
+  ];
+
+  const exploreLinks = [
+    { title: "Projects", href: "/projects", hint: "case studies + proof links" },
+    { title: "Academics", href: "/academics", hint: "notes + structure" },
+    { title: "Professional", href: "/professional", hint: "teaching + lab" },
+    { title: "Media", href: "/media", hint: "demos + talks" }
+  ];
+
   return (
     <Container>
       <Section className="pt-16 sm:pt-20">
@@ -60,6 +74,16 @@ export default function HomePage() {
                 <span className="rounded-full border border-border/60 bg-background/60 px-3 py-1">
                   Updated {now.updated}
                 </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-2 text-[11px] font-mono uppercase tracking-[0.2em] text-muted-foreground">
+                {systemChips.map((chip) => (
+                  <span
+                    key={chip.label}
+                    className="rounded-full border border-border/60 bg-muted/40 px-3 py-1 text-[10px] text-foreground/80"
+                  >
+                    {chip.label}: {chip.value}
+                  </span>
+                ))}
               </div>
               <h1 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
                 Research-focused{" "}
@@ -94,9 +118,32 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="relative">
+            <div className="relative space-y-4">
               <div className="pointer-events-none absolute -top-6 right-2 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
               <SystemConsole />
+              <div className="group rounded-2xl border border-border/70 bg-card/60 p-5 shadow-sm transition duration-300 hover:border-[hsl(var(--accent)/0.45)] hover:shadow-lg">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">Explore</h3>
+                  <span className="text-xs font-mono uppercase text-muted-foreground">quick links</span>
+                </div>
+                <div className="mt-4 space-y-3">
+                  {exploreLinks.map((link) => (
+                    <Link
+                      key={link.title}
+                      href={link.href}
+                      className="group/link flex items-center justify-between rounded-xl border border-border/60 bg-background/50 px-3 py-2 text-sm text-foreground transition duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:bg-muted/40"
+                    >
+                      <div>
+                        <p className="font-semibold">{link.title}</p>
+                        <p className="text-xs text-muted-foreground">{link.hint}</p>
+                      </div>
+                      <span className="text-xs text-muted-foreground transition duration-200 group-hover/link:translate-x-1 group-hover/link:text-accent">
+                        →
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </PageTransition>

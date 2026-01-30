@@ -11,6 +11,10 @@ type StreamState = {
 };
 
 const starterPrompts = [
+  "show featured projects",
+  "verification work",
+  "ai-driven eda",
+  "contact",
   "Show your best verification project",
   "What is your AI-driven EDA direction?",
   "How do I navigate the site fast?",

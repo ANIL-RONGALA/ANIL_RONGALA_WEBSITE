@@ -56,6 +56,24 @@ export default function PersonalPage() {
     )
   }));
 
+  const profilePanels = [
+    {
+      title: "Domains",
+      detail: "VLSI / Verification / ML",
+      hoverDetail: "Signal: cross-domain validation."
+    },
+    {
+      title: "Tooling",
+      detail: "SystemVerilog, UVM, Python",
+      hoverDetail: "Proof: reusable lab playbooks."
+    },
+    {
+      title: "Output",
+      detail: "Projects, Demos, Reports",
+      hoverDetail: "Detail: project-linked artifacts."
+    }
+  ];
+
   return (
     <Container>
       <Section
@@ -64,16 +82,17 @@ export default function PersonalPage() {
         subtitle="Personal context behind the engineering log, values, and long-term goals."
       >
         <div className="space-y-8">
-          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)]">
-            <div className="space-y-4">
-              <div className="space-y-2">
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.85fr)]">
+            <Card className="group relative overflow-hidden p-6">
+              <span className="pointer-events-none absolute left-0 top-0 h-[2px] w-full -translate-x-full bg-[hsl(var(--accent)/0.5)] opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+              <div className="space-y-3">
                 <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">{profileData.name}</p>
                 <h3 className="line-clamp-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
                   {profileData.headline}
                 </h3>
                 <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground line-clamp-3">{profileData.summary}</p>
               </div>
-              <div className="flex flex-wrap gap-2">
+              <div className="mt-4 flex flex-wrap gap-2">
                 {profileData.focusAreas.slice(0, 3).map((area) => (
                   <span
                     key={area.title}
@@ -83,42 +102,49 @@ export default function PersonalPage() {
                   </span>
                 ))}
               </div>
-            </div>
-            <Card className="p-6">
+              <p className="mt-4 text-xs font-mono uppercase tracking-wide text-muted-foreground opacity-0 transition duration-300 group-hover:opacity-100">
+                Detail: {profileData.focusAreas[0]?.title}
+              </p>
+            </Card>
+            <Card className="group relative overflow-hidden p-6">
+              <span className="pointer-events-none absolute left-0 top-0 h-[2px] w-full -translate-x-full bg-[hsl(var(--accent)/0.5)] opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-semibold text-foreground">Profile Console</h4>
-                <span className="text-xs font-mono uppercase tracking-wide text-muted-foreground">status</span>
+                <h4 className="text-sm font-semibold text-foreground">System Panel</h4>
+                <span className="text-xs font-mono uppercase tracking-wide text-muted-foreground">dossier</span>
               </div>
               <div className="mt-4 space-y-3 text-sm text-muted-foreground">
                 <div className="flex items-center justify-between border-b border-border/60 pb-2 font-mono text-xs uppercase tracking-wide">
                   <span>Focus</span>
-                  <span className="text-foreground">AI-driven EDA / RTL verification</span>
+                  <span className="text-foreground">{profileData.focusAreas[0]?.title}</span>
+                </div>
+                <div className="flex items-center justify-between border-b border-border/60 pb-2 font-mono text-xs uppercase tracking-wide">
+                  <span>Status</span>
+                  <span className="text-foreground">Open to PhD / RA</span>
                 </div>
                 <div className="flex items-center justify-between border-b border-border/60 pb-2 font-mono text-xs uppercase tracking-wide">
                   <span>Base</span>
                   <span className="text-foreground">University of Houston</span>
                 </div>
-                <div className="flex items-center justify-between border-b border-border/60 pb-2 font-mono text-xs uppercase tracking-wide">
-                  <span>Role</span>
-                  <span className="text-foreground">Lead TA</span>
-                </div>
                 <div className="flex items-center justify-between font-mono text-xs uppercase tracking-wide">
-                  <span>Availability</span>
-                  <span className="text-foreground">Open to PhD / RA</span>
+                  <span>Contact</span>
+                  <span className="text-foreground">{profileData.links.email}</span>
                 </div>
               </div>
+              <p className="mt-4 text-xs font-mono uppercase tracking-wide text-muted-foreground opacity-0 transition duration-300 group-hover:opacity-100">
+                Signal: Verified portfolio links.
+              </p>
             </Card>
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              { title: "Domains", detail: "VLSI / Verification / ML" },
-              { title: "Tooling", detail: "SystemVerilog, UVM, Python" },
-              { title: "Output", detail: "Projects, Demos, Reports" }
-            ].map((item) => (
-              <Card key={item.title} className="p-4">
+            {profilePanels.map((item) => (
+              <Card key={item.title} className="group relative overflow-hidden p-4">
+                <span className="pointer-events-none absolute left-0 top-0 h-[2px] w-full -translate-x-full bg-[hsl(var(--accent)/0.5)] opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
                 <p className="text-xs font-mono uppercase tracking-wide text-muted-foreground">{item.title}</p>
                 <p className="mt-2 text-sm font-semibold text-foreground">{item.detail}</p>
+                <p className="mt-2 text-xs font-mono uppercase tracking-wide text-muted-foreground opacity-0 transition duration-300 group-hover:opacity-100">
+                  {item.hoverDetail}
+                </p>
               </Card>
             ))}
           </div>
@@ -126,12 +152,8 @@ export default function PersonalPage() {
           <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
             <div className="space-y-6">
               <Card className="p-6">
-                <h3 className="text-lg font-semibold text-foreground">Summary</h3>
-                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{profileData.summary}</p>
-              </Card>
-              <Card className="p-6">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-foreground">Focus & Growth</h3>
+                  <h3 className="text-lg font-semibold text-foreground">Focus / Skills / Timeline</h3>
                   <span className="text-xs font-mono uppercase tracking-wide text-muted-foreground">interactive</span>
                 </div>
                 <div className="mt-4">
