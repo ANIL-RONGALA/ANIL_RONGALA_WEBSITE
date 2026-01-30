@@ -228,10 +228,127 @@ body {
       0 0 28px hsl(var(--accent) / 0.15);
   }
 
-  .neon-glow {
+.neon-glow {
     box-shadow:
       0 0 0 1px hsl(var(--accent) / 0.25),
       0 14px 40px hsl(var(--accent) / 0.12);
+  }
+}
+
+.ambient-overlay {
+  mix-blend-mode: screen;
+}
+
+.ambient-aurora {
+  position: absolute;
+  inset: -20%;
+  opacity: 0.45;
+  filter: blur(80px);
+}
+
+.ambient-blob {
+  position: absolute;
+  width: 35vw;
+  height: 35vw;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, hsl(var(--accent) / 0.28), transparent 65%);
+  animation: aurora-drift 38s ease-in-out infinite;
+}
+
+.ambient-blob-two {
+  width: 30vw;
+  height: 30vw;
+  left: 55%;
+  top: 10%;
+  opacity: 0.5;
+  background: radial-gradient(circle at 50% 50%, hsl(var(--accent2) / 0.22), transparent 70%);
+  animation-delay: -12s;
+}
+
+.ambient-blob-three {
+  width: 26vw;
+  height: 26vw;
+  left: 15%;
+  top: 55%;
+  opacity: 0.4;
+  background: radial-gradient(circle at 40% 40%, hsl(var(--accent) / 0.18), transparent 68%);
+  animation-delay: -22s;
+}
+
+.ambient-scanner {
+  position: absolute;
+  right: -18%;
+  top: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: conic-gradient(from 20deg, transparent 0deg, hsl(var(--accent) / 0.08) 55deg, transparent 120deg);
+  opacity: 0.18;
+  filter: blur(20px);
+  animation: scanner-sweep 42s linear infinite;
+}
+
+.ambient-scanlines {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    hsl(var(--foreground) / 0.06),
+    hsl(var(--foreground) / 0.06) 1px,
+    transparent 1px,
+    transparent 6px
+  );
+  opacity: 0.05;
+  animation: scanline-drift 20s linear infinite;
+}
+
+.ambient-particles {
+  position: absolute;
+  inset: 0;
+}
+
+.ambient-particle {
+  position: absolute;
+  border-radius: 999px;
+  background: hsl(var(--accent) / 0.55);
+  box-shadow: 0 0 8px hsl(var(--accent) / 0.25);
+  will-change: transform;
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-6%, -4%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(6%, 6%, 0) scale(1.08);
+  }
+  100% {
+    transform: translate3d(-4%, 4%, 0) scale(1.02);
+  }
+}
+
+@keyframes scanline-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(0, -200px, 0);
+  }
+}
+
+@keyframes scanner-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-blob,
+  .ambient-scanlines,
+  .ambient-scanner {
+    animation: none;
   }
 }
 
