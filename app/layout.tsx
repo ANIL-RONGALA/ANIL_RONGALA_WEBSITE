@@ -63,9 +63,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <AmbientOverlay />
           <SparkleTrailOverlay />
           <BootScreen />
-          <div className="relative z-10 flex min-h-screen flex-col">
+          <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col px-4 sm:px-6">
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 w-full">{children}</main>
             <Footer />
           </div>
           <HelpBot />

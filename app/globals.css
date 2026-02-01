@@ -21,32 +21,32 @@
   --font-sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans",
     sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --background: 210 40% 98%;
-  --foreground: 222 47% 12%;
-  --muted: 210 24% 94%;
-  --muted-foreground: 215 20% 40%;
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 12%;
-  --border: 215 20% 82%;
-  --input: 210 40% 96%;
-  --ring: 200 100% 42%;
-  --accent: 200 100% 40%;
-  --accent2: 285 90% 58%;
+  --background: 340 35% 92%;
+  --foreground: 222 30% 12%;
+  --muted: 340 25% 88%;
+  --muted-foreground: 222 14% 35%;
+  --card: 340 40% 96%;
+  --card-foreground: 222 30% 12%;
+  --border: 340 18% 82%;
+  --input: 340 18% 82%;
+  --ring: 198 100% 45%;
+  --accent: 198 100% 45%;
+  --accent2: 270 100% 65%;
   --accent-foreground: 0 0% 100%;
-  --primary: 192 90% 42%;
-  --primary-foreground: 210 40% 98%;
-  --border-accent: 200 100% 40%;
+  --primary: 198 90% 44%;
+  --primary-foreground: 0 0% 100%;
+  --border-accent: 198 100% 45%;
   --bg-dark: radial-gradient(circle at center, #020617 0%, #0a0f1e 100%);
-  --bg-light: radial-gradient(circle at top, #ffffff, #eef3ff, #dde7ff);
-  --app-background: radial-gradient(circle at center, #020617, #0a0f1e);
-  --surface-canvas: rgba(2, 6, 23, 0.82);
-  --surface-header: rgba(2, 6, 23, 0.88);
-  --surface-card: rgba(15, 23, 42, 0.7);
-  --surface-soft: rgba(15, 23, 42, 0.55);
-  --surface-border: rgba(148, 163, 184, 0.18);
-  --text-primary: #f1f5f9;
-  --text-muted: rgba(148, 163, 184, 0.82);
-  --text-subtle: rgba(148, 163, 184, 0.65);
+  --bg-light: radial-gradient(circle at top, #fff1f7, #f6dee9, #f0d2e2);
+  --app-background: radial-gradient(circle at center, #fff1f7, #f5dce8);
+  --surface-canvas: rgba(252, 236, 244, 0.86);
+  --surface-header: rgba(255, 244, 249, 0.92);
+  --surface-card: rgba(255, 250, 252, 0.78);
+  --surface-soft: rgba(252, 236, 244, 0.7);
+  --surface-border: rgba(203, 158, 180, 0.35);
+  --text-primary: #1f1a22;
+  --text-muted: rgba(73, 38, 58, 0.82);
+  --text-subtle: rgba(86, 52, 72, 0.68);
   --link-color: hsl(var(--accent));
   --link-hover: hsl(var(--accent2));
   --accent-cyan: #22d3ee;
@@ -215,6 +215,50 @@ body {
   isolation: isolate;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(800px 600px at 20% 10%, hsl(330 90% 70% / 0.18), transparent 60%),
+    radial-gradient(900px 700px at 80% 20%, hsl(200 90% 60% / 0.1), transparent 65%),
+    radial-gradient(900px 900px at 50% 90%, hsl(270 100% 70% / 0.08), transparent 60%);
+}
+
+.dark body::before {
+  background:
+    radial-gradient(800px 600px at 20% 10%, hsl(212 80% 40% / 0.12), transparent 60%),
+    radial-gradient(900px 700px at 80% 20%, hsl(190 90% 45% / 0.08), transparent 65%),
+    radial-gradient(900px 900px at 50% 90%, hsl(280 80% 55% / 0.08), transparent 60%);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 3px,
+      hsl(var(--foreground) / 0.03) 4px,
+      transparent 6px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 3px,
+      hsl(var(--foreground) / 0.02) 4px,
+      transparent 6px
+    );
+  opacity: 0.25;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: 0;
+}
+
 @layer utilities {
   .glass {
     background-color: hsl(var(--background) / 0.7);
@@ -359,29 +403,6 @@ pre,
   font-family: var(--font-mono);
 }
 
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(520px circle at 10% 10%, hsl(var(--primary) / 0.14), transparent 55%),
-    radial-gradient(520px circle at 90% 90%, hsl(var(--accent-blue) / 0.12), transparent 60%);
-  opacity: 0.75;
-  pointer-events: none;
-  z-index: -1;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: linear-gradient(to right, hsl(var(--border) / 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, hsl(var(--border) / 0.08) 1px, transparent 1px);
-  background-size: 88px 88px;
-  opacity: 0.28;
-  pointer-events: none;
-  z-index: -1;
-}
 
 h1,
 h2,
@@ -431,42 +452,6 @@ body.theme-transition {
   animation: pulse-glow 0.6s ease-out;
 }
 
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(circle at 5% 10%, hsl(var(--primary) / 0.08), transparent 45%),
-    radial-gradient(circle at 95% 90%, hsl(var(--primary) / 0.06), transparent 50%);
-  opacity: 0.6;
-  filter: blur(90px);
-  z-index: -2;
-}
-
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0,
-      transparent 3px,
-      rgba(255, 255, 255, 0.02) 4px,
-      transparent 6px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent 0,
-      transparent 3px,
-      rgba(255, 255, 255, 0.015) 4px,
-      transparent 6px
-    );
-  opacity: 0.25;
-  mix-blend-mode: soft-light;
-  pointer-events: none;
-  z-index: -1;
-}
 
 ::selection {
   background: hsl(var(--primary) / 0.25);
@@ -719,56 +704,56 @@ html.light .hero-title-gradient {
 
 html.light {
   color-scheme: light;
-  --app-background: radial-gradient(circle at center, #f9fafb, #e2e8f0);
-  --surface-canvas: rgba(241, 245, 249, 0.82);
-  --surface-header: rgba(248, 250, 252, 0.92);
-  --surface-card: rgba(255, 255, 255, 0.78);
-  --surface-soft: rgba(248, 250, 252, 0.7);
-  --surface-border: rgba(148, 163, 184, 0.35);
-  --text-primary: #0f172a;
-  --text-muted: #1e3a8a;
-  --text-subtle: #334155;
-  --link-color: #2563eb;
-  --link-hover: #1d4ed8;
-  --accent-cyan: #60a5fa;
-  --accent-blue: #d4d4d8;
-  --accent-pink: #ec4899;
-  --module-bg: linear-gradient(150deg, rgba(226, 232, 240, 0.95), rgba(241, 245, 249, 0.9));
-  --module-border: rgba(191, 219, 254, 0.65);
-  --module-shadow: 0 18px 40px rgba(148, 163, 184, 0.28);
-  --module-hover-shadow: 0 20px 44px rgba(96, 165, 250, 0.35);
-  --module-hover-border: rgba(96, 165, 250, 0.65);
-  --module-shadow-gradient: radial-gradient(circle, rgba(148, 163, 184, 0.45), transparent 70%);
-  --module-port-color: #2563eb;
-  --module-subtitle: #0f172a;
-  --module-title: #1e3a8a;
-  --module-shadow-mobile: 0 18px 30px rgba(148, 163, 184, 0.28);
-  --media-border: rgba(148, 163, 184, 0.45);
-  --media-bg: linear-gradient(150deg, rgba(248, 250, 252, 0.95), rgba(226, 232, 240, 0.9));
-  --media-shadow: inset 0 0 22px rgba(148, 163, 184, 0.2), 0 18px 40px rgba(148, 163, 184, 0.25);
-  --media-status: rgba(37, 99, 235, 0.75);
-  --media-subtitle: rgba(59, 130, 246, 0.7);
+  --app-background: radial-gradient(circle at center, #fbe7f1, #f4d6e2);
+  --surface-canvas: rgba(252, 234, 243, 0.82);
+  --surface-header: rgba(255, 244, 249, 0.92);
+  --surface-card: rgba(255, 250, 252, 0.82);
+  --surface-soft: rgba(251, 231, 242, 0.74);
+  --surface-border: rgba(201, 143, 172, 0.35);
+  --text-primary: #1f1a22;
+  --text-muted: #53324a;
+  --text-subtle: #62425a;
+  --link-color: #0e7490;
+  --link-hover: #0f766e;
+  --accent-cyan: #22d3ee;
+  --accent-blue: #c4b5fd;
+  --accent-pink: #f472b6;
+  --module-bg: linear-gradient(150deg, rgba(252, 234, 243, 0.95), rgba(247, 224, 236, 0.9));
+  --module-border: rgba(224, 178, 201, 0.65);
+  --module-shadow: 0 18px 40px rgba(177, 120, 150, 0.25);
+  --module-hover-shadow: 0 20px 44px rgba(14, 165, 233, 0.25);
+  --module-hover-border: rgba(14, 165, 233, 0.45);
+  --module-shadow-gradient: radial-gradient(circle, rgba(214, 158, 188, 0.45), transparent 70%);
+  --module-port-color: #0e7490;
+  --module-subtitle: #2a1f2c;
+  --module-title: #53324a;
+  --module-shadow-mobile: 0 18px 30px rgba(177, 120, 150, 0.28);
+  --media-border: rgba(201, 143, 172, 0.45);
+  --media-bg: linear-gradient(150deg, rgba(255, 244, 249, 0.96), rgba(247, 224, 236, 0.9));
+  --media-shadow: inset 0 0 22px rgba(200, 150, 176, 0.2), 0 18px 40px rgba(177, 120, 150, 0.22);
+  --media-status: rgba(14, 165, 233, 0.75);
+  --media-subtitle: rgba(217, 70, 239, 0.7);
   --media-top-border: rgba(236, 72, 153, 0.55);
-  --media-top-bg: linear-gradient(155deg, rgba(255, 228, 236, 0.95), rgba(255, 241, 246, 0.92));
-  --media-top-shadow: inset 0 0 28px rgba(236, 72, 153, 0.22), 0 18px 48px rgba(236, 72, 153, 0.24);
-  --media-panel-border: rgba(96, 165, 250, 0.45);
-  --media-panel-bg: rgba(255, 255, 255, 0.88);
-  --media-panel-shadow: 0 14px 32px rgba(148, 163, 184, 0.22);
-  --media-panel-shadow-mobile: 0 18px 28px rgba(148, 163, 184, 0.28);
+  --media-top-bg: linear-gradient(155deg, rgba(255, 226, 236, 0.95), rgba(255, 241, 246, 0.92));
+  --media-top-shadow: inset 0 0 28px rgba(236, 72, 153, 0.2), 0 18px 48px rgba(236, 72, 153, 0.22);
+  --media-panel-border: rgba(14, 165, 233, 0.4);
+  --media-panel-bg: rgba(255, 250, 252, 0.88);
+  --media-panel-shadow: 0 14px 32px rgba(177, 120, 150, 0.22);
+  --media-panel-shadow-mobile: 0 18px 28px rgba(177, 120, 150, 0.28);
   --media-top-panel-border: rgba(236, 72, 153, 0.6);
   --media-top-panel-bg: linear-gradient(160deg, rgba(255, 228, 236, 0.95), rgba(253, 242, 248, 0.92));
-  --media-top-panel-shadow: 0 16px 36px rgba(236, 72, 153, 0.28);
-  --pcb-background: radial-gradient(circle at center, rgba(191, 219, 254, 0.4), rgba(226, 232, 240, 0.96) 70%);
-  --pcb-border: rgba(148, 163, 184, 0.35);
-  --pcb-inner-border: rgba(148, 163, 184, 0.24);
-  --pcb-shadow: 0 28px 64px rgba(148, 163, 184, 0.3);
-  --circuit-overlay: radial-gradient(circle at center, rgba(96, 165, 250, 0.2), transparent 65%);
-  --bus-glow: drop-shadow(0 0 4px rgba(37, 99, 235, 0.35));
-  --bus-axi: #60a5fa;
-  --bus-ahb: #d4d4d8;
-  --bus-apb: #ec4899;
-  --bus-electron: #2563eb;
-  --bus-label: rgba(30, 64, 175, 0.85);
+  --media-top-panel-shadow: 0 16px 36px rgba(236, 72, 153, 0.25);
+  --pcb-background: radial-gradient(circle at center, rgba(251, 199, 219, 0.35), rgba(247, 224, 236, 0.95) 70%);
+  --pcb-border: rgba(201, 143, 172, 0.35);
+  --pcb-inner-border: rgba(201, 143, 172, 0.24);
+  --pcb-shadow: 0 28px 64px rgba(177, 120, 150, 0.28);
+  --circuit-overlay: radial-gradient(circle at center, rgba(14, 165, 233, 0.16), transparent 65%);
+  --bus-glow: drop-shadow(0 0 4px rgba(14, 165, 233, 0.3));
+  --bus-axi: #22d3ee;
+  --bus-ahb: #c4b5fd;
+  --bus-apb: #f472b6;
+  --bus-electron: #0e7490;
+  --bus-label: rgba(82, 52, 74, 0.85);
 }
 
 .light {
@@ -783,6 +768,11 @@ html,
 body {
   min-height: 100%;
   scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+* {
+  scroll-margin-top: 90px;
 }
 
 a {

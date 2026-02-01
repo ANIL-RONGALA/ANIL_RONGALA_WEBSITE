@@ -107,7 +107,7 @@ export function AmbientOverlay() {
 
   return (
     <div
-      className="ambient-overlay pointer-events-none fixed inset-0 z-0 overflow-hidden"
+      className="ambient-overlay pointer-events-none fixed inset-0 z-0 h-full w-full overflow-hidden"
       aria-hidden="true"
     >
       <div className="ambient-aurora">
