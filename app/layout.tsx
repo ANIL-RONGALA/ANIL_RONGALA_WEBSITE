@@ -11,6 +11,7 @@ import { SupportWidget } from "@/components/SupportWidget";
 import { ResumeDrawer } from "@/components/ResumeDrawer";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
 import { AmbientOverlay } from "@/components/AmbientOverlay";
+import { SparkleTrailOverlay } from "@/components/SparkleTrailOverlay";
 import localFont from "next/font/local";
 
 const sansFont = localFont({
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <Providers>
           <AmbientOverlay />
+          <SparkleTrailOverlay />
           <BootScreen />
           <div className="relative z-10 flex min-h-screen flex-col">
             <Navbar />
