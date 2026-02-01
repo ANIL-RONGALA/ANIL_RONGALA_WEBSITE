@@ -56,7 +56,7 @@ export function Navbar() {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className="navbar"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-muted-foreground transition-colors duration-300 sm:px-6 md:px-8">
+      <div className="flex w-full items-center justify-between py-4 text-muted-foreground transition-colors duration-300">
         <Link
           href="/"
           className="rounded-full px-2 py-1 font-semibold uppercase tracking-[0.2em] text-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
@@ -132,7 +132,7 @@ export function Navbar() {
           </button>
         </div>
       </div>
-      <div className="mx-auto flex w-full max-w-6xl flex-wrap gap-3 px-4 pb-4 text-xs text-muted-foreground transition-colors duration-300 lg:hidden">
+      <div className="flex w-full flex-wrap gap-3 pb-4 text-xs text-muted-foreground transition-colors duration-300 lg:hidden">
         {navLinks.map((link) => (
           <Link
             key={link.href}
