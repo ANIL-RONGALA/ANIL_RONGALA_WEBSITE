@@ -119,7 +119,9 @@ export default function HomePage() {
               </div>
             </div>
             <div className="relative space-y-4">
-              <div className="pointer-events-none absolute -top-6 right-2 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+              <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+                <div className="absolute -top-6 right-2 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+              </div>
               <SystemConsole />
               <div className="group rounded-2xl border border-border/70 bg-card/60 p-5 shadow-sm transition duration-300 hover:border-[hsl(var(--accent)/0.45)] hover:shadow-lg">
                 <div className="flex items-center justify-between">

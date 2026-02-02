@@ -54,7 +54,7 @@ export function Navbar() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="navbar"
+      className="navbar w-full"
     >
       <div className="flex w-full items-center justify-between py-4 text-muted-foreground transition-colors duration-300">
         <Link
