@@ -772,6 +772,18 @@ body {
   max-width: 100%;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(900px 700px at 15% 10%, hsl(330 95% 72% / 0.14), transparent 60%),
+    radial-gradient(900px 700px at 85% 15%, hsl(200 95% 60% / 0.08), transparent 65%),
+    radial-gradient(1000px 900px at 50% 95%, hsl(270 100% 70% / 0.06), transparent 60%);
+}
+
 * {
   scroll-margin-top: 90px;
 }

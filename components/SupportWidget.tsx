@@ -241,12 +241,12 @@ export function SupportWidget() {
 
       {isVisible && (
         <div className="fixed bottom-5 left-4 right-4 z-50 sm:bottom-6 sm:left-auto sm:right-6 sm:w-[420px]">
-          <div
-            ref={panelRef}
-            className={`glass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 relative w-full rounded-2xl border border-border/70 bg-background/75 p-5 text-foreground shadow-2xl backdrop-blur-xl transition duration-200 ease-out ${
-              open
-                ? "pointer-events-auto scale-100 opacity-100"
-                : "pointer-events-none scale-[0.98] opacity-0"
+            <div
+              ref={panelRef}
+              className={`glass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 relative w-full overflow-hidden rounded-2xl border border-border/70 bg-background/75 p-5 text-foreground shadow-2xl backdrop-blur-xl transition duration-200 ease-out ${
+                open
+                  ? "pointer-events-auto scale-100 opacity-100"
+                  : "pointer-events-none scale-[0.98] opacity-0"
             }`}
             role="dialog"
             aria-modal="true"
