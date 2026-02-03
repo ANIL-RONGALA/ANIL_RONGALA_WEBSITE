@@ -118,8 +118,6 @@ export function AmbientOverlay() {
 
       <div className="ambient-scanner" />
 
-      <div className="ambient-scanlines" />
-
       {!reduceMotion && (
         <div className="ambient-particles">
           {particles.map((particle, index) => (
