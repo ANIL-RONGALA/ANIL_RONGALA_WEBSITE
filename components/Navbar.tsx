@@ -4,7 +4,7 @@ import { siteConfig } from '@/lib/siteConfig';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import { FaFileAlt, FaGithub, FaLifeRing, FaLinkedin } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
@@ -54,9 +54,9 @@ export function Navbar() {
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="navbar w-full"
+      className="w-full border-b border-border/60 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50"
     >
-      <div className="flex w-full items-center justify-between py-4 text-muted-foreground transition-colors duration-300">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 text-muted-foreground transition-colors duration-300 sm:px-6">
         <Link
           href="/"
           className="rounded-full px-2 py-1 font-semibold uppercase tracking-[0.2em] text-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
@@ -79,26 +79,48 @@ export function Navbar() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-3">
+        <button
+          type="button"
+          className="inline-flex items-center rounded-full border border-border/60 bg-background/60 px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 lg:hidden"
+        >
+          Menu
+        </button>
+        <div className="flex min-w-0 items-center gap-2">
           <button
             type="button"
             onClick={handleOpenSupport}
-            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 lg:inline-flex"
+            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 md:inline-flex"
           >
             Live Support
           </button>
           <button
             type="button"
+            onClick={handleOpenSupport}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-base text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 md:hidden sm:h-9 sm:w-9"
+            aria-label="Live Support"
+          >
+            <FaLifeRing />
+          </button>
+          <button
+            type="button"
             onClick={handleOpenResume}
-            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 lg:inline-flex"
+            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 md:inline-flex"
           >
             Resume
+          </button>
+          <button
+            type="button"
+            onClick={handleOpenResume}
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-base text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 md:hidden sm:h-9 sm:w-9"
+            aria-label="Resume"
+          >
+            <FaFileAlt />
           </button>
           <a
             href={siteConfig.githubUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-lg text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 sm:h-9 sm:w-9"
             aria-label="GitHub"
           >
             <FaGithub />
@@ -107,14 +129,14 @@ export function Navbar() {
             href={siteConfig.linkedinUrl}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-lg text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 sm:h-9 sm:w-9"
             aria-label="LinkedIn"
           >
             <FaLinkedin />
           </a>
           <a
             href={`mailto:${siteConfig.email}`}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-lg text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 sm:h-9 sm:w-9"
             aria-label="Email"
           >
             <HiOutlineMail />
@@ -123,7 +145,7 @@ export function Navbar() {
             type="button"
             onClick={handleToggle}
             disabled={!mounted}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border/60 bg-background/60 text-xl text-muted-foreground transition-all duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-lg text-muted-foreground transition-all duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-60 sm:h-9 sm:w-9"
             aria-label={toggleLabel}
           >
             <span aria-hidden className="text-lg">
@@ -131,36 +153,6 @@ export function Navbar() {
             </span>
           </button>
         </div>
-      </div>
-      <div className="flex w-full flex-wrap gap-3 pb-4 text-xs text-muted-foreground transition-colors duration-300 lg:hidden">
-        {navLinks.map((link) => (
-          <Link
-            key={link.href}
-            href={link.href}
-            className={cx(
-              "relative rounded-full px-3 py-1.5 text-muted-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60",
-              pathname === link.href
-                ? "neon-accent border-b border-[hsl(var(--accent)/0.5)] bg-muted/40"
-                : ""
-            )}
-          >
-            {link.label}
-          </Link>
-        ))}
-        <button
-          type="button"
-          onClick={handleOpenSupport}
-          className="rounded-full border border-border/60 bg-background/60 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
-        >
-          Live Support
-        </button>
-        <button
-          type="button"
-          onClick={handleOpenResume}
-          className="rounded-full border border-border/60 bg-background/60 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
-        >
-          Resume
-        </button>
       </div>
     </motion.header>
   );

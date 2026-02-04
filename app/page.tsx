@@ -62,8 +62,8 @@ export default function HomePage() {
     <Container>
       <Section className="pt-16 sm:pt-20">
         <PageTransition>
-          <div className="grid gap-10 lg:grid-cols-[3fr,2fr] lg:items-start">
-            <div className="space-y-6">
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start">
+            <div className="min-w-0 space-y-6">
               <p className="text-xs font-mono uppercase tracking-[0.3em] text-muted-foreground">
                 RESEARCH • ENGINEERING • SYSTEMS
               </p>
@@ -118,7 +118,7 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="relative space-y-4">
+            <div className="relative w-full max-w-[420px] space-y-4 lg:justify-self-end">
               <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
                 <div className="absolute -top-6 right-2 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
               </div>
