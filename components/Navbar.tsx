@@ -9,6 +9,7 @@ import { HiOutlineMail } from 'react-icons/hi';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
 import { cx } from '@/components/ui/classNames';
+import { usePerf } from '@/app/providers';
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -23,6 +24,7 @@ const navLinks = [
 
 export function Navbar() {
   const { theme, setTheme } = useTheme();
+  const { effectsEnabled, setEffectsEnabled } = usePerf();
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
 
@@ -51,10 +53,13 @@ export function Navbar() {
 
   return (
     <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="w-full border-b border-border/60 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/50"
+      initial={effectsEnabled ? { y: -20, opacity: 0 } : false}
+      animate={effectsEnabled ? { y: 0, opacity: 1 } : { y: 0, opacity: 1 }}
+      transition={effectsEnabled ? { duration: 0.6, ease: 'easeOut' } : { duration: 0 }}
+      className={cx(
+        "w-full border-b border-border/60 bg-background/70 supports-[backdrop-filter]:bg-background/50",
+        effectsEnabled ? "backdrop-blur" : ""
+      )}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 text-muted-foreground transition-colors duration-300 sm:px-6">
         <Link
@@ -141,6 +146,14 @@ export function Navbar() {
           >
             <HiOutlineMail />
           </a>
+          <button
+            type="button"
+            onClick={() => setEffectsEnabled(!effectsEnabled)}
+            className="inline-flex items-center rounded-full border border-border/60 bg-background/60 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+            aria-label={`Turn effects ${effectsEnabled ? 'off' : 'on'}`}
+          >
+            Effects {effectsEnabled ? 'On' : 'Off'}
+          </button>
           <button
             type="button"
             onClick={handleToggle}

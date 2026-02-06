@@ -10,8 +10,7 @@ import { HelpBot } from "@/components/HelpBot";
 import { SupportWidget } from "@/components/SupportWidget";
 import { ResumeDrawer } from "@/components/ResumeDrawer";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
-import { AmbientOverlay } from "@/components/AmbientOverlay";
-import { SparkleTrailOverlay } from "@/components/SparkleTrailOverlay";
+import { EffectsOverlays } from "@/components/EffectsOverlays";
 import localFont from "next/font/local";
 
 const sansFont = localFont({
@@ -60,8 +59,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         className={`${sansFont.variable} ${monoFont.variable} min-h-screen bg-background text-foreground`}
       >
         <Providers>
-          <AmbientOverlay />
-          <SparkleTrailOverlay />
+          <EffectsOverlays />
           <BootScreen />
           <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6">
             <div className="flex min-h-screen w-full flex-col">
