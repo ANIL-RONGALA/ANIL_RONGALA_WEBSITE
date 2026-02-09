@@ -3,13 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 
 const MIN_WIDTH = 640;
-const DESKTOP_PARTICLE_COUNT = 28;
-const MOBILE_PARTICLE_COUNT = 14;
+const DESKTOP_PARTICLE_RANGE: [number, number] = [12, 18];
+const MOBILE_PARTICLE_RANGE: [number, number] = [0, 10];
 const MAX_SPEED = 0.32;
 const SPARK_INTERVAL_RANGE: [number, number] = [600, 1200];
+const FRAME_INTERVAL = 50;
+const SHADOW_BLUR = 2;
+const CLEAR_FILL_DARK = "rgb(0, 0, 0)";
+const CLEAR_FILL_LIGHT = "rgb(255, 255, 255)";
 
 const randomBetween = (min: number, max: number) =>
   Math.random() * (max - min) + min;
+
+const randomIntBetween = (min: number, max: number) =>
+  Math.floor(randomBetween(min, max + 1));
 
 type Particle = {
   x: number;
@@ -19,6 +26,8 @@ type Particle = {
   life: number;
   size: number;
   hue: number;
+  colorDark: string;
+  colorLight: string;
   twinkle: number;
   boostUntil: number;
 };
@@ -37,6 +46,8 @@ const createParticle = (width: number, height: number): Particle => {
     life: randomBetween(0.2, 1),
     size: randomBetween(1.2, 2.6),
     hue: baseHue,
+    colorDark: `hsl(${baseHue}, 90%, 72%)`,
+    colorLight: `hsl(${baseHue}, 90%, 60%)`,
     twinkle: randomBetween(0, Math.PI * 2),
     boostUntil: 0,
   };
@@ -51,6 +62,7 @@ export function SparkleTrailOverlay() {
   const overlayDimRef = useRef(false);
   const nextSparkRef = useRef(0);
   const visibleRef = useRef(true);
+  const lastFrameRef = useRef(0);
   const [enabled, setEnabled] = useState(true);
 
   useEffect(() => {
@@ -118,10 +130,14 @@ export function SparkleTrailOverlay() {
       context.scale(dpr, dpr);
 
       const particleCount =
-        width < 900 ? MOBILE_PARTICLE_COUNT : DESKTOP_PARTICLE_COUNT;
-      particlesRef.current = Array.from({ length: particleCount }, () =>
-        createParticle(width, height)
-      );
+        width < 900
+          ? randomIntBetween(...MOBILE_PARTICLE_RANGE)
+          : randomIntBetween(...DESKTOP_PARTICLE_RANGE);
+      const nextParticles = new Array<Particle>(particleCount);
+      for (let i = 0; i < particleCount; i += 1) {
+        nextParticles[i] = createParticle(width, height);
+      }
+      particlesRef.current = nextParticles;
     };
 
     const startAnimation = () => {
@@ -138,6 +154,7 @@ export function SparkleTrailOverlay() {
     const handleVisibility = () => {
       visibleRef.current = !document.hidden;
       if (visibleRef.current) {
+        lastFrameRef.current = performance.now();
         startAnimation();
       } else {
         stopAnimation();
@@ -145,11 +162,18 @@ export function SparkleTrailOverlay() {
     };
 
     const animate = (time: number) => {
-      animationRef.current = window.requestAnimationFrame(animate);
-
       if (!visibleRef.current) return;
+      if (time - lastFrameRef.current < FRAME_INTERVAL) {
+        animationRef.current = window.requestAnimationFrame(animate);
+        return;
+      }
+      lastFrameRef.current = time;
+
       const { width, height } = sizeRef.current;
-      if (!width || !height) return;
+      if (!width || !height) {
+        animationRef.current = window.requestAnimationFrame(animate);
+        return;
+      }
 
       if (time > nextSparkRef.current) {
         const sparks = Math.random() > 0.6 ? 2 : 1;
@@ -168,14 +192,15 @@ export function SparkleTrailOverlay() {
       const overlayAlpha = overlayDimRef.current ? 0.5 : 1;
       const fadeAlpha = isDark ? 0.08 : 0.06;
       const fade = fadeAlpha * overlayAlpha;
+      const particleFill = isDark ? CLEAR_FILL_DARK : CLEAR_FILL_LIGHT;
 
       context.globalCompositeOperation = "source-over";
-      context.fillStyle = isDark
-        ? `rgba(0, 0, 0, ${fade})`
-        : `rgba(255, 255, 255, ${fade})`;
+      context.fillStyle = particleFill;
+      context.globalAlpha = fade;
       context.fillRect(0, 0, width, height);
 
       context.globalCompositeOperation = "lighter";
+      context.shadowBlur = SHADOW_BLUR;
 
       for (let i = 0; i < particlesRef.current.length; i += 1) {
         const particle = particlesRef.current[i];
@@ -208,14 +233,12 @@ export function SparkleTrailOverlay() {
 
         const twinkle = 0.55 + 0.45 * Math.sin(particle.twinkle);
         const boost = time < particle.boostUntil ? 1.4 : 1;
-        const glow = (isDark ? 10 : 8) * boost;
         const alpha = (0.2 + twinkle * 0.4) * overlayAlpha;
-        const lightness = isDark ? 72 : 60;
-        const color = `hsla(${particle.hue}, 90%, ${lightness}%, ${alpha})`;
+        const baseColor = isDark ? particle.colorDark : particle.colorLight;
 
-        context.shadowBlur = glow;
-        context.shadowColor = color;
-        context.fillStyle = color;
+        context.shadowColor = baseColor;
+        context.globalAlpha = alpha;
+        context.fillStyle = baseColor;
 
         context.beginPath();
         context.arc(particle.x, particle.y, particle.size * boost, 0, Math.PI * 2);
@@ -223,7 +246,8 @@ export function SparkleTrailOverlay() {
 
         const streakLength = 6 * boost;
         const streakAlpha = alpha * 0.6;
-        context.strokeStyle = `hsla(${particle.hue}, 90%, ${lightness}%, ${streakAlpha})`;
+        context.globalAlpha = streakAlpha;
+        context.strokeStyle = baseColor;
         context.lineWidth = 0.6 * boost;
         context.beginPath();
         context.moveTo(particle.x, particle.y);
@@ -235,7 +259,9 @@ export function SparkleTrailOverlay() {
       }
 
       context.shadowBlur = 0;
+      context.globalAlpha = 1;
       context.globalCompositeOperation = "source-over";
+      animationRef.current = window.requestAnimationFrame(animate);
     };
 
     updateTheme();
@@ -259,6 +285,7 @@ export function SparkleTrailOverlay() {
     window.addEventListener("resize", resizeCanvas);
     document.addEventListener("visibilitychange", handleVisibility);
 
+    lastFrameRef.current = performance.now();
     startAnimation();
 
     return () => {
