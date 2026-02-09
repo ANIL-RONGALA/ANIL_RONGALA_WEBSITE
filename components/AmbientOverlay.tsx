@@ -2,11 +2,15 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const PARTICLE_COUNT = 16;
+const DESKTOP_PARTICLE_RANGE: [number, number] = [12, 18];
+const MOBILE_PARTICLE_RANGE: [number, number] = [0, 10];
 const FRAME_INTERVAL = 50;
 
 const randomBetween = (min: number, max: number) =>
   Math.random() * (max - min) + min;
+
+const randomIntBetween = (min: number, max: number) =>
+  Math.floor(randomBetween(min, max + 1));
 
 type ParticleSpec = {
   id: number;
@@ -23,17 +27,20 @@ type ParticleState = {
 
 export function AmbientOverlay() {
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [particleCount, setParticleCount] = useState(0);
   const particleRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const particleStates = useRef<ParticleState[]>([]);
+  const visibleRef = useRef(true);
+  const animationRef = useRef(0);
 
   const particles = useMemo<ParticleSpec[]>(
     () =>
-      Array.from({ length: PARTICLE_COUNT }).map((_, index) => ({
+      Array.from({ length: particleCount }).map((_, index) => ({
         id: index,
         size: randomBetween(2, 4),
         opacity: randomBetween(0.18, 0.38),
       })),
-    []
+    [particleCount]
   );
 
   useEffect(() => {
@@ -48,6 +55,21 @@ export function AmbientOverlay() {
 
     media.addListener(update);
     return () => media.removeListener(update);
+  }, []);
+
+  useEffect(() => {
+    const updateCount = () => {
+      const width = window.innerWidth;
+      const nextCount =
+        width < 900
+          ? randomIntBetween(...MOBILE_PARTICLE_RANGE)
+          : randomIntBetween(...DESKTOP_PARTICLE_RANGE);
+      setParticleCount(nextCount);
+    };
+
+    updateCount();
+    window.addEventListener("resize", updateCount);
+    return () => window.removeEventListener("resize", updateCount);
   }, []);
 
   useEffect(() => {
@@ -69,18 +91,21 @@ export function AmbientOverlay() {
   useEffect(() => {
     if (reduceMotion) return undefined;
 
-    let animationFrame = 0;
     let lastTime = 0;
 
     const update = (time: number) => {
-      animationFrame = window.requestAnimationFrame(update);
-      if (time - lastTime < FRAME_INTERVAL) return;
+      if (!visibleRef.current) return;
+      if (time - lastTime < FRAME_INTERVAL) {
+        animationRef.current = window.requestAnimationFrame(update);
+        return;
+      }
       lastTime = time;
 
       const width = window.innerWidth;
       const height = window.innerHeight;
 
-      particleStates.current.forEach((particle, index) => {
+      for (let index = 0; index < particleStates.current.length; index += 1) {
+        const particle = particleStates.current[index];
         particle.x += particle.vx;
         particle.y += particle.vy;
 
@@ -98,12 +123,27 @@ export function AmbientOverlay() {
         if (element) {
           element.style.transform = `translate3d(${particle.x}px, ${particle.y}px, 0)`;
         }
-      });
+      }
+
+      animationRef.current = window.requestAnimationFrame(update);
     };
 
-    animationFrame = window.requestAnimationFrame(update);
-    return () => window.cancelAnimationFrame(animationFrame);
-  }, [reduceMotion]);
+    const handleVisibility = () => {
+      visibleRef.current = !document.hidden;
+      if (!visibleRef.current) {
+        window.cancelAnimationFrame(animationRef.current);
+        return;
+      }
+      animationRef.current = window.requestAnimationFrame(update);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibility);
+    animationRef.current = window.requestAnimationFrame(update);
+    return () => {
+      window.cancelAnimationFrame(animationRef.current);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, [reduceMotion, particles]);
 
   return (
     <div
