@@ -202,7 +202,7 @@ export function ProfileTabs({ focusAreas, skills, timeline }: ProfileTabsProps) 
         ))}
         <span
           aria-hidden="true"
-          className="absolute bottom-0 h-[2px] rounded-full bg-[hsl(var(--accent)/0.6)] shadow-[0_0_12px_hsl(var(--accent)/0.4)] transition-all duration-300"
+          className="absolute bottom-0 h-[2px] rounded-full bg-[hsl(var(--accent)/0.6)] shadow-[0_0_12px_hsl(var(--accent)/0.4)] transition-transform duration-300"
           style={{ left: indicator.left, width: indicator.width }}
         />
       </div>

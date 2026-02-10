@@ -58,9 +58,9 @@ export function AdBoard({ youtubeUrl, title, position, rotation = 0, isActive = 
         rotate: `${rotation}deg`
       }}
     >
-      <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-2 shadow-xl transition-colors duration-500 backdrop-blur">
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-2 shadow-sm transition-opacity duration-500 backdrop-blur">
         <div className="absolute inset-0 -z-10 rounded-3xl bg-[radial-gradient(circle_at_center,_hsl(var(--accent)/0.22),_transparent_68%)] opacity-70 blur-2xl" />
-        <div className="relative overflow-hidden rounded-2xl border border-border bg-background/80 transition-colors duration-500">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-background/80 transition-opacity duration-500">
           <VideoCard video={{ youtubeId: videoId, title }} />
         </div>
         <div className="mt-3 text-[11px] uppercase tracking-[0.25em] text-muted-foreground">{title}</div>

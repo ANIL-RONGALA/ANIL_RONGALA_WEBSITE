@@ -17,14 +17,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-50px' }}
       transition={{ duration: 0.4, ease: 'easeOut' }}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-lg transition duration-300 backdrop-blur hover:border-[hsl(var(--accent)/0.45)]"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-6 shadow-sm transition-transform duration-300 backdrop-blur hover:border-[hsl(var(--accent)/0.45)]"
     >
-      <span className="pointer-events-none absolute left-0 top-0 h-[2px] w-full -translate-x-full bg-[hsl(var(--accent)/0.5)] opacity-0 transition duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+      <span className="pointer-events-none absolute left-0 top-0 h-[2px] w-full -translate-x-full bg-[hsl(var(--accent)/0.5)] opacity-0 transition-transform duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
       <div className="flex flex-1 flex-col">
         <h3 className="text-xl font-semibold text-foreground">{project.title}</h3>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{project.oneLiner}</p>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.outcome}</p>
-        <p className="mt-3 text-xs font-mono uppercase tracking-wide text-muted-foreground opacity-0 transition duration-300 group-hover:opacity-100">
+        <p className="mt-3 text-xs font-mono uppercase tracking-wide text-muted-foreground opacity-0 transition-opacity duration-300 group-hover:opacity-100">
           Proof: {project.proof.map((item) => item.label).join(" / ")}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
@@ -37,7 +37,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
             href={project.externalUrl}
             target="_blank"
             rel="noreferrer"
-            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 inline-flex items-center gap-2 rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] px-4 py-2 text-sm font-medium text-foreground transition duration-200 hover:border-[hsl(var(--accent)/0.5)] hover:bg-[hsl(var(--accent)/0.18)] hover:text-accent"
+            className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 inline-flex items-center gap-2 rounded-full border border-[hsl(var(--accent)/0.35)] bg-[hsl(var(--accent)/0.12)] px-4 py-2 text-sm font-medium text-foreground transition-opacity duration-200 hover:border-[hsl(var(--accent)/0.5)] hover:bg-[hsl(var(--accent)/0.18)] hover:text-accent"
           >
             <FaExternalLinkAlt className="text-xs" />
             View Project

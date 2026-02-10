@@ -123,7 +123,7 @@ export default function HomePage() {
                 <div className="absolute -top-6 right-2 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
               </div>
               <SystemConsole />
-              <div className="group rounded-2xl border border-border/70 bg-card/60 p-5 shadow-sm transition duration-300 hover:border-[hsl(var(--accent)/0.45)] hover:shadow-lg">
+              <div className="group rounded-2xl border border-border/70 bg-card/60 p-5 shadow-sm transition-transform duration-300 hover:border-[hsl(var(--accent)/0.45)] hover:shadow-sm">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">Explore</h3>
                   <span className="text-xs font-mono uppercase text-muted-foreground">quick links</span>
