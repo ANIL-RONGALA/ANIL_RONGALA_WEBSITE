@@ -18,7 +18,7 @@ export function AdCarousel() {
             href={item.youtubeUrl}
             target="_blank"
             rel="noreferrer"
-            className="min-w-[260px] rounded-xl border border-border bg-card p-4 text-left shadow-lg transition duration-300 hover:border-[hsl(var(--accent)/0.45)]"
+            className="min-w-[260px] rounded-xl border border-border bg-card p-4 text-left shadow-sm transition-transform duration-300 hover:border-[hsl(var(--accent)/0.45)]"
           >
             <p className="neon-accent text-xs uppercase tracking-[0.3em]">Featured</p>
             <h3 className="mt-2 text-lg font-semibold text-foreground">{item.title}</h3>

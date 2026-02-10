@@ -221,7 +221,7 @@ export function SupportWidget() {
             onClick={() => setOpen(true)}
             aria-label="Open live support chat"
             aria-expanded={open}
-            className="glass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 flex h-12 w-12 items-center justify-center gap-2 rounded-full border border-border/60 bg-background/70 text-foreground shadow-lg transition-all duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-accent sm:w-auto sm:px-4"
+            className="glass focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 flex h-12 w-12 items-center justify-center gap-2 rounded-full border border-border/60 bg-background/70 text-foreground shadow-sm transition-transform duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-accent sm:w-auto sm:px-4"
           >
             <span className="neon-accent inline-flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(var(--accent)/0.15)] text-[13px] font-semibold">
               AI

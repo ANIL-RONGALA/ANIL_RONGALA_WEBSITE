@@ -57,8 +57,7 @@ export function Navbar() {
       animate={effectsEnabled ? { y: 0, opacity: 1 } : { y: 0, opacity: 1 }}
       transition={effectsEnabled ? { duration: 0.6, ease: 'easeOut' } : { duration: 0 }}
       className={cx(
-        "w-full border-b border-border/60 bg-background/70 supports-[backdrop-filter]:bg-background/50",
-        effectsEnabled ? "backdrop-blur" : ""
+        "w-full border-b border-border/50 bg-background/80"
       )}
     >
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 text-muted-foreground transition-colors duration-300 sm:px-6">
@@ -158,7 +157,7 @@ export function Navbar() {
             type="button"
             onClick={handleToggle}
             disabled={!mounted}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-lg text-muted-foreground transition-all duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-60 sm:h-9 sm:w-9"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-lg text-muted-foreground transition-transform duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 disabled:cursor-not-allowed disabled:opacity-60 sm:h-9 sm:w-9"
             aria-label={toggleLabel}
           >
             <span aria-hidden className="text-lg">

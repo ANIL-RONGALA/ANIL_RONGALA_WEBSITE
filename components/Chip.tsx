@@ -332,7 +332,7 @@ export function Chip({
       whileTap={{ scale: 0.97 }}
       onHoverStart={onHoverStart}
       onHoverEnd={onHoverEnd}
-      className={`group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none rounded-2xl border-[1.5px] p-[1.5px] transition-all duration-500 will-change-transform ${className ?? ''}`}
+      className={`group absolute z-10 -translate-x-1/2 -translate-y-1/2 cursor-pointer select-none rounded-2xl border-[1.5px] p-[1.5px] transition-transform duration-500 will-change-transform ${className ?? ''}`}
       style={{
         ...style,
         borderColor,
