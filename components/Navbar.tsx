@@ -23,7 +23,7 @@ const navLinks = [
 ];
 
 export function Navbar() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const { effectsEnabled, setEffectsEnabled } = usePerf();
   const [mounted, setMounted] = useState(false);
   const pathname = usePathname();
@@ -32,7 +32,7 @@ export function Navbar() {
     setMounted(true);
   }, []);
 
-  const currentTheme = theme === 'light' || theme === 'dark' ? theme : 'dark';
+  const currentTheme = resolvedTheme === 'light' || resolvedTheme === 'dark' ? resolvedTheme : 'dark';
   const isLight = currentTheme === 'light';
   const toggleLabel = isLight ? 'Switch to dark mode' : 'Switch to light mode';
   const toggleIcon = isLight ? '🌙' : '☀️';

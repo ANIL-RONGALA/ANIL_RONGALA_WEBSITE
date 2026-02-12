@@ -42,7 +42,7 @@ export function Providers({ children }: { children: ReactNode }) {
 
   return (
     <PerfContext.Provider value={perfValue}>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <MotionConfig reducedMotion={effectsEnabled ? "never" : "always"}>
           {children}
         </MotionConfig>
