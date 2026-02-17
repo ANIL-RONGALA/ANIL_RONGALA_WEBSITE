@@ -4,7 +4,7 @@ import { siteConfig } from '@/lib/siteConfig';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { FaFileAlt, FaGithub, FaLifeRing, FaLinkedin } from 'react-icons/fa';
+import { FaFileAlt, FaGithub, FaLifeRing, FaLinkedin, FaSlidersH } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
@@ -57,17 +57,25 @@ export function Navbar() {
       animate={effectsEnabled ? { y: 0, opacity: 1 } : { y: 0, opacity: 1 }}
       transition={effectsEnabled ? { duration: 0.6, ease: 'easeOut' } : { duration: 0 }}
       className={cx(
-        "w-full border-b border-border/50 bg-background/80"
+        'w-full border-b border-border/60 bg-background/70 backdrop-blur'
       )}
     >
-      <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 text-muted-foreground transition-colors duration-300 sm:px-6">
-        <Link
-          href="/"
-          className="rounded-full px-2 py-1 font-semibold uppercase tracking-[0.2em] text-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
-        >
-          {siteConfig.siteName}
-        </Link>
-        <nav className="hidden items-center gap-4 text-sm text-muted-foreground transition-colors duration-300 lg:flex">
+      <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-2 px-4 py-3 text-muted-foreground transition-colors duration-300 sm:px-6">
+        <div className="flex items-center gap-2">
+          <Link
+            href="/"
+            className="rounded-full px-2 py-1 font-semibold uppercase tracking-[0.2em] text-foreground transition-colors duration-200 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
+          >
+            {siteConfig.siteName}
+          </Link>
+          <button
+            type="button"
+            className="inline-flex items-center rounded-full border border-border/60 bg-background/60 px-2.5 py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 xl:hidden"
+          >
+            Menu
+          </button>
+        </div>
+        <nav className="hidden items-center gap-6 text-sm text-muted-foreground transition-colors duration-300 xl:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -83,24 +91,19 @@ export function Navbar() {
             </Link>
           ))}
         </nav>
-        <button
-          type="button"
-          className="inline-flex items-center rounded-full border border-border/60 bg-background/60 px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 lg:hidden"
-        >
-          Menu
-        </button>
-        <div className="flex min-w-0 items-center gap-2">
+        <div className="flex min-w-0 flex-wrap items-center justify-end gap-1 sm:gap-2 xl:flex-nowrap">
+          <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={handleOpenSupport}
-            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 md:inline-flex"
+            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 xl:inline-flex"
           >
             Live Support
           </button>
           <button
             type="button"
             onClick={handleOpenSupport}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-base text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 md:hidden sm:h-9 sm:w-9"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-base text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 xl:hidden sm:h-9 sm:w-9"
             aria-label="Live Support"
           >
             <FaLifeRing />
@@ -108,18 +111,20 @@ export function Navbar() {
           <button
             type="button"
             onClick={handleOpenResume}
-            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 md:inline-flex"
+            className="hidden items-center rounded-full border border-border/60 bg-background/60 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 xl:inline-flex"
           >
             Resume
           </button>
           <button
             type="button"
             onClick={handleOpenResume}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-base text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 md:hidden sm:h-9 sm:w-9"
+            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/60 bg-background/60 text-base text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 xl:hidden sm:h-9 sm:w-9"
             aria-label="Resume"
           >
             <FaFileAlt />
           </button>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
           <a
             href={siteConfig.githubUrl}
             target="_blank"
@@ -151,7 +156,10 @@ export function Navbar() {
             className="inline-flex items-center rounded-full border border-border/60 bg-background/60 px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors duration-200 hover:border-[hsl(var(--accent)/0.45)] hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60"
             aria-label={`Turn effects ${effectsEnabled ? 'off' : 'on'}`}
           >
-            Effects {effectsEnabled ? 'On' : 'Off'}
+            <span className="hidden xl:inline">Effects {effectsEnabled ? 'On' : 'Off'}</span>
+            <span className="text-sm xl:hidden" aria-hidden>
+              <FaSlidersH />
+            </span>
           </button>
           <button
             type="button"
@@ -164,6 +172,7 @@ export function Navbar() {
               {toggleIcon}
             </span>
           </button>
+          </div>
         </div>
       </div>
     </motion.header>
